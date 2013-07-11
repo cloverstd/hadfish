@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}设置{% endblock %}
+{% block content %}
+<form action="{{ url_for('account.setting') }}" method="POST">
+    <label>用户名</label>
+    <input type="text" name="username" value="{{ user.name }}" />
+</br>
+    <label>邮箱</label>
+    <input type="text" name="email" value="{{ user.email }}" />
+</br>
+    <label>QQ</label>
+    <input type="text" name="QQ" value="{{ user.qq }}" />
+</br>
+    <label>电话</label>
+    <input type="text" name="tel" value="{{ user.tel }}" />
+</br>
+    <label>学校</label>
+    <input type="text" name="school" value="{{ user.school }}" />
+</br>
+    <label>地址</label>
+    <input type="text" name="address" value="{{ user.address }}" />
+</br>
+    <label>个人简介</label>
+    <input type="text" name="profile" value="{{ user.profile }}" />
+</br>
+<button type="submit">保存</button>
+
+</form>
+{% endblock %}

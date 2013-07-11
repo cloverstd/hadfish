@@ -30,6 +30,7 @@ class User(db.Model):
         self.qq = qq
         self.address = address
         self.profile = profile
+        self.school = school
         self.is_validate = is_validate
         self.avatar = avatar
         self.date = datetime.now()

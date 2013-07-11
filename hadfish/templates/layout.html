@@ -5,6 +5,12 @@
     <title>{% block title %}{% endblock %} - 有鱼网</title>
 </head>
 <body>
+    {% if g.user %}
+    <a href="{{ url_for('account.logout') }}">登出</a>
+    {% else %}
+    <a href="{{ url_for('account.register') }}">注册</a>
+    <a href="{{ url_for('account.login') }}">登录</a>
+    {% endif %}
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     <ul>

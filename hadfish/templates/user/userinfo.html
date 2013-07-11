@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}{{ user.name }}{% endblock %}
+{% block content %}
+{% if g.user.name == user.name %}
+修改个人资料</br>
+{% endif %}
+用户名：{{ user.name }}
+</br>
+邮箱：{{ user.email }}
+</br>
+QQ：{{ user.qq }}
+</br>
+电话：{{ user.tel }}
+</br>
+学校：{{ user.school }}
+</br>
+地址：{{ user.address }}
+</br>
+注册时间： {{ user.date | date_format }}
+{% endblock %}
