@@ -71,11 +71,13 @@ class Item(db.Model):
 
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32), unique=True)
     date = db.Column(db.DateTime)  # 文件名以日期保存
     item_id = db.Column(db.Integer, db.ForeignKey("item.id"))
 
-    def __init__(self, date):
-        self.date = date
+    def __init__(self, name):
+        self.name = name
+        self.date = datetime.now()
 
     def get_name(self, suffix="jpg"):
         return "%s.%s" % (self.date.strftime("%Y%m%d%H%M%S%s"), suffix)

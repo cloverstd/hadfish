@@ -16,6 +16,8 @@ PER_PAGE = 20 # 每页显示商品数目
 RE_PER_PAGE = 20 # 每页显示评论数目
 DEFAULT_TIMEZONE = "Asia/Shanghai" # 默认时区
 
+PASSWORD_KEY = "This is a key"
+
 class BaseConfig(object):
     DEBUG = False
     TESTING = False
