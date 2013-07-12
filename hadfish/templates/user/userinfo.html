@@ -2,7 +2,7 @@
 {% block title %}{{ user.name }}{% endblock %}
 {% block content %}
 {% if g.user.name == user.name %}
-修改个人资料</br>
+<a href="{{ url_for('account.setting') }}">修改个人资料</a></br>
 {% endif %}
 用户名：{{ user.name }}
 </br>

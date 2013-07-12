@@ -4,7 +4,7 @@
 <form action="{{ url_for('account.setting_avatar') }}" method="POST" enctype="multipart/form-data">
     <label>原头像</label>
     {%if user.avatar %}
-    <img src="{{ url_for('.static', filename='img/') }}{{ user.avatar }}"/>
+    <img src="{{ user.avatar | avatar_url }}!100.100" />
     {% else %}
     <img src="{{ url_for('.static', filename='img/txdefault-small.jpg') }}">
     {% endif %}

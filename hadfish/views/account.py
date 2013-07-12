@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from flask import Module, render_template, request, flash, url_for, redirect, session, g, abort
-from hadfish.utils import check_password_hash, generate_password_hash, allowed_file
+from flask import Module, render_template, request, flash, url_for, redirect,\
+    session, g, abort
+from werkzeug import secure_filename
+from werkzeug.exceptions import RequestEntityTooLarge
+from hadfish.utils import check_password_hash, generate_password_hash,\
+    allowed_file, rename_image, get_avatar_name
 from hadfish.extensions import db
 from hadfish.databases import User
 from hadfish import config
-from werkzeug import secure_filename
-import os.path
+from hadfish.images import upload_images, delete_images
+# import os.path
 
 account = Module(__name__)
 
@@ -50,7 +54,7 @@ def register():
                     generate_password_hash(request.form["password"],
                                            config.PASSWORD_KEY),
                     tel=request.form["tel"], qq=request.form["QQ"],
-                    school=u"上海建桥学院",
+                    school=u"上海建桥学院", profile=u"",
                     address=request.form["address"])
 
         db.session.add(user)
@@ -77,6 +81,8 @@ def login():
             else:
                 flash(u"登录成功！", category="alert-success")
                 session["user_id"] = user.id
+                if request.form.get("login-auto"):
+                    session.permanent = True
                 # return redirect(url_for(""))
                 return "登录成功"
         else:
@@ -90,6 +96,8 @@ def login():
             else:
                 flash(u"登录成功！", category="alert-success")
                 session["user_id"] = user.id
+                if request.form.get("login-auto"):
+                    session.permanent = True
                 # return redirect(url_for(""))
                 return "登录成功"
 
@@ -100,10 +108,10 @@ def login():
 @account.route("/logout", methods=["GET", "POST"])
 def logout():
     if g.user is not None:
-		session.pop('user_id', None)
-		session.permanent = False
-		flash(u"'你已经成功登出！")
-	# return redirect(url_for())
+        session.pop('user_id', None)
+        session.permanent = False
+        flash(u"'你已经成功登出！")
+    # return redirect(url_for())
     return "已经成功登出"
 
 
@@ -114,13 +122,13 @@ def userinfo(username):
         abort(404)
     return render_template("user/userinfo.html", user=user)
 
+
 @account.route("/setting/account", methods=["GET", "POST"])
 def setting():
     if not g.user:
         # return redirect(url_for(""))
         return "请先登录"
     error = None
-    
     if request.method == "POST":
         if not request.form["username"]:
             error = u"用户名不能为空"
@@ -129,7 +137,6 @@ def setting():
         if error:
             flash(error, category="alert-error")
             return redirect(url_for("account.setting"))
-        
         user = g.user
         user.name = request.form["username"]
         user.email = request.form["email"]
@@ -139,8 +146,7 @@ def setting():
         user.profile = request.form["profile"]
         db.session.commit()
         flash(u"修改成功", category="alert-success")
-        return redirect(url_for("account.setting"))        
-    
+        return redirect(url_for("account.setting"))
     return render_template("user/setting.html", user=g.user)
 
 
@@ -151,19 +157,22 @@ def setting_password():
         return "请先登录"
     error = None
     if request.method == "POST":
-        
-        if not request.form["password[0]"] or not request.form["password[1]"] or not request.form["password[2]"]:
+        if not request.form["password[0]"] or \
+                not request.form["password[1]"] or \
+                not request.form["password[2]"]:
             error = u"密码不能为空"
-        elif not check_password_hash(user.password, request.form["password[0]"], config.PASSWORD_KEY):
+        elif not check_password_hash(g.user.password,
+                                     request.form["password[0]"],
+                                     config.PASSWORD_KEY):
             error = u"原密码不正确"
         elif request.form["password[1]"] != request.form["password[2]"]:
             error = u"新密码两次不相同"
-        
         if error:
             flash(error, category="alert-error")
             return render_template("user/password.html")
         user = g.user
-        user.password = generate_password_hash(request.form["password[1]"],config.PASSWORD_KEY)
+        user.password = generate_password_hash(request.form["password[1]"],
+                                               config.PASSWORD_KEY)
         db.session.commit()
         flash(u"密码修改成功，请重新登录", category="alert-success")
         return redirect(url_for("account.logout"))
@@ -175,19 +184,29 @@ def setting_avatar():
     if not g.user:
         # return redirect(url_for(""))
         return "请先登录"
-    error = None
+    # error = None
     if request.method == "POST":
-        file = request.files["avatar"]
+        try:
+            file = request.files["avatar"]
+        except RequestEntityTooLarge:
+            flash(u"只允许上传 5MB 以下的图片，谢谢", category="alert-error")
+            return redirect(url_for("account.setting_avatar"))
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            # TODO 文件以 ID 保存，转换成 JPG 后
-            file.save(os.path.join("/home/action/hadfish/hadfish/static/img", filename))
+            filename = rename_image(filename, get_avatar_name(g.user.id))
+            # file.save(os.path.join("hadfish/hadfish/static/img", filename))
+            # 上传二进制流到七牛
+            if not delete_images(config.QINIU_BUCKET_AVATAR, g.user.avatar):
+                flash(u"修改头像失败，请重试", categoty="alert-warming")
+                return render_template("user/avatar.html", user=g.user)
+            if not upload_images(config.QINIU_BUCKET_AVATAR,
+                                 filename, file.stream):
+                flash(u"修改头像失败，请重试", categoty="alert-warming")
+                return render_template("user/avatar.html", user=g.user)
             flash(u"上传成功", category="alert-success")
-            
             g.user.avatar = filename
             db.session.commit()
             return redirect(url_for("account.setting_avatar"))
         else:
             flash(u"文件格式不支持", category="alert-error")
-            
     return render_template("user/avatar.html", user=g.user)

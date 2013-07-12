@@ -39,7 +39,7 @@ class User(db.Model):
         return "<User %r>" % (self.name)
 
 
-class Item(db.Model):
+class ItemSale(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     original_price = db.Column(db.Float)
@@ -48,8 +48,8 @@ class Item(db.Model):
     date = db.Column(db.DateTime)  # 上架时间
     valid_date = db.Column(db.Integer(3))  # 最长时间 150 天
     description = db.Column(db.Integer(140))
-    type = db.Column(db.Integer(1))  # 0 表示出售，1 表示求购
-    # classify 外键
+    # type = db.Column(db.Integer(1))  # 0 表示出售，1 表示求购
+    # classify 外键 类型
     images = db.relationship("Image", backref="item", lazy="dynamic")
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
@@ -85,3 +85,12 @@ class Image(db.Model):
 
     def __repr__(self):
         return "<Image %r>" % (self.date)
+
+
+# class Setting(db.Model):
+    # id = db.Column(db.Integer, primary_key=True)
+    # allow_register = db.Column(db.Boolean, default=False)  # 允许注册
+    # allow_email_validate = db.Column(db.Boolean, default=False)  # 允许邮箱验证
+    # # 七牛 key
+    # qiniu_access_key = db.Column(db.String(100))
+    # qiniu_access_key = db.Column(db.String(100))

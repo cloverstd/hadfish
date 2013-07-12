@@ -5,7 +5,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from hadfish import config
 from hadfish.views import account
 from hadfish.extensions import db
-from hadfish.databases import User, Item, Image
+from hadfish.databases import User, ItemSale, Image
 import os
 
 
@@ -23,10 +23,15 @@ db.init_app(app)
 def before_request():
     g.user = None
     if "user_id" in session:
-        g.user = User.query.get(session['user_id'])
+        g.user = User.query.get(session["user_id"])
         
         
 # 模版过滤器
-@app.template_filter('date_format')
+@app.template_filter("date_format")
 def date_format(date):
     return u"%s年%s月%s日" % (date.year, date.month, date.day)
+
+
+@app.template_filter("avatar_url")
+def get_avatar(avatar):
+    return u"%s/%s" % (config.QINIU_DOMAIN_AVATAR, avatar)
