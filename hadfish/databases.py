@@ -19,9 +19,12 @@ class User(db.Model):
     date = db.Column(db.DateTime)
     avatar = db.Column(db.String(50))
 
-    items = db.relationship("Item", backref="user", lazy="dynamic")
+    item_sales = db.relationship("ItemSale",
+                                 backref="user", lazy="dynamic")
+    item_demands = db.relationship("ItemDemand",
+                                   backref="user", lazy="dynamic")
 
-    def __init__(self, name, email, password, tel=None, qq=None, school=None,
+    def __init__(self, name, password, email, tel=None, qq=None, school=None,
                  address=None, profile=None, is_validate=False, avatar=None):
         self.name = name
         self.email = email
@@ -40,6 +43,7 @@ class User(db.Model):
 
 
 class ItemSale(db.Model):
+    __tablename__ = "itemsales"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     original_price = db.Column(db.Float)
@@ -48,17 +52,15 @@ class ItemSale(db.Model):
     date = db.Column(db.DateTime)  # 上架时间
     valid_date = db.Column(db.Integer(3))  # 最长时间 150 天
     description = db.Column(db.Integer(140))
-    # type = db.Column(db.Integer(1))  # 0 表示出售，1 表示求购
-    # classify 外键 类型
-    images = db.relationship("Image", backref="item", lazy="dynamic")
+    # TODO classify 外键 类型
+    images = db.relationship("Image", backref="itemsales", lazy="dynamic")
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
-    def __init__(self, name, price, level, type, original_price=None,
+    def __init__(self, name, price, level, original_price=None,
                  valid_date=150, description=None):
         self.name = name
         self.price = price
         self.level = level
-        self.type = type
         if not original_price:
             self.original_price = price
         self.valid_date = valid_date
@@ -70,11 +72,34 @@ class ItemSale(db.Model):
         return "<Item %r>" % (self.name)
 
 
+class ItemDemand(db.Model):
+    __tablename__ = "itemdemands"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    price = db.Column(db.Float)
+    description = db.Column(db.String(140))
+    date = db.Column(db.DateTime)
+    valid_date = db.Column(db.Integer(3))
+    # TODO classify 外键 类型
+    images = db.relationship("Image", backref="itemdemands", lazy="dynamic")
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+
+    def __init__(self, name, price=0, description=None, valid_date=150):
+        self.name = name
+        self.price = price
+        self.description = description
+        self.date = datetime.now()
+
+    def __repr__(self):
+        return "<ItemDemand %r>" % self.name
+
+
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), unique=True)
     date = db.Column(db.DateTime)  # 文件名以日期保存
-    item_id = db.Column(db.Integer, db.ForeignKey("item.id"))
+    item_sale_id = db.Column(db.Integer, db.ForeignKey("itemsales.id"))
+    item_demand_id = db.Column(db.Integer, db.ForeignKey("itemdemands.id"))
 
     def __init__(self, name):
         self.name = name

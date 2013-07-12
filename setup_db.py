@@ -13,17 +13,24 @@ with app.test_request_context():
 
     image1 = Image("1")
     image2 = Image("2")
-    item = Item("test", 1.2, 1, 0)
-    item.images = [image1, image2]
+    image3 = Image("3")
+    image4 = Image("4")
+    item_sale = ItemSale("test", 1.2, 1)
+    item_demand = ItemDemand("test", 1, "test")
+    item_sale.images = [image1, image3]
+    item_demand.images = [image2, image4]
     # 
     user = User("test", "test", "test")
-    user.items = [item]
+    user.item_sales = [item_sale]
+    user.item_demands = [item_demand]
     # 
     db.session.add(user)
     db.session.commit()
     # 
     i = User.query.first()
-    print i.items[0]
+    print i.item_sales[0]
     # 
-    for a in i.items[0].images:
-        print a.get_name()
+    for a in i.item_sales[0].images:
+        print a
+    for a in i.item_demands[0].images:
+        print a

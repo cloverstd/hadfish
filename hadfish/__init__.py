@@ -3,9 +3,10 @@
 from flask import Flask, g, session
 from flask.ext.sqlalchemy import SQLAlchemy
 from hadfish import config
-from hadfish.views import account
+from hadfish.views import account, item_sale, item_demand
 from hadfish.extensions import db
-from hadfish.databases import User, ItemSale, Image
+# from hadfish.databases import User, ItemSale, Image
+from hadfish.databases import *
 import os
 
 
@@ -15,6 +16,8 @@ app = Flask(__name__)
 app.config.from_object("hadfish.config.DevConfig")
 
 app.register_module(account)
+app.register_module(item_sale)
+app.register_module(item_demand)
 
 # db = SQLAlchemy(app)
 db.init_app(app)
