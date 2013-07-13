@@ -54,6 +54,7 @@ class ItemSale(db.Model):
     valid_date = db.Column(db.Integer(3))  # 最长时间 150 天
     description = db.Column(db.Integer(140))
     # TODO classify 外键 类型
+    # TODO 相关链接
     images = db.relationship("Image", backref="itemsales", lazy="dynamic")
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 

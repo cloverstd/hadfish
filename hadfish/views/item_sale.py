@@ -17,7 +17,7 @@ def get_items():
 
 @item.route("/item/sale/add", methods=["GET", "POST"])
 def add_item():
-    return "add_item sale"
+    return render_template("item/sale/add.html")
 
 
 @item.route("/item/sale/modify/<int:item_id>", methods=["GET", "POST"])
