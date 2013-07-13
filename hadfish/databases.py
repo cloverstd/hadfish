@@ -5,6 +5,7 @@ from datetime import datetime
 
 # MySQL 中 一个汉字是一个位
 class User(db.Model):
+    # TODO 用户收藏，用户浏览记录
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
