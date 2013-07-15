@@ -90,7 +90,7 @@ class ItemDemand(db.Model):
     date = db.Column(db.DateTime)
     valid_date = db.Column(db.Integer(3))
     # TODO classify 外键 类型
-    images = db.relationship("Image", backref="itemdemands", lazy="dynamic")
+    # images = db.relationship("Image", backref="itemdemands", lazy="dynamic")
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     kind_id = db.Column(db.Integer)  # 分类
     is_sell = db.Column(db.Boolean)  # 售出
@@ -115,7 +115,7 @@ class Image(db.Model):
     name = db.Column(db.String(32), unique=True)
     date = db.Column(db.DateTime)  # 文件名以日期保存
     item_sale_id = db.Column(db.Integer, db.ForeignKey("itemsales.id"))
-    item_demand_id = db.Column(db.Integer, db.ForeignKey("itemdemands.id"))
+    # item_demand_id = db.Column(db.Integer, db.ForeignKey("itemdemands.id"))
 
     def __init__(self, name):
         self.name = name
