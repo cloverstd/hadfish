@@ -3,6 +3,7 @@
 from hashlib import md5
 from hadfish import config
 from datetime import datetime
+from hadfish.databases import *
 
 
 def generate_password_hash(password, key=None):
@@ -41,3 +42,12 @@ def get_avatar_name(uid):
     # 此处用 BUG，用户量超过 100w 可能出现 BUG， 为了上传头像即时刷新所做的处理
     name = "%.6d%.6d" % (uid, datetime.now().microsecond)
     return hex(int(name))[2:]
+
+
+def get_kind():
+    kinds = Kind.query.all()
+    rv = list()
+    for k in kinds:
+        rv.append(dict(id=k.id, name=k.name))
+
+    return dict(kinds=rv)

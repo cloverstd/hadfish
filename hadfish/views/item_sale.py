@@ -4,8 +4,8 @@ from flask import Module, render_template, request, flash, url_for, redirect,\
     session, g, abort
 from werkzeug import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
-from hadfish.extensions import db
 from hadfish import config
+from hadfish.extensions import db
 from hadfish.images import upload_images, delete_images
 
 item = Module(__name__)
