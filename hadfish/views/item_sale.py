@@ -7,6 +7,7 @@ from werkzeug.exceptions import RequestEntityTooLarge
 from hadfish import config
 from hadfish.extensions import db
 from hadfish.images import upload_images, delete_images
+from hadfish.utils import get_kind
 
 item = Module(__name__)
 
@@ -17,7 +18,8 @@ def get_items():
 
 @item.route("/item/sale/add", methods=["GET", "POST"])
 def add_item():
-    return render_template("item/sale/add.html")
+    print request.form
+    return render_template("item/sale/add.html", kinds=get_kind())
 
 
 @item.route("/item/sale/modify/<int:item_id>", methods=["GET", "POST"])
