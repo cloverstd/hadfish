@@ -57,8 +57,12 @@ class ItemSale(db.Model):
     # TODO 相关链接
     images = db.relationship("Image", backref="itemsales", lazy="dynamic")
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    kind_id = db.Column(db.Integer)  # 分类
+    is_sell = db.Column(db.Boolean)  # 售出
+    is_visited = db.Column(db.Boolean)  # 是否隐藏
 
-    def __init__(self, name, price, level, original_price=None,
+    def __init__(self, name, price, level, kind_id, is_sell=False,
+                 is_visited=True, original_price=None,
                  valid_date=150, description=None):
         self.name = name
         self.price = price
@@ -69,6 +73,9 @@ class ItemSale(db.Model):
         self.description = description
         self.date = datetime.now()
         # self.images = images
+        self.kind_id = kind_id
+        self.is_sell = is_sell
+        self.is_visited = is_visited
 
     def __repr__(self):
         return "<Item %r>" % (self.name)
@@ -85,12 +92,19 @@ class ItemDemand(db.Model):
     # TODO classify 外键 类型
     images = db.relationship("Image", backref="itemdemands", lazy="dynamic")
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    kind_id = db.Column(db.Integer)  # 分类
+    is_sell = db.Column(db.Boolean)  # 售出
+    is_visited = db.Column(db.Boolean)  # 是否隐藏
 
-    def __init__(self, name, price=0, description=None, valid_date=150):
+    def __init__(self, name, price, kind_id, is_sell=False,
+                 is_visited=True, description=None, valid_date=150):
         self.name = name
         self.price = price
         self.description = description
         self.date = datetime.now()
+        self.kind_id = kind_id
+        self.is_sell = is_sell
+        self.is_visited = is_visited
 
     def __repr__(self):
         return "<ItemDemand %r>" % self.name
@@ -121,3 +135,14 @@ class Image(db.Model):
     # # 七牛 key
     # qiniu_access_key = db.Column(db.String(100))
     # qiniu_access_key = db.Column(db.String(100))
+
+
+class Kind(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(6), unique=True)
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return "<Kind %r>" % self.name
