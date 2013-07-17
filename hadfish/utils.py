@@ -51,3 +51,7 @@ def get_kind():
         rv.append(dict(id=k.id, name=k.name))
 
     return dict(kinds=rv)
+
+
+def date_string():
+    return "%s" % (datetime.now().strftime("%Y%m%d%H%M%S%s"))
