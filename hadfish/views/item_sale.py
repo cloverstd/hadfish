@@ -30,6 +30,7 @@ def modify_item(item_id):
 @item.route("/item/sale/show/<int:item_id>")
 @item.route("/item/sale/show", defaults={"item_id": None})
 @item.route("/item/sale/all", defaults={"item_id": None})
+@item.route("/item/sale/", defaults={"item_id": None})
 @item.route("/item/sale", defaults={"item_id": None})
 def show_item(item_id):
     return "show_item sale"
