@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block title %}我有东西要出售{% endblock %}
+{% block content %}
+<form action="{{ url_for('item_sale.add_item') }}" method="POST">
+    <label>名称：</label>
+    <input type="text" name="name" />不超过100个字
+    </br>
+    <label>价格：</label>
+    <input type="text" name="price" />
+    </br>
+    <label>类型：</label>
+    <select name="kind">
+        {% for kind in kinds.kinds %}
+        <option value="{{ kind.id }}">{{ kind.name }}</option>
+        {% endfor %}
+        <!--
+        <option value="clothes">服饰</option>
+        <option value="supplies" selected>日常用品</option>
+        <option value="food">食品</option>
+        <option value="3C">数码电子</option>
+        <option value="stationery">文化用品</option>
+        <option value="other">其他</option>
+        -->
+    </select>
+    </br>
+    <label>成色</label>
+    <select name="new">
+        <option value="0">1</option>
+        <option value="1">2</option>
+        <option value="2">3</option>
+        <option value="3">4</option>
+        <option value="4">5</option>
+        <option value="5">6</option>
+        <option value="6">7</option>
+        <option value="7">8</option>
+        <option value="8">9</option>
+        <option value="9">10</option>
+    </select>10 成新表示全新
+    </br>
+    <label>图片</label>
+    <span id="buttonUpload"></span>
+    <div id="publish-list">
+        <span id="errorMsg">最多可上传 6 张图片</span>
+        <ul class="postimg"></ul>
+    </div>
+    </br>
+    <label>描述</label>
+    <textarea name="description"></textarea>
+    </br>
+    <label>相关链接</label>
+    <input type="text" name="link" /> 商品相关链接介绍
+    <button type="submit">添加</button>
+</form>
+{% endblock %}
+
+{% block solescript %}
+<script type="text/javascript" src="{{ url_for('.static', filename='js/swfupload/swfupload.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('.static', filename='js/swfupload/uploadfile.js') }}"></script>
+<script type="text/javascript">
+    window.onload = swfuInit;
+</script>
+{% endblock %}
