@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} - 有鱼网</title>
+    {% block solehead %}{% endblock %}
 </head>
 <body>
     {% if g.user %}
@@ -23,4 +24,6 @@
     {% block content %}
     {% endblock %}
 </body>
+<script type="text/javascript" src="http://upcdn.b0.upaiyun.com/libs/jquery/jquery-1.9.1.min.js"></script>
+{% block solescript %}{% endblock %}
 </html>
