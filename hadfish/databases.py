@@ -53,8 +53,6 @@ class ItemSale(db.Model):
     date = db.Column(db.DateTime)  # 上架时间
     valid_date = db.Column(db.Integer(3))  # 最长时间 150 天
     description = db.Column(db.Integer(140))
-    # TODO classify 外键 类型
-    # TODO 相关链接
     images = db.relationship("Image", backref="itemsales", lazy="dynamic")
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     kind_id = db.Column(db.Integer)  # 分类
@@ -89,7 +87,6 @@ class ItemDemand(db.Model):
     description = db.Column(db.String(140))
     date = db.Column(db.DateTime)
     valid_date = db.Column(db.Integer(3))
-    # TODO classify 外键 类型
     # images = db.relationship("Image", backref="itemdemands", lazy="dynamic")
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     kind_id = db.Column(db.Integer)  # 分类
@@ -112,7 +109,7 @@ class ItemDemand(db.Model):
 
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), unique=True)
+    name = db.Column(db.String(40), unique=True)
     date = db.Column(db.DateTime)  # 文件名以日期保存
     item_sale_id = db.Column(db.Integer, db.ForeignKey("itemsales.id"))
     # item_demand_id = db.Column(db.Integer, db.ForeignKey("itemdemands.id"))
