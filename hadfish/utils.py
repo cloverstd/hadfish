@@ -55,3 +55,15 @@ def get_kind():
 
 def date_string():
     return "%s" % (datetime.now().strftime("%Y%m%d%H%M%S%s"))
+
+
+def check_price(value, check_type="float"):
+    """检查 value 是否为数字"""
+    try:
+        if check_type == "float":
+            float(value)
+        else:
+            int(value)
+        return True
+    except ValueError:
+        return False

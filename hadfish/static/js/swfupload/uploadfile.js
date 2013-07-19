@@ -56,7 +56,13 @@ function uploadSuccess(file, serverData) {
         $(".postimg-item").eq(index).append($('<a class="postimg-item-del" href="javascript:void(0)" onClick="delUploadedFile(this);">删除</a>'));
 
         // 添加到 form 里
-        $('<input hidden name="img_' + index + '"' + ' value="' + serverData.substring(9) + '" />').appendTo($(".postimg-item")).eq(index);
+        //$(".postimg-item").eq(index).append($('<input hidden name="img_' + index + '"' + ' value="' + serverData.substring(9) + '" />'));
+        if (index !== 0) {
+            var value = $("#postimg-ipt").attr("value") + ";" + serverData.substring(9);
+        } else {
+            value = serverData.substring(9);
+        }
+        $("#postimg-ipt").attr("value", value);
     } else {
         $("#errorMsg").html("发生了一些错误，请重新上传");
     }

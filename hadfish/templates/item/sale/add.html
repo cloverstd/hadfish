@@ -3,7 +3,7 @@
 {% block content %}
 <form action="{{ url_for('item_sale.add_item') }}" method="POST">
     <label>名称：</label>
-    <input type="text" name="name" />不超过100个字
+    <input type="text" name="name" /><span class="sale-prompt">不超过100个字</span>
     </br>
     <label>价格：</label>
     <input type="text" name="price" />
@@ -37,18 +37,21 @@
         <option value="9">10</option>
     </select>10 成新表示全新
     </br>
+    <label>有效期</label>
+    <input type="text" name="valid_date" value="150"/>天
+    <span class="sale-prompt">指在有鱼网上架多少天如若无人购买则自动下架，最大 150 天</span>
+    </br>
     <label>图片</label>
     <span id="buttonUpload"></span>
     <div id="publish-list">
         <span id="errorMsg">最多可上传 6 张图片</span>
         <ul class="postimg"></ul>
+        <input type="hidden" id="postimg-ipt" name="img" value=""/>
     </div>
     </br>
     <label>描述</label>
     <textarea name="description"></textarea>
     </br>
-    <label>相关链接</label>
-    <input type="text" name="link" /> 商品相关链接介绍
     <button type="submit">添加</button>
 </form>
 {% endblock %}
