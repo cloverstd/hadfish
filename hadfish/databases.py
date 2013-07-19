@@ -16,16 +16,20 @@ class User(db.Model):
     school = db.Column(db.String(20))
     address = db.Column(db.String(140))
     profile = db.Column(db.String(140))
-    is_validate = db.Column(db.Boolean)
     date = db.Column(db.DateTime)
     avatar = db.Column(db.String(50))
+
+    # Email validate
+    is_validate = db.Column(db.Boolean)
+    valid_time = db.Column(db.DateTime)
+    valid_value = db.Column(db.String(32))
 
     item_sales = db.relationship("ItemSale",
                                  backref="user", lazy="dynamic")
     item_demands = db.relationship("ItemDemand",
                                    backref="user", lazy="dynamic")
 
-    def __init__(self, name, password, email, tel=None, qq=None, school=None,
+    def __init__(self, name, email, password, tel=None, qq=None, school=None,
                  address=None, profile=None, is_validate=False, avatar=None):
         self.name = name
         self.email = email

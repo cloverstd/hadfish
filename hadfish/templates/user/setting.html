@@ -7,6 +7,9 @@
 </br>
     <label>邮箱</label>
     <input type="text" name="email" value="{{ user.email }}" />
+    {% if not g.user.is_validate %}
+    <a class="email-valid" href="javascript:void(0);">验证邮箱</a>
+    {% endif %}
 </br>
     <label>QQ</label>
     <input type="text" name="QQ" value="{{ user.qq }}" />
@@ -26,4 +29,15 @@
 <button type="submit">保存</button>
 
 </form>
+
+<form id="email-valid" action="{{ url_for('email_valid') }}" method="POST">
+
+</form>
+{% endblock %}
+{% block solescript %}
+<script type="text/javascript">
+    $("a.email-valid").click(function(){
+        $("#email-valid").submit();
+    });
+</script>
 {% endblock %}

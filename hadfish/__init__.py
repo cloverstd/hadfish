@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, g, session
-from flask.ext.sqlalchemy import SQLAlchemy
+# from flask.ext.sqlalchemy import SQLAlchemy
 from hadfish import config
 from hadfish.views import account, item_sale, item_demand, common
-from hadfish.extensions import db
+from hadfish.extensions import db, mail
 # from hadfish.databases import User, ItemSale, Image
 from hadfish.databases import *
 import os
@@ -22,6 +22,7 @@ app.register_module(common)
 
 # db = SQLAlchemy(app)
 db.init_app(app)
+mail.init_app(app)
 
 @app.before_request
 def before_request():

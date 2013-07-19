@@ -6,10 +6,12 @@ from werkzeug import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
 from hadfish.utils import check_password_hash, generate_password_hash,\
     allowed_file, rename_image, get_avatar_name
-from hadfish.extensions import db
+from hadfish.extensions import db, mail
 from hadfish.databases import User
 from hadfish import config
 from hadfish.images import upload_images, delete_images
+from hashlib import md5
+from datetime import datetime
 # import os.path
 
 account = Module(__name__)
@@ -197,11 +199,11 @@ def setting_avatar():
             # file.save(os.path.join("hadfish/hadfish/static/img", filename))
             # 上传二进制流到七牛
             if not delete_images(config.QINIU_BUCKET_AVATAR, g.user.avatar):
-                flash(u"修改头像失败，请重试", categoty="alert-warming")
+                flash(u"修改头像失败，请重试", category="alert-warming")
                 return render_template("user/avatar.html", user=g.user)
             if not upload_images(config.QINIU_BUCKET_AVATAR,
                                  filename, file.stream):
-                flash(u"修改头像失败，请重试", categoty="alert-warming")
+                flash(u"修改头像失败，请重试", category="alert-warming")
                 return render_template("user/avatar.html", user=g.user)
             flash(u"上传成功", category="alert-success")
             g.user.avatar = filename
@@ -210,3 +212,62 @@ def setting_avatar():
         else:
             flash(u"文件格式不支持", category="alert-error")
     return render_template("user/avatar.html", user=g.user)
+
+
+@account.route("/setting/email", methods=["GET", "POST"])
+def email_valid():
+    if request.args:
+        k = request.args.get("k")
+        v = request.args.get("v")
+        if not k or not v:
+            flash(u"无效的验证链接", category="alert-error")
+            return "验证链接无效"
+        user = User.query.filter_by(id=k).first()
+        if g.user.is_validate:
+            flash(u"已经验证过了", category="alert-warming")
+            return "已经验证了的邮箱"
+
+        valid_time = user.valid_time
+        if (datetime.now() - valid_time).days > 0:
+            flash(u"验证链接已经过期", category="alert-warming")
+            return "验证链接已经过期"
+
+        if not user or user.valid_value != v:
+            flash(u"无效的验证链接", category="alert-error")
+            return "验证链接无效"
+
+        if user.valid_value == v:
+            user.is_validate = True
+            user.valid_time = None
+            user.valid_value = None
+            db.session.commit()
+            flash(u"恭喜验证成功", category="alert-success")
+            return "验证成功"
+
+    if not g.user:
+        # return redirect(url_for(""))
+        return "请先登录"
+    if request.method == "POST":
+        if g.user.is_validate:
+            flash(u"已经验证过了", category="alert-warming")
+            return "已经验证了的邮箱"
+
+        valid_time = datetime.now()
+        valid_value = md5("%s%s" % (g.user.id,
+                                    valid_time.__str__())).hexdigest()
+        g.user.valid_time = valid_time
+        g.user.valid_value = valid_value
+        db.session.commit()
+        # Send a validate email
+        html = """
+        <a href="%s/setting/email?k=%sv&v=%s">点击验证</a></br>
+        如果无法点击，请复制下列地址到浏览器中验证
+        %s/setting/email?k=%s&v=%s
+        """ % ("http://localhost:8080", g.user.id, valid_value,
+               "http://localhost:8080", g.user.id, valid_value)
+        mail.send_message(subject="有鱼网验证邮件",
+                          # recipients=[g.user.email],
+                          recipients=["23081991@qq.com"],
+                          html=html)
+        return "邮件已经发送，请查收"
+    return "无效的验证链接"

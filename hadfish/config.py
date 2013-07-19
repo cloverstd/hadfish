@@ -39,6 +39,18 @@ class BaseConfig(object):
     # MAX_CONTENT_LENGTH = 1024 # Just for test
     SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % _DB_SQLITE_PATH
 
+    # Flask-Mail configuration
+    MAIL_SERVER = "smtp.exmail.qq.com"
+    # MAIL_PORT = 25
+    # MAIL_USE_TLS = False
+    # MAIL_USE_SSL = False
+    # MAIL_DEBUG = True
+    MAIL_USERNAME = "test@cloverstd.com"
+    MAIL_PASSWORD = "xws2931336"
+    MAIL_DEFAULT_SENDER = "test@cloverstd.com"
+    # MAIL_MAX_EMAILS = None
+    # MAIL_SUPPRESS_SEND = False
+
 
 class DevConfig(BaseConfig):
     DEBUG = True
