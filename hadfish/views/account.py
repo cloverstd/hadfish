@@ -141,6 +141,11 @@ def setting():
             return redirect(url_for("account.setting"))
         user = g.user
         user.name = request.form["username"]
+        # 如果邮箱改变则需要重新验证
+        if request.form["email"] != user.email:
+            user.is_validate = False
+            user.valid_time = ""
+            user.valid_value = ""
         user.email = request.form["email"]
         user.qq = request.form["QQ"]
         user.tel = request.form["tel"]
@@ -266,8 +271,8 @@ def email_valid():
         """ % ("http://localhost:8080", g.user.id, valid_value,
                "http://localhost:8080", g.user.id, valid_value)
         mail.send_message(subject="有鱼网验证邮件",
-                          # recipients=[g.user.email],
-                          recipients=["23081991@qq.com"],
+                          recipients=[g.user.email],
+                          # recipients=["23081991@qq.com"],
                           html=html)
         return "邮件已经发送，请查收"
     return "无效的验证链接"
