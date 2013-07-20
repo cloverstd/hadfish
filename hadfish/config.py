@@ -20,8 +20,8 @@ PASSWORD_KEY = "This is a key"
 SITE_NAME = u"有鱼网"
 
 # 七牛 key
-QINIU_ACCESS_KEY = "WeqOutuF2P9hhB3lEGBQwWXfh1ivcfSBsILdF_U6"
-QINIU_SECRET_KEY = "anyM4uKbxl3JCCkrESHcrilPdd23t2OJPDtmbiMB"
+QINIU_ACCESS_KEY = "mTjx-jhzEBaeRpY60t--XLCVdKWDopZK4TqIRPDj"
+QINIU_SECRET_KEY = "93nRC4uy98qJSCsadtz7-HLPCiF95-qyZDmajtGC"
 QINIU_BUCKET_AVATAR = "hadfish-avatar"
 QINIU_BUCKET = "hadfish"
 QINIU_DOMAIN = "http://hadfish.qiniudn.com"

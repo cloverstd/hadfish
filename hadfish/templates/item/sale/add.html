@@ -47,6 +47,9 @@
         <span id="errorMsg">最多可上传 6 张图片</span>
         <ul class="postimg"></ul>
         <input type="hidden" id="postimg-ipt" name="img" value=""/>
+        <script type="text/javascript">
+            QINIU = {name: "hadfish", token: "{{ token }}", uid: {{ g.user.id }}, count: 0};
+        </script>
     </div>
     </br>
     <label>描述</label>

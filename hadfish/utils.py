@@ -4,6 +4,12 @@ from hashlib import md5
 from hadfish import config
 from datetime import datetime
 from hadfish.databases import *
+import json
+import hmac
+from hashlib import sha1
+from hadfish import config
+from time import time
+from base64 import urlsafe_b64encode
 
 
 def generate_password_hash(password, key=None):
@@ -67,3 +73,21 @@ def check_price(value, check_type="float"):
         return True
     except ValueError:
         return False
+
+
+def qiniu_token(scope=config.QINIU_BUCKET):
+    auth_info = {"scope": scope,
+                 "deadline": int(time() + 600),
+                 # "callbackUrl": "http://pi.hui.lu:8080/upload",
+                 "callbackBodyType": "application/json",
+                 # "customer": "customer",
+                 # "escape": 1,
+                 # "asyncOps": "",
+                 # "returnBody": '{"name": $(fname)}',
+                 }
+    auth_info_encoded = urlsafe_b64encode(json.dumps(auth_info))
+    mac = hmac.new(config.QINIU_SECRET_KEY, auth_info_encoded, sha1)
+    auth_digest = mac.digest()
+    auth_digest_encoded = urlsafe_b64encode(auth_digest)
+    return "%s:%s:%s" % (config.QINIU_ACCESS_KEY,
+                         auth_digest_encoded, auth_info_encoded)

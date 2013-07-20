@@ -7,7 +7,7 @@ from werkzeug.exceptions import RequestEntityTooLarge
 from hadfish import config
 from hadfish.extensions import db
 from hadfish.images import upload_images, delete_images
-from hadfish.utils import get_kind, check_price
+from hadfish.utils import get_kind, check_price, qiniu_token
 
 item = Module(__name__)
 
@@ -34,7 +34,7 @@ def add_item():
         return render_template("item/sale/add.html", kinds=get_kind(), 
                                pre_data=request.form)
 
-    return render_template("item/sale/add.html", kinds=get_kind())
+    return render_template("item/sale/add.html", kinds=get_kind(), token=qiniu_token())
 
 
 @item.route("/item/sale/modify/<int:item_id>", methods=["GET", "POST"])

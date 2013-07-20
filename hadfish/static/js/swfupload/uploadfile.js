@@ -38,6 +38,10 @@ function uploadStart(file) {
     img.appendTo(li);
     li.append('<span class="postimg-item-msg"></span>');
     li.appendTo($(".postimg"));
+    var t = new Date();
+    var timeFormat = "" + t.getFullYear() + t.getMonth() + t.getDate() + t.getHours() + t.getMinutes() + t.getSeconds() + t.getMilliseconds();
+    var key = QINIU.uid.toString() + "-" + timeFormat + "-" + Math.floor((Math.random()*100)+1).toString() + file.type;
+    this.addFileParam(file.id, "key", key);
     //console.log(swfu.getStats().successful_uploads + 1);
 }
 
@@ -48,6 +52,27 @@ function uploadProgress(file, bytesLoaded) {
 }
 
 function uploadSuccess(file, serverData) {
+    console.log(serverData);
+    var result = $.parseJSON(serverData);
+    if (result.key){
+        var index = swfu.getStats().successful_uploads - 1;
+        $(".postimg-item-img").eq(index).attr("src", "http://" + QINIU.name + ".qiniudn.com/" + result.key + "_thumb120.120");
+        $(".postimg-item-msg").eq(index).html("上传完成");
+        $(".postimg-item").eq(index).append($('<a class="postimg-item-del" href="javascript:void(0)" onClick="delUploadedFile(this);">删除</a>'));
+        // 添加到 form 里
+        //$(".postimg-item").eq(index).append($('<input hidden name="img_' + index + '"' + ' value="' + serverData.substring(9) + '" />'));
+        if (index !== 0) {
+            var value = $("#postimg-ipt").attr("value") + ";" + result.key;
+        } else {
+            value = result.key;
+        }
+        $("#postimg-ipt").attr("value", value);
+    } else {
+        console.log("错误");
+        console.log(result);
+    }
+
+    /*
     if (serverData.substring(0, 9) === "FILENAME:") {
         //console.log(serverData);
         var index = swfu.getStats().successful_uploads - 1;
@@ -66,6 +91,7 @@ function uploadSuccess(file, serverData) {
     } else {
         $("#errorMsg").html("发生了一些错误，请重新上传");
     }
+    */
 }
 
 function uploadComplete(file) {
@@ -98,8 +124,11 @@ function uploadError(file, errorCode, message) {
 
 function swfuInit(){
     swfu = new SWFUpload({
-        upload_url: "/upload/image",
-        post_params: {},
+        upload_url: "http://up.qiniu.com/",
+        file_post_name: "file",
+        post_params: {
+            "token": QINIU.token
+        },
 
         // File Upload Settings
         file_size_limit: "5 MB",	// 5MB
