@@ -71,6 +71,8 @@ class ItemSale(db.Model):
         self.level = level
         if not original_price:
             self.original_price = price
+        else:
+            self.original_price = original_price
         self.valid_date = valid_date
         self.description = description
         self.date = datetime.now()
@@ -113,6 +115,7 @@ class ItemDemand(db.Model):
 
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    # name 最大应该为 25
     name = db.Column(db.String(40), unique=True)
     date = db.Column(db.DateTime)  # 文件名以日期保存
     item_sale_id = db.Column(db.Integer, db.ForeignKey("itemsales.id"))

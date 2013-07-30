@@ -36,3 +36,8 @@ def upload_image():
     else:
         flash(u"文件格式不支持", category="alert-error")
     return "ERROR"
+
+
+@common.route("/")
+def index():
+    return "index"

@@ -75,7 +75,7 @@ def login():
         if '@' in request.form["username"]:
             user = User.query.filter_by(email=request.form["username"]).first()
             if user is None:
-                error = u"用户名错误哟！"
+                error = u"用户不存在！"
             elif not check_password_hash(user.password,
                                          request.form["password"],
                                          config.PASSWORD_KEY):
@@ -203,7 +203,8 @@ def setting_avatar():
             filename = rename_image(filename, get_avatar_name(g.user.id))
             # file.save(os.path.join("hadfish/hadfish/static/img", filename))
             # 上传二进制流到七牛
-            if not delete_images(config.QINIU_BUCKET_AVATAR, g.user.avatar):
+            if not delete_images(config.QINIU_BUCKET_AVATAR, g.user.avatar)\
+                    and g.user.avatar:
                 flash(u"修改头像失败，请重试", category="alert-warming")
                 return render_template("user/avatar.html", user=g.user)
             if not upload_images(config.QINIU_BUCKET_AVATAR,
