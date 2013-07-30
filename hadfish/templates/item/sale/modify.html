@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block title %}修改-{{ item.item.name }}{% endblock %}
+
+{% block content %}
+<form action="{{ url_for('item_sale.modify_item', item_id=item.item.id) }}" method="POST">
+    <label>名称：</label>
+    <input type="text" name="name" value="{{ item.item.name }}"/><span class="sale-prompt">不超过100个字</span>
+    </br>
+    <label>原价：</label>
+    <input type="text" name="original_price" value="{{ item.item.original_price }}"/>
+    </br>
+    <label>价格：</label>
+    <input type="text" name="price" value="{{ item.item.price }}"/>
+    </br>
+    <label>类型：</label>
+    <select name="kind">
+        {% for kind in kinds.kinds %}
+        <option value="{{ kind.id }}" {% if kind.id == item.item.kind_id %}selected{% endif %}>{{ kind.name }}</option>
+        {% endfor %}
+    </select>
+    </br>
+    <label>成色：</label>
+    <select name="level">
+        {% for i in range(10) %}
+        <option value="{{ i }}" {% if item.item.level == i %}selected{% endif %}>{{ i+1 }}</option>
+        {% endfor %}
+    </select>10 成新表示全新
+    </br>
+    <label>有效期</label>
+    <input type="text" name="valid_date" value="{{ item.item.valid_date }}"/>天
+    <span class="sale-prompt">指在有鱼网上架多少天如若无人购买则自动下架，最大 150 天</span>
+    </br>
+    <label>图片</label>
+    <span id="buttonUpload"></span>
+    <div id="publish-list">
+        <span id="errorMsg">最多可上传 6 张图片</span>
+        <ul class="postimg">
+            {% for img in item.item.images %}
+            <li class="postimg-item">
+            <img class="postimg-item-img" src="http://hadfish.qiniudn.com/{{ img }}_thumb120.120" />
+            <a data-filename="{{ img }}" class="postimg-item-del" href="javascript:void(0)" onclick="delUploadedFile(this);">删除</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <input type="hidden" id="postimg-ipt" name="img" value="{{ item.item.images|images_ipt }}"/>
+        <script type="text/javascript">
+            QINIU = {name: "hadfish", token: "{{ token }}", uid: {{ g.user.id }} , count: 0};
+            SETTINGS = {file_upload_limit: "{{ 6 - item.item.images|count }}", successful_uploads: {{ item.item.images|count }}};
+        </script>
+    </div>
+    </br>
+    <label>描述</label>
+    <textarea name="description">{{ item.item.description }}</textarea>
+    </br>
+    <button type="submit">修改</button>
+    </form>
+{% endblock %}
+
+{% block solescript %}
+<script type="text/javascript" src="{{ url_for('.static', filename='js/swfupload/swfupload.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('.static', filename='js/swfupload/uploadfile.js') }}"></script>
+<script type="text/javascript">
+    window.onload = swfuInit;
+</script>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}正在销售的商品{% endblock %}
+
+{% block content %}
+{% for item in items['items'] %}
+{{ item }}
+{% endfor %}
+{% endblock %}
+
+{% block solescript %}
+{% endblock %}

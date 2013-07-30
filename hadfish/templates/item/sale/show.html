@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block title %}{{ item.item.name }}{% endblock %}
+
+{% block content %}
+<br/>
+{% if g.user %}
+    <a href="{{ url_for('item_sale.modify_item', item_id=item.item.id) }}">修改</a>
+{% endif %}
+<br/>
+<div class="sale-item-user-info">
+<label>出售用户</label> 
+<span class="sale-show-user-name">{{ item.user.name }}</span>
+<label>头像</label>
+<span class="sale-show-user-avatar"><img src="http://hadfish-avatar.qiniudn.com/{{ item.user.avatar }}_100.100" /></span>
+<label>邮箱</label>
+<span class="sale-show-user-email">{{ item.user.email }}</span>
+<label>电话</label>
+<span class="sale-show-user-tel">{{ item.user.tel }}</span>
+<label>QQ</label>
+<span class="sale-show-user-qq">{{ item.user.qq }}</span>
+</div>
+<div class="sale-item-info">
+<label>名称：</label>
+<span class="sale-show-name">{{ item.item.name }}</span>
+</br>
+<label>原价：</label>
+<span class="sale-show-original_price">{{ item.item.original_price }}</span> 元
+</br>
+<label>价格：</label>
+<span class="sale-show-price">{{ item.item.price }}</span> 元
+</br>
+<label>类型：</label>
+<span class="sale-show-kind">{{ item.item.kind }}</span>
+</br>
+<label>成色：</label>
+<span class="sale-show-level">{{ item.item.level| level_format }}</span><span class="sale-show-level-prompt">成新</span>
+</br>
+<label>有效期：</label>
+<span class="sale-show-valid_date">{{ item.item.valid_date }}</span> 天
+<span class="sale-prompt">指在有鱼网上架多少天如若无人购买则自动下架，最大 150 天</span>
+</br>
+<label>图片</label>
+<div id="sale-show-images-list">
+    <ul class="sale-show-images-ul">
+        {% for img in item.item.images %}
+        <li class="sale-show-image-li">
+        <img class="sale-show-image" src="http://hadfish.qiniudn.com/{{ img }}_thumb120.120" />
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+</br>
+<label>描述</label>
+<span class="sale-show-description">{{ item.item.description }}</span>
+</br>
+</div>
+{% endblock %}
+
+{% block solescript %}
+{% endblock %}
