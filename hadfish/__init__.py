@@ -33,10 +33,22 @@ def before_request():
         
 # 模版过滤器
 @app.template_filter("date_format")
-def date_format(date):
+def filter_date_format(date):
     return u"%s年%s月%s日" % (date.year, date.month, date.day)
 
 
 @app.template_filter("avatar_url")
-def get_avatar(avatar):
+def filter_get_avatar(avatar):
     return u"%s/%s" % (config.QINIU_DOMAIN_AVATAR, avatar)
+
+
+@app.template_filter("images_ipt")
+def filter_images_ipt(imgs):
+    """ 生成 postimg-ipt 里的 value """
+    return (';').join(imgs);
+
+
+@app.template_filter("level_format")
+def filter_level_format(level):
+    rv = [u"一", u"二", u"三", u"四", u"五", u"六", u"七", u"八", u"九", u"全新"]
+    return rv[level]
