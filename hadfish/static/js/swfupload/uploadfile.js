@@ -26,12 +26,14 @@ function fileQueueError(file, errorCode, message) {
 }
 
 function fileDialogComplete(numFilesSelected, numFilesQueued) {
+    initSuccessfuUploads();
     if (numFilesQueued > 0) {
         this.startUpload();
     }
 }
 
 function uploadStart(file) {
+    initSuccessfuUploads();
     var li = $('<li class="postimg-item"></li>');
     var img = $('<img class="postimg-item-img" />');
     img.attr("src", "/static/js/swfupload/uploader.gif");
@@ -40,7 +42,12 @@ function uploadStart(file) {
     li.appendTo($(".postimg"));
     var t = new Date();
     var timeFormat = "" + t.getFullYear() + t.getMonth() + t.getDate() + t.getHours() + t.getMinutes() + t.getSeconds() + t.getMilliseconds();
-    var key = QINIU.uid.toString() + "-" + timeFormat + "-" + Math.floor((Math.random()*100)+1).toString() + file.type;
+    var index = this.getStats().successful_uploads;
+    //console.log(SETTINGS.successful_uploads);
+    //index += SETTINGS.successful_uploads;
+    //console.log(index);
+    //var key = QINIU.uid.toString() + "-" + timeFormat + "-" + Math.floor((Math.random()*100)+1).toString() + file.type;
+    var key = QINIU.uid.toString() + "-" + timeFormat + "-" + index + file.type;
     this.addFileParam(file.id, "key", key);
     //console.log(swfu.getStats().successful_uploads + 1);
 }
@@ -52,13 +59,14 @@ function uploadProgress(file, bytesLoaded) {
 }
 
 function uploadSuccess(file, serverData) {
-    console.log(serverData);
+    //console.log(serverData);
     var result = $.parseJSON(serverData);
     if (result.key){
         var index = swfu.getStats().successful_uploads - 1;
+        //index += SETTINGS.successful_uploads;
         $(".postimg-item-img").eq(index).attr("src", "http://" + QINIU.name + ".qiniudn.com/" + result.key + "_thumb120.120");
         $(".postimg-item-msg").eq(index).html("上传完成");
-        $(".postimg-item").eq(index).append($('<a class="postimg-item-del" href="javascript:void(0)" onClick="delUploadedFile(this);">删除</a>'));
+        $(".postimg-item").eq(index).append($('<a data-filename="' + result.key + '" class="postimg-item-del" href="javascript:void(0)" onClick="delUploadedFile(this);">删除</a>'));
         // 添加到 form 里
         //$(".postimg-item").eq(index).append($('<input hidden name="img_' + index + '"' + ' value="' + serverData.substring(9) + '" />'));
         if (index !== 0) {
@@ -134,7 +142,8 @@ function swfuInit(){
         file_size_limit: "5 MB",	// 5MB
         file_types: "*.jpg;*.png;*.jpeg",
         file_types_description: "文件类型",
-        file_upload_limit: "6",  // 最多 6 张图片
+        //file_upload_limit: SETTINGS.file_upload_limit,  // 最多 6 张图片
+        file_upload_limit: 6,  // 最多 6 张图片
 
         // Event Handler Settings - these functions as defined in Handlers.js
         file_queue_error_handler: fileQueueError, // 文件添加到队列失败时会触发这个函数 
@@ -176,8 +185,31 @@ function myProgress(file, percent) {
 }
 
 function delUploadedFile(element) {
+    initSuccessfuUploads();
+    handleDelUploadedFile($(element).data('filename'));
     $(element).parent().remove();
     var stats = swfu.getStats();
     stats.successful_uploads--;
     swfu.setStats(stats);
+}
+
+function handleDelUploadedFile(filename) {
+    var ipt = $("#postimg-ipt").attr("value").split(';');
+    var index = 0;
+    for (var index = 0; index < ipt.length; index++) {
+        if (ipt[index] === filename) {
+            break;
+        }
+    }
+    ipt.splice(index, 1);
+    $("#postimg-ipt").attr("value", ipt.join(';'));
+}
+
+function initSuccessfuUploads() {
+    if (SETTINGS.successful_uploads) {
+        var stats = swfu.getStats();
+        stats.successful_uploads = SETTINGS.successful_uploads;
+        swfu.setStats(stats);
+        SETTINGS.successful_uploads = undefined;
+    }
 }
