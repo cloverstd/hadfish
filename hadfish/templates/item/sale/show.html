@@ -3,7 +3,7 @@
 
 {% block content %}
 <br/>
-{% if g.user %}
+{% if g.user.id == item.user.id %}
     <a href="{{ url_for('item_sale.modify_item', item_id=item.item.id) }}">修改</a>
 {% endif %}
 <br/>
