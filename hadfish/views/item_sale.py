@@ -14,28 +14,42 @@ from hadfish.utils import get_kind, check_price, qiniu_token
 item = Module(__name__)
 
 
-def get_items():
+def get_items(page=None):
     """全部 items"""
+    if page is not None:
+        rv = ItemSale.query.order_by("id desc").paginate(page, 2)
+        items = list()
+        for item in rv.items:
+            items.append(get_item_by_id(item.id))
+        rv = dict(sales=items,
+                  has_next=rv.has_next,
+                  has_prev=rv.has_prev,
+                  next_num=rv.next_num,
+                  prev_num=rv.prev_num,
+                  pages=rv.pages,
+                  page=rv.page)
+        return rv
     rv = ItemSale.query.all()
     items = list()
     for item in rv:
-        images = list(img.name for img in item.images)
-        kind = Kind.query.filter_by(id=item.kind_id).first().name
-        item_dict = dict(id=item.id,
-                         name=item.name,
-                         original_price=item.original_price,
-                         price=item.price,
-                         level=item.level,
-                         valid_date=item.valid_date,
-                         date=item.date,
-                         description=item.description,
-                         kind_id=item.kind_id,
-                         kind=kind,
-                         is_sell=item.is_sell,
-                         images=images,
-                         is_visited=item.is_visited)
-        items.append(item_dict)
-    return dict(items=items)
+        # images = list(img.name for img in item.images)
+        # kind = Kind.query.filter_by(id=item.kind_id).first().name
+        # item_dict = dict(id=item.id,
+                         # name=item.name,
+                         # original_price=item.original_price,
+                         # price=item.price,
+                         # level=item.level,
+                         # valid_date=item.valid_date,
+                         # date=item.date,
+                         # description=item.description,
+                         # kind_id=item.kind_id,
+                         # kind=kind,
+                         # is_sell=item.is_sell,
+                         # images=images,
+                         # is_visited=item.is_visited)
+        items.append(get_item_by_id(item.id))
+    rv = dict(sales=items, count=len(items))
+    return rv
 
 
 def get_item_by_id(item_id):
@@ -79,16 +93,20 @@ def add_item():
         return redirect(url_for("account.login"))
     if request.method == "POST":
         error = None
+        original_price = None
+        if request.form["original_price"] == '':
+            original_price = request.form["price"]
+
         if len(request.form["name"]) == 0:
             error = u"商品名称不能为空！"
-        elif not check_price(request.form["original_price"]):
-            error = u"原价应该为数字"
         elif not check_price(request.form["price"]):
             error = u"价格应该为数字"
-        elif float(request.form["original_price"]) < 0:
-            error = u"原价不能未0"
         elif float(request.form["price"]) < 0:
             error = u"价格不能未0"
+        elif original_price is None and not check_price(request.form["original_price"]):
+            error = u"原价应该为数字"
+        elif original_price is None and float(request.form["original_price"]) < 0:
+            error = u"原价不能未0"
         elif not check_price(request.form["valid_date"], "int"):
             error = u"有效期应该为数字"
         elif int(request.form["valid_date"]) <= 0 or \
@@ -100,14 +118,15 @@ def add_item():
             return render_template("item/sale/add.html", kinds=get_kind(), 
                                    pre_data=request.form, token=qiniu_token())
         # print request.form["original_price"]
-        images_name = request.form["img"].split(';')
-        images = [Image(img) for img in images_name]
         item = ItemSale(request.form["name"], float(request.form["price"]),
                         request.form["level"], int(request.form["kind"]),
                         valid_date=int(request.form["valid_date"]),
-                        original_price=int(request.form["original_price"]),
+                        original_price=int(request.form["original_price"]) if original_price is None else original_price,
                         description=request.form["description"])
-        item.images = images
+        if request.form["img"] != '':
+            images_name = request.form["img"].split(';')
+            images = [Image(img) for img in images_name]
+            item.images = images
         g.user.item_sales.append(item)
         db.session.add(item)
         db.session.commit()
@@ -122,6 +141,9 @@ def modify_item(item_id):
         flash(u"请先登录", category="alert-warming")
         return redirect(url_for("account.login"))
     item = get_item_by_id(item_id)
+    if g.user.id != item["user"]["id"]:
+        flash(u"亲，无法修改别人的商品", category="alert-warming")
+        return redirect(url_for("item_sale.show_item_by_id", item_id=item["item"]["id"]))
     if item is None:
         abort(404)
 
@@ -183,10 +205,11 @@ def show_item_by_id(item_id):
     return render_template("item/sale/show.html", item=item, kinds=get_kind())
     
 
-@item.route("/item/sale/show")
-@item.route("/item/sale/all")
-@item.route("/item/sale/")
-@item.route("/item/sale")
-def show_item():
-    items = get_items()
+# @item.route("/item/sale/show")
+# @item.route("/item/sale/all")
+@item.route("/item/sale/", defaults={"page": 1})
+@item.route("/item/sale/<int:page>")
+def show_item(page):
+    items = get_items(page)
+    # items = ItemSale.query.paginate(page, 2)
     return render_template("item/sale/show_all.html", items=items)

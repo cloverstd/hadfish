@@ -47,7 +47,6 @@ def register():
         elif get_user_id_from_email(request.form["email"]):
             error = u"亲，邮箱已经存在了哟！"
 
-        print request.form
 
         if error:
             flash(error, category="alert-error")

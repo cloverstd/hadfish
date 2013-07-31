@@ -16,9 +16,10 @@ with app.test_request_context():
     # image3 = Image("3")
     # image4 = Image("4")
     kind1 = Kind(u"日用品")
-    kind2 = Kind(u"其他")
     kind3 = Kind(u"书籍")
     kind4 = Kind(u"3C")
+    kind5 = Kind(u"衣物")
+    kind2 = Kind(u"其他")
     # item_sale = ItemSale("test", 1.2, 1, kind1.id)
     # item_demand = ItemDemand("test", 1, kind2.id)
     # item_sale.images = [image1, image3]
@@ -29,7 +30,7 @@ with app.test_request_context():
     # user.item_demands = [item_demand]
     # 
     # db.session.add(user)
-    db.session.add_all([kind1, kind2, kind3, kind4])
+    db.session.add_all([kind1, kind5, kind3, kind4, kind2])
     db.session.commit()
     # 
     # i = User.query.first()
