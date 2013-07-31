@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from flask import Module, render_template, request, flash, url_for, redirect,\
-    session, g, abort
-from werkzeug import secure_filename
-from werkzeug.exceptions import RequestEntityTooLarge
+    g, abort
 from hadfish import config
 from hadfish.extensions import db
 from hadfish.databases import ItemSale, Image, Kind, User
-from hadfish.images import upload_images, delete_images
 from hadfish.utils import get_kind, check_price, qiniu_token
 
 
@@ -17,7 +14,7 @@ item = Module(__name__)
 def get_items(page=None):
     """全部 items"""
     if page is not None:
-        rv = ItemSale.query.order_by("id desc").paginate(page, 2)
+        rv = ItemSale.query.order_by("id desc").paginate(page, config.PER_PAGE)
         items = list()
         for item in rv.items:
             items.append(get_item_by_id(item.id))
@@ -83,8 +80,8 @@ def get_item_by_id(item_id):
                 date=user.date,
                 avatar=user.avatar)
 
-    
     return dict(item=item, user=user)
+
 
 @item.route("/item/sale/add", methods=["GET", "POST"])
 def add_item():
@@ -103,25 +100,28 @@ def add_item():
             error = u"价格应该为数字"
         elif float(request.form["price"]) < 0:
             error = u"价格不能未0"
-        elif original_price is None and not check_price(request.form["original_price"]):
+        elif original_price is None and\
+                not check_price(request.form["original_price"]):
             error = u"原价应该为数字"
-        elif original_price is None and float(request.form["original_price"]) < 0:
+        elif original_price is None and\
+                float(request.form["original_price"]) < 0:
             error = u"原价不能未0"
         elif not check_price(request.form["valid_date"], "int"):
             error = u"有效期应该为数字"
         elif int(request.form["valid_date"]) <= 0 or \
-                int (request.form["valid_date"]) > 150:
+                int(request.form["valid_date"]) > 150:
             error = u"有效日期无效"
 
         if error:
             flash(error, category="alert-error")
-            return render_template("item/sale/add.html", kinds=get_kind(), 
+            return render_template("item/sale/add.html", kinds=get_kind(),
                                    pre_data=request.form, token=qiniu_token())
         # print request.form["original_price"]
         item = ItemSale(request.form["name"], float(request.form["price"]),
                         request.form["level"], int(request.form["kind"]),
                         valid_date=int(request.form["valid_date"]),
-                        original_price=int(request.form["original_price"]) if original_price is None else original_price,
+                        original_price=int(request.form["original_price"])
+                        if original_price is None else original_price,
                         description=request.form["description"])
         if request.form["img"] != '':
             images_name = request.form["img"].split(';')
@@ -132,7 +132,9 @@ def add_item():
         db.session.commit()
         flash(u"恭喜，添加商品成功！", category="alert-success")
         return redirect(url_for("item_sale.show_item_by_id", item_id=item.id))
-    return render_template("item/sale/add.html", kinds=get_kind(), token=qiniu_token())
+    return render_template("item/sale/add.html",
+                           kinds=get_kind(),
+                           token=qiniu_token())
 
 
 @item.route("/item/sale/modify/<int:item_id>", methods=["GET", "POST"])
@@ -143,32 +145,42 @@ def modify_item(item_id):
     item = get_item_by_id(item_id)
     if g.user.id != item["user"]["id"]:
         flash(u"亲，无法修改别人的商品", category="alert-warming")
-        return redirect(url_for("item_sale.show_item_by_id", item_id=item["item"]["id"]))
+        return redirect(url_for("item_sale.show_item_by_id",
+                        item_id=item["item"]["id"]))
     if item is None:
         abort(404)
 
     if request.method == "POST":
         error = None
+        original_price = None
+        if request.form["original_price"] == '':
+            original_price = request.form["price"]
+
         if len(request.form["name"]) == 0:
             error = u"商品名称不能为空！"
-        elif not check_price(request.form["original_price"]):
-            error = u"原价应该为数字"
         elif not check_price(request.form["price"]):
             error = u"价格应该为数字"
-        elif float(request.form["original_price"]) < 0:
-            error = u"原价不能未0"
         elif float(request.form["price"]) < 0:
             error = u"价格不能未0"
+        elif original_price is None and\
+                not check_price(request.form["original_price"]):
+            error = u"原价应该为数字"
+        elif original_price is None and\
+                float(request.form["original_price"]) < 0:
+            error = u"原价不能未0"
         elif not check_price(request.form["valid_date"], "int"):
             error = u"有效期应该为数字"
         elif int(request.form["valid_date"]) <= 0 or \
-                int (request.form["valid_date"]) > 150:
+                int(request.form["valid_date"]) > 150:
             error = u"有效日期无效"
 
         if error:
             flash(error, category="alert-error")
-            return render_template("item/sale/modify.html", item=item, kinds=get_kind(), 
-                                   pre_data=request.form, token=qiniu_token())
+            return render_template("item/sale/modify.html",
+                                   item=item,
+                                   kinds=get_kind(),
+                                   pre_data=request.form,
+                                   token=qiniu_token())
 
         item_db = ItemSale.query.get(item_id)
         images_name = request.form["img"].split(';')
@@ -183,7 +195,8 @@ def modify_item(item_id):
 
         item_db.images = images
         item_db.name = request.form["name"]
-        item_db.original_price = float(request.form["original_price"])
+        item_db.original_price = float(request.form["original_price"])\
+            if original_price is None else original_price
         item_db.price = float(request.form["price"])
         item_db.kind = int(request.form["kind"])
         item_db.level = int(request.form["level"])
@@ -194,7 +207,10 @@ def modify_item(item_id):
         return redirect(url_for("item_sale.show_item_by_id", item_id=item_id))
         return "test"
 
-    return render_template("item/sale/modify.html", item=item, kinds=get_kind(),  token=qiniu_token())
+    return render_template("item/sale/modify.html",
+                           item=item,
+                           kinds=get_kind(),
+                           token=qiniu_token())
 
 
 @item.route("/item/sale/show/<int:item_id>")
@@ -203,7 +219,7 @@ def show_item_by_id(item_id):
     if item is None:
         abort(404)
     return render_template("item/sale/show.html", item=item, kinds=get_kind())
-    
+
 
 # @item.route("/item/sale/show")
 # @item.route("/item/sale/all")
