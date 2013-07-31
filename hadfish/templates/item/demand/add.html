@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}我需要一些东西{% endblock %}
+{% block content %}
+<form action="{{ url_for('item_demand.add_item') }}" method="POST">
+    <label>名称：</label>
+    <input type="text" name="name" /><span class="want-prompt">不超过100个字</span>
+    <br/>
+    <label>价格：</label>
+    <input type="text" name="price" /><span class="want-prompt-price">愿意付出的价格</span>
+    <br/>
+    <label>有效期：</label>
+    <input type="text" name="valid_date" value="150" />
+    <br/>
+    <label>类型：</label>
+    <select name="kind">
+        {% for kind in kinds.kinds %}
+        <option value="{{ kind.id }}">{{ kind.name }}</option>
+        {% endfor %}
+        <!--
+        <option value="clothes">服饰</option>
+        <option value="supplies" selected>日常用品</option>
+        <option value="food">食品</option>
+        <option value="3C">数码电子</option>
+        <option value="stationery">文化用品</option>
+        <option value="other">其他</option>
+        -->
+    </select>
+    </br>
+    <label>描述：</label>
+    <textarea name="description"></textarea>
+    <br/>
+    <button>提交</button>
+</form>
+{% endblock %}
+
+{% block solescript %}
+{% endblock %}

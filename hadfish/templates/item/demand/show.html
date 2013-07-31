@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}求购-{{ item.item.name }}{% endblock %}
+{% block content %}
+{% if g.user.id == item.user.id %}
+<a href="{{ url_for('item_demand.modify_item', item_id=item.item.id) }}">修改</a>
+{% endif %}
+<br/>
+名称：{{ item.item.name }}
+<br/>
+价格：{{ item.item.price }}
+<br/>
+有效期：{{ item.item.valid_date }}
+<br/>
+类型：{{ item.item.kind }}
+<br/>
+描述：{{ item.item.description }}
+<br/>
+{% endblock %}
+
+{% block solescript %}
+{% endblock %}

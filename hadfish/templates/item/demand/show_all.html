@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}求购{% endblock %}
+{% block content %}
+<div class="demand-show-item">
+    <ul>
+        {% for item in items.demands %}
+        <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% if items.has_prev %}<a href="{{ url_for('item_sale.show_item', page=items.prev_num) }}">前一页</a>{% endif %}
+{% if items.has_next %}<a href="{{ url_for('item_sale.show_item', page=items.next_num) }}">后一页</a>{% endif %}
+当前第{{ items.page }}页
+一共{{ items.pages }}页
+{% endblock %}
+{% block solescript %}
+{% endblock %}
