@@ -108,6 +108,7 @@ class ItemDemand(db.Model):
         self.kind_id = kind_id
         self.is_sell = is_sell
         self.is_visited = is_visited
+        self.valid_date = valid_date
 
     def __repr__(self):
         return "<ItemDemand %r>" % self.name

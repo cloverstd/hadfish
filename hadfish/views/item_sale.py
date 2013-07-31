@@ -128,6 +128,7 @@ def add_item():
             images = [Image(img) for img in images_name]
             item.images = images
         g.user.item_sales.append(item)
+        item.user_id = g.user.id
         db.session.add(item)
         db.session.commit()
         flash(u"恭喜，添加商品成功！", category="alert-success")
@@ -205,7 +206,6 @@ def modify_item(item_id):
         db.session.commit()
         flash(u"修改完成", category="alert-success")
         return redirect(url_for("item_sale.show_item_by_id", item_id=item_id))
-        return "test"
 
     return render_template("item/sale/modify.html",
                            item=item,
