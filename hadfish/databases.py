@@ -29,6 +29,11 @@ class User(db.Model):
     item_demands = db.relationship("ItemDemand",
                                    backref="user", lazy="dynamic")
 
+    # receive_msgs = db.relationship("Message",
+                                   # backref="user", lazy="dynamic")
+    # send_msgs = db.relationship("Message",
+                                   # backref="user", lazy="dynamic")
+
     def __init__(self, name, email, password, tel=None, qq=None, school=None,
                  address=None, profile=None, is_validate=False, avatar=None):
         self.name = name
@@ -59,7 +64,7 @@ class ItemSale(db.Model):
     description = db.Column(db.Integer(140))
     images = db.relationship("Image", backref="itemsales", lazy="dynamic")
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    kind_id = db.Column(db.Integer)  # 分类
+    kind_id = db.Column(db.Integer, db.ForeignKey("kind.id"))  # 分类
     is_sell = db.Column(db.Boolean)  # 售出
     is_visited = db.Column(db.Boolean)  # 是否隐藏
 
@@ -95,7 +100,7 @@ class ItemDemand(db.Model):
     valid_date = db.Column(db.Integer(3))
     # images = db.relationship("Image", backref="itemdemands", lazy="dynamic")
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    kind_id = db.Column(db.Integer)  # 分类
+    kind_id = db.Column(db.Integer, db.ForeignKey("kind.id"))  # 分类
     is_sell = db.Column(db.Boolean)  # 售出
     is_visited = db.Column(db.Boolean)  # 是否隐藏
 
@@ -151,3 +156,25 @@ class Kind(db.Model):
 
     def __repr__(self):
         return "<Kind %r>" % self.name
+
+
+class Message(db.Model):
+    __tablename__ = "messages"
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    receiver_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    send_time = db.Column(db.DateTime)
+    content = db.Column(db.String(200))
+    is_read = db.Column(db.Boolean)
+    is_delete = db.Column(db.Boolean)
+
+    def __init__(self, sender_id, receiver_id, content):
+        self.sender_id = sender_id
+        self.receiver_id = receiver_id
+        self.content = content
+        self.send_time = datetime.now()
+        self.is_read = False
+        self.is_delete = False
+
+    def __repr__(self):
+        return "<Message %r>" % self.id

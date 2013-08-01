@@ -30,8 +30,17 @@ with app.test_request_context():
     # user.item_demands = [item_demand]
     # 
     # db.session.add(user)
-    db.session.add_all([kind1, kind5, kind3, kind4, kind2])
+    # message test
+    user1 = User("user1", "email1", "t")
+    user2 = User("user2", "email2", "t")
+    db.session.add_all([kind1, kind5, kind3, kind4, kind2, user1, user2])
     db.session.commit()
+
+    msg = Message(user1.id, user2.id, u"user1 send msg to user2")
+    db.session.add(msg)
+    db.session.commit()
+    user2_msg = Message.query.filter_by(receiver_id=user2.id).first()
+    print user2_msg
     # 
     # i = User.query.first()
     # print i.item_sales[0]

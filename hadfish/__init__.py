@@ -3,7 +3,7 @@
 from flask import Flask, g, session
 # from flask.ext.sqlalchemy import SQLAlchemy
 from hadfish import config
-from hadfish.views import account, item_sale, item_demand, common
+from hadfish.views import account, item_sale, item_demand, common, message
 from hadfish.extensions import db, mail
 # from hadfish.databases import User, ItemSale, Image
 from hadfish.databases import *
@@ -19,6 +19,7 @@ app.register_module(account)
 app.register_module(item_sale)
 app.register_module(item_demand)
 app.register_module(common)
+app.register_module(message)
 
 # db = SQLAlchemy(app)
 db.init_app(app)
