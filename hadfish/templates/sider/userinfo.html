@@ -1,0 +1,22 @@
+<div class="userinfo">
+    个人信息
+</div>
+<div class="avatar text-center">
+	{% if g.user.avatar %}
+    <img src="http://hadfish-avatar.qiniudn.com/{{ g.user.avatar }}_120.120" class="img-polaroid img-circle"/>
+    {% else %}
+    <img src="/static/img/txdefault-small.jpg" class="img-polaroid img-circle"/>
+    {% endif %}
+</div>
+<div class="username text-center">
+    {{ g.user.name }}
+</div>
+<div class="sider-sale text-center">
+    出售：10
+</div>
+<div class="sider-demand text-center">
+    求购：20
+</div>
+<div class="sider-star text-center">
+    收藏：10000
+</div>
