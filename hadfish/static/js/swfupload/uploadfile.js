@@ -35,7 +35,7 @@ function fileDialogComplete(numFilesSelected, numFilesQueued) {
 function uploadStart(file) {
     initSuccessfuUploads();
     var li = $('<li class="postimg-item"></li>');
-    var img = $('<img class="postimg-item-img" />');
+    var img = $('<img class="postimg-item-img img-polaroid"/>');
     img.attr("src", "/static/js/swfupload/uploader.gif");
     img.appendTo(li);
     li.append('<span class="postimg-item-msg"></span>');
@@ -43,6 +43,7 @@ function uploadStart(file) {
     var t = new Date();
     var timeFormat = "" + t.getFullYear() + t.getMonth() + t.getDate() + t.getHours() + t.getMinutes() + t.getSeconds() + t.getMilliseconds();
     var index = this.getStats().successful_uploads;
+    //console.log(index);
     //console.log(SETTINGS.successful_uploads);
     //index += SETTINGS.successful_uploads;
     //console.log(index);
@@ -63,10 +64,11 @@ function uploadSuccess(file, serverData) {
     var result = $.parseJSON(serverData);
     if (result.key){
         var index = swfu.getStats().successful_uploads - 1;
+        //console.log(index);
         //index += SETTINGS.successful_uploads;
         $(".postimg-item-img").eq(index).attr("src", "http://" + QINIU.name + ".qiniudn.com/" + result.key + "_thumb120.120");
         $(".postimg-item-msg").eq(index).html("上传完成");
-        $(".postimg-item").eq(index).append($('<a data-filename="' + result.key + '" class="postimg-item-del" href="javascript:void(0)" onClick="delUploadedFile(this);">删除</a>'));
+        $(".postimg-item").eq(index).append($('<a data-filename="' + result.key + '" class="postimg-item-del" href="javascript:void(0)" onClick="delUploadedFile(this);"><i class="icon-trash"></i></a>'));
         // 添加到 form 里
         //$(".postimg-item").eq(index).append($('<input hidden name="img_' + index + '"' + ' value="' + serverData.substring(9) + '" />'));
         if (index !== 0) {
@@ -180,6 +182,8 @@ function swfuInit(){
 }
 
 function myProgress(file, percent) {
+    //console.log("success");
+    //console.log(swfu.getStats().successful_uploads);
     var msg = $(".postimg-item-msg").eq(swfu.getStats().successful_uploads);
     msg.html("上传中：" + percent + "%");
 }

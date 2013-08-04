@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 {% block title %}{{ user.name }}{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
 {% block content %}
 {% if g.user.name == user.name %}
 <a href="{{ url_for('account.setting') }}">修改个人资料</a></br>
@@ -17,4 +21,9 @@ QQ：{{ user.qq }}
 地址：{{ user.address }}
 </br>
 注册时间： {{ user.date | date_format }}
+{% endblock %}
+
+{% block solescript %}
+<script type="text/javascript">
+</script>
 {% endblock %}

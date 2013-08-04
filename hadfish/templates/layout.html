@@ -1,29 +1,102 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} - 有鱼网</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{{ url_for('.static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('.static', filename='css/base.css') }}" rel="stylesheet" media="screen">
     {% block solehead %}{% endblock %}
 </head>
 <body>
-    {% if g.user %}
-    <a href="{{ url_for('account.logout') }}">登出</a>
-    {% else %}
-    <a href="{{ url_for('account.register') }}">注册</a>
-    <a href="{{ url_for('account.login') }}">登录</a>
-    {% endif %}
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <ul>
-        {% for category, message in messages %}
-        <li>{{ category }}, {{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    {% block content %}
-    {% endblock %}
+
+{# 导航条 #}
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <ul class="nav" id="myPage">
+                <li><a class="brand" href="/"><strong>hadfish</strong>.<small>com</small></a></li>
+                <li class="divider-vertical"><a href="{{ url_for('item_sale.show_item') }}">跳蚤市场</a></li>
+                <li class="divider-vertical"><a href="{{ url_for('item_demand.show_item') }}">求购市场</a></li>
+            </ul>
+            <ul class="nav pull-right" id="myPageRight">
+                {% if g.user %}
+                <li class="divider-vertical dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user icon-white"></i> {{ g.user.name }}<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ url_for('account.setting') }}"><i class="icon-wrench"></i> 个人设置</a></li>
+                    <li><a href="{{ url_for('item_sale.add_item') }}"><i class="icon-plus"></i> 发布商品</a></li>
+                    <li><a href="{{ url_for('item_demand.add_item') }}"><i class="icon-plus"></i> 发布求购</a></li>
+                    <li><a href="{{ url_for('account.logout') }}"><i class="icon-off"></i> 注销登录</a></li>
+                </ul>
+                </li>
+                {% else %}
+                <li class="divider-vertical"><a href="{{ url_for('account.register') }}">注册</a></li>
+                <li class="divider-vertical"><a href="{{ url_for('account.login') }}">登录</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    {# 
+    head_box 子模板 
+    可以在子模板中 include 不同的 head_box 
+    #}
+    <div class="span12">{% block header %}{% endblock %}</div>
+    
+
+    <div class="row">
+
+        <div class="span3">
+            
+            {% block sider %}
+            <div class="sider">
+            {% include "sider/userinfo.html" %}
+            </div>
+            {% endblock %}
+            
+        </div>
+
+        <div class="span9">
+            {# flash message #}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert {{ category }}">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {# left content #}
+            {% block content %}{% endblock %}
+        </div>
+        {# 
+        sider: right-content
+        sider_box 子模板 
+        可以在子模板中 include 不同的 sider_box 
+        #}
+        
+    </div>
+</div>
+
+<div class="footer">
+    <div class="container">
+        <div class="span12">
+            {% block footer %}
+            {% include "footer/footer.html" %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
 </body>
 <script type="text/javascript" src="http://upcdn.b0.upaiyun.com/libs/jquery/jquery-1.9.1.min.js"></script>
+<script src="{{ url_for('.static', filename='js/bootstrap.min.js') }}"></script>
 {% block solescript %}{% endblock %}
 </html>

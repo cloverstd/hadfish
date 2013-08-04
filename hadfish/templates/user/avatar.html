@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% block title %}设置{% endblock %}
+{% block solehead %}
+{% endblock %}
+
 {% block content %}
 <form action="{{ url_for('account.setting_avatar') }}" method="POST" enctype="multipart/form-data">
     <label>原头像</label>
@@ -14,4 +17,7 @@
     <button type="submit">上传</button>
 
 </form>
+{% endblock %}
+
+{% block solescript %}
 {% endblock %}

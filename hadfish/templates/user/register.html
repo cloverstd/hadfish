@@ -1,28 +1,88 @@
 {% extends "layout.html" %}
 {% block title %}注册{% endblock %}
 {% block content %}
-<form action="{{ url_for('account.register') }}" method="POST">
-    <label>用户名</label>
-    <input type="text" name="username"/>*
-    </br>
-    <label>密码</label>
-    <input type="password" name="password"/>*
-    </br>
-    <label>重复密码</label>*
-    <input type="password" name="password2"/>*
-    </br>
-    <label>邮箱</label>
-    <input type="text" name="email"/>*
-    </br>
-    <label>tel</label>
-    <input type="text" name="tel"/>
-    </br>
-    <label>QQ</label>
-    <input type="text" name="QQ"/>
-    </br>
-    <label>地址</label>
-    <input type="text" name="address"/>
-    </br>
-    <button type="submit">注册</button>
+<div class="sale-add-box">
+<form class="form-horizontal" action="{{ url_for('account.register') }}" method="POST">
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">注册</legend>
+      </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">用户名</label>
+          <div class="controls">
+          <input type="text" name="username" placeholder="您的用户名" class="input-xlarge"><span class="must">*</span>
+            <p class="help-block">请输入您的用户名</p>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">密码</label>
+          <div class="controls">
+          <input type="password" name="password" placeholder="您的密码" class="input-xlarge"><span class="must">*</span>
+            <p class="help-block">密码需要大于 6 位，为了您的账户安全，请使用复杂的密码</p>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">重复密码</label>
+          <div class="controls">
+          <input type="password" name="password2" placeholder="重复密码" class="input-xlarge"><span class="must">*</span>
+            <p class="help-block">请再一次输入密码</p>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">邮箱</label>
+          <div class="controls">
+              <input type="text" name="email" placeholder="您的邮箱" class="input-xlarge"><span class="must">*</span>
+            <p class="help-block">用户找回密码和接收通知</p>
+          </div>
+        </div>
+
+<hr/>
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">手机号码</label>
+          <div class="controls">
+            <input type="text" name="tel" placeholder="您的手机号码" class="input-xlarge">
+            <p class="help-block">方便用户联系到您</p>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">QQ</label>
+          <div class="controls">
+            <input type="text" name="QQ" placeholder="您的 QQ 号" class="input-xlarge">
+            <p class="help-block">方便用户联系到您</p>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Button -->
+          <div class="controls">
+              <div class="offset1">
+            <button class="btn btn-primary">注册</button>
+            </div>
+          </div>
+        </div>
+
+    </fieldset>
+
 </form>
+</div>
+{% endblock %}
+{% block sider %}
 {% endblock %}

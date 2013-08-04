@@ -1,43 +1,218 @@
 {% extends "layout.html" %}
 {% block title %}设置{% endblock %}
-{% block content %}
-<form action="{{ url_for('account.setting') }}" method="POST">
-    <label>用户名</label>
-    <input type="text" name="username" value="{{ user.name }}" />
-</br>
-    <label>邮箱</label>
-    <input type="text" name="email" value="{{ user.email }}" />
-    {% if not g.user.is_validate %}
-    <a class="email-valid" href="javascript:void(0);">验证邮箱</a>
-    {% endif %}
-</br>
-    <label>QQ</label>
-    <input type="text" name="QQ" value="{{ user.qq }}" />
-</br>
-    <label>电话</label>
-    <input type="text" name="tel" value="{{ user.tel }}" />
-</br>
-    <label>学校</label>
-    <input type="text" name="school" value="{{ user.school }}" />
-</br>
-    <label>地址</label>
-    <input type="text" name="address" value="{{ user.address }}" />
-</br>
-    <label>个人简介</label>
-    <input type="text" name="profile" value="{{ user.profile }}" />
-</br>
-<button type="submit">保存</button>
 
-</form>
-
-<form id="email-valid" action="{{ url_for('email_valid') }}" method="POST">
-
-</form>
+{% block left_head_box %}
 {% endblock %}
+{% block content %}
+<div class="user-setting">
+    <!--div class="user-setting-head">
+    </div-->
+<ul class="nav nav-tabs" id="myTab">
+  <li class="active"><a href="#profile">基本信息</a></li>
+  <li><a href="#password">密码修改</a></li>
+  <li><a href="#avatar">头像修改</a></li>
+  <li><a href="#hadfish">站内设置</a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="profile">
+
+<form class="form-horizontal" action="{{ url_for('account.setting') }}" method="POST">
+    <fieldset>
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">用户名</label>
+          <div class="controls">
+              <input type="text" value="{{ user.name }}" name="username" placeholder="用户名" class="input-xlarge">
+              <span class="must">*</span>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">邮箱</label>
+          <div class="controls">
+              <input type="text" value="{{ user.email }}" name="email" placeholder="邮箱" class="input-xlarge">
+              <span class="must">*</span>
+              {% if not user.is_validate %}
+              <a class="btn btn-info email-valid" href="javascript:void(0);">验证邮箱</a>
+              {% endif %}
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">QQ</label>
+          <div class="controls">
+              <input type="text" value="{{ user.qq }}" name="QQ" placeholder="QQ" class="input-xlarge">
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">手机号码</label>
+          <div class="controls">
+              <input type="text" value="{{ user.tel }}" name="tel" placeholder="手机号码" class="input-xlarge">
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">地址</label>
+          <div class="controls">
+              <input type="text" value="{{ user.address }}" name="address" placeholder="地址" class="input-xlarge">
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Textarea -->
+          <label class="control-label">个人简介</label>
+          <div class="controls">
+            <div class="textarea">
+                <textarea name="profile" class="input-xlarge" rows=4>{{ user.profile }}</textarea>
+            </div>
+          </div>
+        </div>
+
+    <div class="control-group">
+          <!-- Button -->
+          <div class="controls">
+            <button class="btn btn-success">修改</button>
+          </div>
+        </div>
+
+    </fieldset>
+</form>
+</div>
+
+  <div class="tab-pane" id="password">
+<form class="form-horizontal" action="{{ url_for('account.setting_password') }}" method="POST">
+    <fieldset>
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">原密码</label>
+          <div class="controls">
+            <input type="password" name="password[0]" placeholder="您现在的密码" class="input-xlarge">
+             <span class="must">*</span>
+            <p class="help-block">请输入原密码验证身份</p>
+          </div>
+        </div><div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">新密码</label>
+          <div class="controls">
+            <input type="password" name="password[1]" placeholder="新密码" class="input-xlarge">
+            <span class="must">*</span>
+            <p class="help-block">您的新密码</p>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">重复新密码</label>
+          <div class="controls">
+            <input type="password" name="password[2]" placeholder="重复修改的密码" class="input-xlarge">
+            <span class="must">*</span>
+            <p class="help-block">请重复新密码一遍</p>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Button -->
+          <div class="controls">
+            <button class="btn btn-success">修改</button>
+          </div>
+        </div>
+
+    </fieldset>
+  </form>
+</div>
+
+  <div class="tab-pane" id="avatar">
+
+<form class="form-horizontal" action="{{ url_for('account.setting_avatar') }}" method="POST" enctype="multipart/form-data">
+    <fieldset>
+
+        <div class="row">
+
+        <div class="span2">
+    <div class="control-group">
+    {%if user.avatar %}
+    <img class="img-polaroid" src="{{ user.avatar | avatar_url }}!180.180" />
+    {% else %}
+    <img class="img-polaroid" src="{{ url_for('.static', filename='img/txdefault-small.jpg') }}">
+    {% endif %}
+    </div>
+        </div>
+    <div class="span4">
+
+    <div class="control-group">
+
+          <!-- File Upload -->
+          <div class="controls">
+            <input class="input-file" id="fileInput" name="avatar" type="file">
+          </div>
+        </div>
+
+    <div class="control-group">
+          <label class="control-label"></label>
+
+          <!-- Button -->
+          <div class="controls">
+            <button class="btn btn-success">上传</button>
+          </div>
+        </div>
+    </div>
+</div>
+
+    </fieldset>
+  </form>
+
+  </div>
+
+  <div class="tab-pane" id="hadfish">hadfish</div>
+</div>
+
+</div>
+
+<form id="email-valid" action="{{ url_for('email_valid') }}" method="POST"></form>
+
+
+{% endblock %}
+
+{% block sider %}
+{{ super() }}
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}
+
 {% block solescript %}
 <script type="text/javascript">
-    $("a.email-valid").click(function(){
-        $("#email-valid").submit();
-    });
+    $(function() {
+        $("a.email-valid").click(function(){
+            $("#email-valid").submit();
+        });
+        //$('#myTab a:last').tab('show');
+        $('#myTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        })
+        var come = window.location.search.substring(6);
+        $('#myTab a[href="' + '#' + come + '"]').tab('show');
+        //$("#setting-profile a[href='#profile']").tab("show");
+        //$("#setting-avatar a[href='#avatar']").tab("show");
+        $("#myPageRight li").eq(0).addClass("active");
+    })
 </script>
 {% endblock %}

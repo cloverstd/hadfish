@@ -2,59 +2,114 @@
 {% block title %}{{ item.item.name }}{% endblock %}
 
 {% block content %}
-<br/>
-{% if g.user.id == item.user.id %}
-    <a href="{{ url_for('item_sale.modify_item', item_id=item.item.id) }}">修改</a>
-{% endif %}
-<br/>
-<div class="sale-item-user-info">
-<label>出售用户</label> 
-<span class="sale-show-user-name">{{ item.user.name }}</span>
-<label>头像</label>
-<span class="sale-show-user-avatar"><img src="http://hadfish-avatar.qiniudn.com/{{ item.user.avatar }}_100.100" /></span>
-<label>邮箱</label>
-<span class="sale-show-user-email">{{ item.user.email }}</span>
-<label>电话</label>
-<span class="sale-show-user-tel">{{ item.user.tel }}</span>
-<label>QQ</label>
-<span class="sale-show-user-qq">{{ item.user.qq }}</span>
-</div>
-<div class="sale-item-info">
-<label>名称：</label>
-<span class="sale-show-name">{{ item.item.name }}</span>
-</br>
-<label>原价：</label>
-<span class="sale-show-original_price">{{ item.item.original_price }}</span> 元
-</br>
-<label>价格：</label>
-<span class="sale-show-price">{{ item.item.price }}</span> 元
-</br>
-<label>类型：</label>
-<span class="sale-show-kind">{{ item.item.kind }}</span>
-</br>
-<label>成色：</label>
-<span class="sale-show-level">{{ item.item.level| level_format }}</span><span class="sale-show-level-prompt">成新</span>
-</br>
-<label>有效期：</label>
-<span class="sale-show-valid_date">{{ item.item.valid_date }}</span> 天
-<span class="sale-prompt">指在有鱼网上架多少天如若无人购买则自动下架，最大 150 天</span>
-</br>
-<label>图片</label>
-<div id="sale-show-images-list">
-    <ul class="sale-show-images-ul">
-        {% for img in item.item.images %}
-        <li class="sale-show-image-li">
-        <img class="sale-show-image" src="http://hadfish.qiniudn.com/{{ img }}_thumb120.120" />
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-</br>
-<label>描述</label>
-<span class="sale-show-description">{{ item.item.description }}</span>
-</br>
+<div class="sale-add-box">
+    <div class="row">
+        <div class="span9">
+            <div class="box-head">
+            <div class="box-head-text">
+                <strong>{{ item.item.name }}</strong>
+            </div>
+            {% if g.user.id == item.user.id %}
+            <div class="modify text-right">
+                <form action="{{ url_for('item_sale.delete_item', item_id=item.item.id) }}" method="POST">
+            <a class="btn btn-success btn-small" href="{{ url_for('item_sale.modify_item', item_id=item.item.id) }}">修改</a>
+            
+            <button class="btn btn-danger btn-small">删除</button>
+            </form>
+            </div>
+            {% endif %}
+        </div>
+
+
+        <div class="span6">
+            <div class="img-player">
+                <div class="img-display text-center">
+                    {% for img in item.item.images %}
+                    <img src="http://hadfish.qiniudn.com/{{ img }}_400.300" />
+                    {% endfor %}
+                </div>
+                <ul class="img-thumbnail">
+                    {% for i in range(6) %}
+                    {% if item.item.images[i] %}
+                    <li class="img-thumbnail-display"><a href="javascript:void(0);"><img src="http://hadfish.qiniudn.com/{{ item.item.images[i] }}_50.50"/></a></li>
+                    {% else %}
+                    <li class=""></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="span2">
+            <div class="item-sale-info">
+            <div class="item-sale-price">
+                <h3>价格：{{ item.item.price }} 元</h3>
+            </div>
+            <div class="item-sale-original_price">
+                原价：<del>{{ item.item.original_price }}</del> 元
+            </div>
+            <div class="item-sale-kind">
+                分类：{{ item.item.kind }}
+            </div>
+            <div class="item-sale-level">
+                成色：
+                {% if item.item.level == 10 %}
+                全新
+                {% else %}
+                {{ item.item.level|level_format }} 成新
+                {% endif %}
+            </div>
+            <div class="item-sale-date">
+                上架时间：{{ item.item.date|date_format }}
+            </div>
+            卖家信息：
+            <div class="item-saler-info">
+                <div class="item-saler-name">昵称：{{ item.user.name }}</div>
+                {% if item.user.qq %}
+                <div class="item-saler-QQ"><span class="qqTips">QQ：
+                        <a ref="qqTips" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={{ item.user.qq }}&site=qq&menu=yes">{{ item.user.qq }}</a>
+                    </span>
+                </div>
+                {% endif %}
+                {% if item.user.tel %}
+                <div class="item-saler-tel"><a id="telShow" class="btn btn-info" href="javascript:void(0);">显示号码</a></div>
+                {% endif %}
+            </div>
+            </div>
+        </div>
+
+        <div class="span9">
+            <div class="item-sale-description">
+                <div class="item-sale-description-title">商品描述</div>
+                {{ item.item.description }}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
-
-{% block solescript %}
+{% block solescript %} <script type="text/javascript">
+$(function(){
+        var $imgs = $(".img-display").children();
+        for (var i = 1; i < $imgs.length; i++) {
+            $imgs.eq(i).hide();
+        }
+        var currentImg = 0;
+        $(".img-thumbnail-display").click(function () {
+            $(this).parent().children().eq(currentImg).removeClass("img-thumbnail-current");
+            console.log($(this).index());
+            $imgs.eq(currentImg).hide();
+            currentImg = $(this).index();
+            $imgs.eq($(this).index()).fadeIn('slow');
+            $(this).addClass("img-thumbnail-current");
+        });
+        $("#telShow").click(function () {
+            $(this).hide();
+            $(this).parent().html("{{ item.user.tel }}");
+        });
+        $(".qqTips a").tooltip({
+            placement: "right",
+            title: "点击给我发送消息",
+        });
+    });
+</script>
 {% endblock %}

@@ -3,7 +3,7 @@
 from flask import Flask, g, session
 # from flask.ext.sqlalchemy import SQLAlchemy
 from hadfish import config
-from hadfish.views import account, item_sale, item_demand, common, message
+from hadfish.views import account, item_sale, item_demand, common, message, admin
 from hadfish.extensions import db, mail
 # from hadfish.databases import User, ItemSale, Image
 from hadfish.databases import *
@@ -20,6 +20,7 @@ app.register_module(item_sale)
 app.register_module(item_demand)
 app.register_module(common)
 app.register_module(message)
+app.register_module(admin)
 
 # db = SQLAlchemy(app)
 db.init_app(app)
@@ -41,12 +42,6 @@ def filter_date_format(date):
 @app.template_filter("avatar_url")
 def filter_get_avatar(avatar):
     return u"%s/%s" % (config.QINIU_DOMAIN_AVATAR, avatar)
-
-
-@app.template_filter("images_ipt")
-def filter_images_ipt(imgs):
-    """ 生成 postimg-ipt 里的 value """
-    return (';').join(imgs);
 
 
 @app.template_filter("level_format")

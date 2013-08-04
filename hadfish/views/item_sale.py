@@ -144,6 +144,8 @@ def modify_item(item_id):
         flash(u"请先登录", category="alert-warming")
         return redirect(url_for("account.login"))
     item = get_item_by_id(item_id)
+    if item is None:
+        abort(404)
     if g.user.id != item["user"]["id"]:
         flash(u"亲，无法修改别人的商品", category="alert-warming")
         return redirect(url_for("item_sale.show_item_by_id",
@@ -229,3 +231,24 @@ def show_item(page):
     items = get_items(page)
     # items = ItemSale.query.paginate(page, 2)
     return render_template("item/sale/show_all.html", items=items)
+
+
+@item.route("/item/sale/delete/<int:item_id>", methods=["POST"])
+def delete_item(item_id):
+    if not g.user:
+        flash(u"请先登录", category="alert-warming")
+        return redirect(url_for("account.login"))
+    item = get_item_by_id(item_id)
+    if item is None:
+        abort(404)        
+    if g.user.id != item["user"]["id"]:
+        flash(u"亲，无法删除别人的商品", category="alert-warming")
+        return redirect(url_for("item_sale.show_item_by_id",
+                        item_id=item["item"]["id"]))
+
+    if request.method == "POST":
+        db.session.delete(ItemSale.query.get(item_id))
+        db.session.commit()
+        flash(u"亲，删除成功", category="alert-success")
+        return redirect(url_for("item_sale.show_item"))
+

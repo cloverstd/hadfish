@@ -1,14 +1,53 @@
 {% extends "layout.html" %}
 {% block title %}登录{% endblock %}
 {% block content %}
-<form action="{{ url_for('login') }}" method="POST">
-    <label>用户名</label>
-    <input type="text" name="username" />
-    </br>
-    <label>密码</label>
-    <input type="password" name="password" />
-    </br>
-    <button type="submit">登录</button>
-    <input type="checkbox" checked="checked" name="login-auto"/> 下次自动登录
+<div class="sale-add-box">
+<form class="form-horizontal" action="{{ url_for('login') }}" method="POST">
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">登录</legend>
+      </div>
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">用户名</label>
+          <div class="controls">
+            <input type="text" name="username" placeholder="您在有鱼网的用户名" class="input-xlarge">
+            <p class="help-block"></p>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">密码</label>
+          <div class="controls">
+            <input type="password" name="password" placeholder="您在有鱼网的密码" class="input-xlarge">
+            <p class="help-block"></p>
+          </div>
+        </div>
+
+   <!-- Checkboxes -->
+          <div class="controls">
+            <label class="checkbox inline">
+            <input type="checkbox" checked="checked" name="login-auto"/> 下次自动登录
+            </label>
+          </div>
+
+    <div class="control-group">
+          <label class="control-label"></label>
+
+          <!-- Button -->
+          <div class="controls">
+            <button class="btn btn-primary">登录</button>
+            <a class="btn btn-success" href="{{ url_for('account.register') }}">注册</a>
+          </div>
+        </div>
+
+    </fieldset>
 </form>
+</div>
+{% endblock %}
+
+{% block sider %}
 {% endblock %}

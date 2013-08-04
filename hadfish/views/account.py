@@ -47,7 +47,6 @@ def register():
         elif get_user_id_from_email(request.form["email"]):
             error = u"亲，邮箱已经存在了哟！"
 
-
         if error:
             flash(error, category="alert-error")
             return render_template("user/register.html", pre_data=request.form)
@@ -55,8 +54,8 @@ def register():
                     generate_password_hash(request.form["password"],
                                            config.PASSWORD_KEY),
                     tel=request.form["tel"], qq=request.form["QQ"],
-                    school=u"上海建桥学院", profile=u"",
-                    address=request.form["address"])
+                    school=u"上海建桥学院", profile=u"")
+                    # address=request.form["address"])
 
         db.session.add(user)
         db.session.commit()
@@ -99,7 +98,7 @@ def login():
                 session["user_id"] = user.id
                 if request.form.get("login-auto"):
                     session.permanent = True
-                # return redirect(url_for(""))
+                return redirect(url_for("account.setting"))
                 return "登录成功"
 
         flash(error, category="alert-error")
@@ -111,24 +110,24 @@ def logout():
     if g.user is not None:
         session.pop('user_id', None)
         session.permanent = False
-        flash(u"'你已经成功登出！")
+        flash(u"你已经成功登出！")
     # return redirect(url_for())
     return "已经成功登出"
 
 
-@account.route("/user/<username>")
-def userinfo(username):
-    user = User.query.filter_by(name=username).first()
+@account.route("/user/<int:uid>")
+def userinfo(uid):
+    user = User.query.get(uid)
     if not user:
         abort(404)
     return render_template("user/userinfo.html", user=user)
 
 
+@account.route("/setting")
 @account.route("/setting/account", methods=["GET", "POST"])
 def setting():
     if not g.user:
-        # return redirect(url_for(""))
-        return "请先登录"
+        return redirect(url_for("account.login"))
     error = None
     if request.method == "POST":
         if not request.form["username"]:
@@ -152,11 +151,12 @@ def setting():
         user.profile = request.form["profile"]
         db.session.commit()
         flash(u"修改成功", category="alert-success")
-        return redirect(url_for("account.setting"))
+        return redirect(url_for("account.setting", come="profile"))
     return render_template("user/setting.html", user=g.user)
 
 
-@account.route("/setting/password", methods=["GET", "POST"])
+@account.route("/setting/password", methods=["POST"])
+# @account.route("/setting/password", methods=["GET", "POST"])
 def setting_password():
     if not g.user:
         # return redirect(url_for(""))
@@ -175,7 +175,7 @@ def setting_password():
             error = u"新密码两次不相同"
         if error:
             flash(error, category="alert-error")
-            return render_template("user/password.html")
+            return redirect(url_for("account.setting", come="password"))
         user = g.user
         user.password = generate_password_hash(request.form["password[1]"],
                                                config.PASSWORD_KEY)
@@ -185,7 +185,8 @@ def setting_password():
     return render_template("user/password.html")
 
 
-@account.route("/setting/avatar", methods=["GET", "POST"])
+# @account.route("/setting/avatar", methods=["GET", "POST"])
+@account.route("/setting/avatar", methods=["POST"])
 def setting_avatar():
     if not g.user:
         # return redirect(url_for(""))
@@ -205,41 +206,45 @@ def setting_avatar():
             if not delete_images(config.QINIU_BUCKET_AVATAR, g.user.avatar)\
                     and g.user.avatar:
                 flash(u"修改头像失败，请重试", category="alert-warming")
-                return render_template("user/avatar.html", user=g.user)
+                return redirect(url_for("account.setting", come="avatar"))
             if not upload_images(config.QINIU_BUCKET_AVATAR,
                                  filename, file.stream):
                 flash(u"修改头像失败，请重试", category="alert-warming")
-                return render_template("user/avatar.html", user=g.user)
+                return redirect(url_for("account.setting", come="avatar"))
             flash(u"上传成功", category="alert-success")
             g.user.avatar = filename
             db.session.commit()
-            return redirect(url_for("account.setting_avatar"))
+            return redirect(url_for("account.setting", come="avatar"))
+        elif not file:
+            flash(u"您还没有选择文件", category="alert-warming")
+            return redirect(url_for("account.setting", come="avatar"))
         else:
             flash(u"文件格式不支持", category="alert-error")
-    return render_template("user/avatar.html", user=g.user)
+            return redirect(url_for("account.setting", come="avatar"))
 
 
 @account.route("/setting/email", methods=["GET", "POST"])
+# @account.route("/setting/email", methods=["GET", "POST"])
 def email_valid():
     if request.args:
         k = request.args.get("k")
         v = request.args.get("v")
         if not k or not v:
             flash(u"无效的验证链接", category="alert-error")
-            return "验证链接无效"
+            return redirect(url_for("account.setting"))
         user = User.query.filter_by(id=k).first()
-        if g.user.is_validate:
+        if user.is_validate:
             flash(u"已经验证过了", category="alert-warming")
-            return "已经验证了的邮箱"
+            return redirect(url_for("account.setting"))
 
         valid_time = user.valid_time
         if (datetime.now() - valid_time).days > 0:
             flash(u"验证链接已经过期", category="alert-warming")
-            return "验证链接已经过期"
+            return redirect(url_for("account.setting"))
 
         if not user or user.valid_value != v:
             flash(u"无效的验证链接", category="alert-error")
-            return "验证链接无效"
+            return redirect(url_for("account.setting"))
 
         if user.valid_value == v:
             user.is_validate = True
@@ -247,7 +252,7 @@ def email_valid():
             user.valid_value = None
             db.session.commit()
             flash(u"恭喜验证成功", category="alert-success")
-            return "验证成功"
+            return redirect(url_for("account.setting"))
 
     if not g.user:
         # return redirect(url_for(""))
@@ -255,7 +260,8 @@ def email_valid():
     if request.method == "POST":
         if g.user.is_validate:
             flash(u"已经验证过了", category="alert-warming")
-            return "已经验证了的邮箱"
+            flash(u"邮件已经发送，请查收", category="alert-success")
+            return redirect(url_for("account.setting"))
 
         valid_time = datetime.now()
         valid_value = md5("%s%s" % (g.user.id,
@@ -268,11 +274,12 @@ def email_valid():
         <a href="%s/setting/email?k=%sv&v=%s">点击验证</a></br>
         如果无法点击，请复制下列地址到浏览器中验证
         %s/setting/email?k=%s&v=%s
-        """ % ("http://localhost:8080", g.user.id, valid_value,
-               "http://localhost:8080", g.user.id, valid_value)
+        """ % ("http://pi.hui.lu", g.user.id, valid_value,
+               "http://pi.hui.lu", g.user.id, valid_value)
         mail.send_message(subject="有鱼网验证邮件",
                           recipients=[g.user.email],
                           # recipients=["23081991@qq.com"],
                           html=html)
-        return "邮件已经发送，请查收"
+        flash(u"邮件已经发送，请查收", category="alert-success")
+        return redirect(url_for("account.setting"))
     return "无效的验证链接"
