@@ -8,18 +8,19 @@ from datetime import datetime
 from time import sleep
 
 with app.test_request_context():
-    db.init_app(app)
-    db.create_all()
-
+    # db.init_app(app)
+    # db.create_all()
+    k = Kind.query.first()
+    print k.test
     # image1 = Image("1")
     # image2 = Image("2")
     # image3 = Image("3")
     # image4 = Image("4")
-    kind1 = Kind(u"日用品")
-    kind3 = Kind(u"书籍")
-    kind4 = Kind(u"3C")
-    kind5 = Kind(u"衣物")
-    kind2 = Kind(u"其他")
+    # kind1 = Kind(u"日用品")
+    # kind3 = Kind(u"书籍")
+    # kind4 = Kind(u"3C")
+    # kind5 = Kind(u"衣物")
+    # kind2 = Kind(u"其他")
     # item_sale = ItemSale("test", 1.2, 1, kind1.id)
     # item_demand = ItemDemand("test", 1, kind2.id)
     # item_sale.images = [image1, image3]
@@ -31,7 +32,7 @@ with app.test_request_context():
     # 
     # db.session.add(user)
     # message test
-    db.session.add_all([kind1, kind5, kind3, kind4, kind2])
+    # db.session.add_all([kind1, kind5, kind3, kind4, kind2])
     db.session.commit()
 
     # msg = Message(user1.id, user2.id, u"user1 send msg to user2")

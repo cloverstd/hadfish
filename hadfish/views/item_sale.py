@@ -20,7 +20,7 @@ def get_items(page=None, kind_id=None):
             rv = ItemSale.query.order_by("id desc").paginate(page, config.PER_PAGE)
         items = list()
         for item in rv.items:
-            items.append(get_item_by_id(item.id))
+            items.append(get_item_by_id(item.id, item=item))
         rv = dict(sales=items,
                   has_next=rv.has_next,
                   has_prev=rv.has_prev,
@@ -53,8 +53,11 @@ def get_items(page=None, kind_id=None):
     return rv
 
 
-def get_item_by_id(item_id):
-    item = ItemSale.query.get(item_id)
+def get_item_by_id(item_id, item=None):
+    if item is None:
+        item = ItemSale.query.get(item_id)
+    else:
+        item = item
     if item is None:
         return None
     images = list(img.name for img in item.images)

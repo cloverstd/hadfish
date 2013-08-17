@@ -22,7 +22,7 @@ def get_items(page=None, kind_id=None):
             rv = ItemDemand.query.order_by("id desc").paginate(page, config.PER_PAGE)
         items = list()
         for item in rv.items:
-            items.append(get_item_by_id(item.id))
+            items.append(get_item_by_id(item.id, item))
         rv = dict(demands=items,
                   has_next=rv.has_next,
                   has_prev=rv.has_prev,
@@ -39,8 +39,12 @@ def get_items(page=None, kind_id=None):
     return rv
 
 
-def get_item_by_id(item_id):
-    item = ItemDemand.query.get(item_id)
+def get_item_by_id(item_id, item=None):
+    if item is None:
+        item = ItemDemand.query.get(item_id)
+    else:
+        item = item
+
     if item is None:
         return None
     kind = Kind.query.get(item.kind_id).name

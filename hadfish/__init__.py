@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, g, session
+from flask import Flask, g, session, render_template
 # from flask.ext.sqlalchemy import SQLAlchemy
 from hadfish import config
 from hadfish.views import account, item_sale, item_demand, common, message, admin, page
@@ -32,7 +32,11 @@ def before_request():
     g.user = None
     if "user_id" in session:
         g.user = User.query.get(session["user_id"])
-        
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('404.html'), 404
+
         
 # 模版过滤器
 @app.template_filter("date_format")

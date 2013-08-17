@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="row-fluid">
         <div class="text-right">
             <a href="{{ url_for('account.setting') }}">修改个人资料</a>
         </div>
@@ -18,7 +18,7 @@
     {% if g.user.name == user.name %}
     {% endif %}
 
-    <div class="row">
+    <div class="row-fluid">
         <div class="span6">
             <div class="span3">
                 用户名：{{ user.name }}

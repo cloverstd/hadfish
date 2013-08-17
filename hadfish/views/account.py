@@ -7,7 +7,7 @@ from werkzeug.exceptions import RequestEntityTooLarge
 from hadfish.utils import check_password_hash, generate_password_hash,\
     allowed_file, rename_image, get_avatar_name
 from hadfish.extensions import db, mail
-from hadfish.databases import User
+from hadfish.databases import User, ItemSale, ItemDemand, Kind
 from hadfish import config
 from hadfish.images import upload_images, delete_images
 from hashlib import md5
@@ -26,6 +26,46 @@ def get_user_id_from_email(email):
     rv = User.query.filter_by(email=email).first()
     return rv.id if rv else None
 
+
+def get_sale_item_by_user(uid):
+    rv = ItemSale.query.filter_by(user_id=uid).order_by("id desc")[:10]
+
+    items = list()
+    for item in rv:
+        kind = Kind.query.filter_by(id=item.kind_id).first().name
+        items.append(dict(id=item.id,
+                          name=item.name,
+                          original_price=item.original_price,
+                          price=item.price,
+                          level=item.level,
+                          valid_date=item.valid_date,
+                          date=item.date,
+                          description=item.description,
+                          kind_id=item.kind_id,
+                          kind=kind,
+                          is_sell=item.is_sell,
+                          images=images,
+                          is_visited=item.is_visited)
+                  )
+    return items
+
+def get_demand_item_by_user(uid):
+    rv = ItemDemand.query.filter_by(user_id=uid).order_by("id desc")[:10]
+    items = list()
+    for item in rv:
+        kind = Kind.query.get(item.kind_id).name
+        items.append(dict(id=item.id,
+                          name=item.name,
+                          price=item.price,
+                          valid_date=item.valid_date,
+                          date=item.date,
+                          description=item.description,
+                          kind_id=item.kind_id,
+                          kind=kind,
+                          is_sell=item.is_sell,
+                          is_visited=item.is_visited)
+                  )
+    return items
 
 @account.route("/register", methods=["GET", "POST"])
 def register():
@@ -123,7 +163,12 @@ def userinfo(uid):
     user = User.query.get(uid)
     if not user:
         abort(404)
-    return render_template("user/userinfo.html", user=user)
+
+    item_sales = get_sale_item_by_user(user.id)
+    item_demands = get_demand_item_by_user(user.id)
+    return render_template("user/userinfo.html", user=user,
+                           item_sales=item_sales,
+                           item_demands=item_demands)
 
 
 @account.route("/setting")

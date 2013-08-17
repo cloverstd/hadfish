@@ -6,11 +6,11 @@ import os.path
 _CURRENT_PATH = os.path.dirname(__file__)
 _DB_SQLITE_PATH = os.path.join(_CURRENT_PATH, 'hadfish.sqlite')
 
-_DBUSER = None # 数据库用户名
-_DBPASS = None # 数据库密码
-_DBHOST = None # 数据库服务器
-_DBNAME = None # 数据库名称
-_DBPORT = None # 数据库端口
+_DBUSER = "hadfish" # 数据库用户名
+_DBPASS = "hadfish" # 数据库密码
+_DBHOST = "localhost" # 数据库服务器
+_DBNAME = "hadfish" # 数据库名称
+_DBPORT = 3306 # 数据库端口
 
 PER_PAGE = 20 # 每页显示商品数目
 RE_PER_PAGE = 20 # 每页显示评论数目
@@ -56,4 +56,5 @@ class DevConfig(BaseConfig):
     DEBUG = True
 
 class ProConfig(BaseConfig):
-    SQLALCHEMY_DATABASE_URI = 'mysql://%s:%s@%s/%s' % (_DBUSER, _DBPASS, _DBHOST, _DBNAME)
+    # SQLALCHEMY_DATABASE_URI = 'mysql://%s:%s@%s/%s:%d?charset=utf8"' % (_DBUSER, _DBPASS, _DBHOST, _DBNAME, _DBPORT)
+    SQLALCHEMY_DATABASE_URI = 'mysql://%s:%s@%s/%s?charset=utf8' % (_DBUSER, _DBPASS, _DBHOST, _DBNAME)
