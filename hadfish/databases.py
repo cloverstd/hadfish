@@ -24,6 +24,11 @@ class User(db.Model):
     valid_time = db.Column(db.DateTime)
     valid_value = db.Column(db.String(32))
 
+    disable = db.Column(db.Boolean)
+
+    # 权限 99 最大权限，注册用户默认权限为 0
+    power = db.Column(db.Integer(2))
+
     item_sales = db.relationship("ItemSale",
                                  backref="user", lazy="dynamic")
     item_demands = db.relationship("ItemDemand",
@@ -34,8 +39,8 @@ class User(db.Model):
     # send_msgs = db.relationship("Message",
                                    # backref="user", lazy="dynamic")
 
-    def __init__(self, name, email, password, tel=None, qq=None, school=None,
-                 address=None, profile=None, is_validate=False, avatar=None):
+    def __init__(self, name, email, password, tel='', qq='', school='',
+                 address='', profile='', is_validate=False, avatar=''):
         self.name = name
         self.email = email
         self.password = password
@@ -47,6 +52,8 @@ class User(db.Model):
         self.is_validate = is_validate
         self.avatar = avatar
         self.date = datetime.now()
+        self.power = 0
+        self.disable = False
 
     def __repr__(self):
         return "<User %r>" % (self.name)
@@ -69,8 +76,8 @@ class ItemSale(db.Model):
     is_visited = db.Column(db.Boolean)  # 是否隐藏
 
     def __init__(self, name, price, level, kind_id, is_sell=False,
-                 is_visited=True, original_price=None,
-                 valid_date=150, description=None):
+                 is_visited=True, original_price='',
+                 valid_date=150, description=''):
         self.name = name
         self.price = price
         self.level = level
@@ -105,7 +112,7 @@ class ItemDemand(db.Model):
     is_visited = db.Column(db.Boolean)  # 是否隐藏
 
     def __init__(self, name, price, kind_id, is_sell=False,
-                 is_visited=True, description=None, valid_date=150):
+                 is_visited=True, description='', valid_date=150):
         self.name = name
         self.price = price
         self.description = description
@@ -178,3 +185,30 @@ class Message(db.Model):
 
     def __repr__(self):
         return "<Message %r>" % self.id
+
+
+# class Page(db.Model):
+    # id = db.Column(db.Integer, primary_key=True)
+    # title = db.Column(db.String(10))
+    # slug = db.Column(db.String(20), unique=True)
+    # description = db.Column(db.String(150))
+    # content = db.Column(db.Text)
+    # timestamp = db.Column(db.DateTime)
+    # visitable = db.Column(db.Boolean)
+    # user_id = db.Column(db.Integer)
+    # ui = db.Column(db.Boolean)
+    # kind = True 表示整站 UI
+    # kind = False 表示独立页面
+
+    # def __init__(self, slug, title, description, content, user_id, ui):
+        # self.slug = slug
+        # self.title = title
+        # self.description = description
+        # self.content = content
+        # self.user_id = user_id
+        # self.timestamp = datetime.now()
+        # self.visitable = True
+        # self.ui = ui
+
+    # def __repr__(self):
+        # return "<Page %r>" % self.id

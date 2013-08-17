@@ -4,14 +4,14 @@
 {% block left_head_box %}
 {% endblock %}
 {% block content %}
-<div class="user-setting">
+<div>
     <!--div class="user-setting-head">
     </div-->
 <ul class="nav nav-tabs" id="myTab">
   <li class="active"><a href="#profile">基本信息</a></li>
   <li><a href="#password">密码修改</a></li>
   <li><a href="#avatar">头像修改</a></li>
-  <li><a href="#hadfish">站内设置</a></li>
+  <!--li><a href="#hadfish">站内设置</a></li-->
 </ul>
 
 <div class="tab-content">
@@ -179,12 +179,15 @@
 
   </div>
 
-  <div class="tab-pane" id="hadfish">hadfish</div>
-</div>
+  <!--div class="tab-pane" id="hadfish">hadfish</div-->
 
 </div>
 
+</div>
+
+{% if not user.is_validate %}
 <form id="email-valid" action="{{ url_for('email_valid') }}" method="POST"></form>
+{% endif %}
 
 
 {% endblock %}

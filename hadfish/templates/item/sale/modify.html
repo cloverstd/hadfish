@@ -2,7 +2,7 @@
 {% block title %}修改-{{ item.item.name }}{% endblock %}
 
 {% block content %}
-<div class="sale-add-box">
+<div>
 <form class="form-horizontal" action="{{ url_for('item_sale.modify_item', item_id=item.item.id) }}" method="POST">
     <fieldset>
       <div id="legend" class="">
@@ -125,7 +125,7 @@
             <div class="textarea">
                 <textarea name="description" class="input-xlarge" rows="5">{{ item.item.description }}</textarea>
             </div>
-            <p class="help-block">不超过 200 个字</p>
+            <p class="help-block">请简要描述，不超过 200 个字</p>
           </div>
         </div>
 
@@ -134,6 +134,7 @@
           <!-- Button -->
           <div class="controls">
             <button type="submit" class="btn btn-success">修改</button>
+            <a href="{{ url_for('show_item_by_id', item_id=item.item.id) }}" class="btn btn-inverse">返回</a>
           </div>
         </div>
     </fieldset>

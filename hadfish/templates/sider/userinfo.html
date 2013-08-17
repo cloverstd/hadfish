@@ -1,11 +1,11 @@
-<div class="userinfo">
+<div class="userinfo text-center">
     个人信息
 </div>
 <div class="avatar text-center">
 	{% if g.user.avatar %}
     <img src="http://hadfish-avatar.qiniudn.com/{{ g.user.avatar }}_120.120" class="img-polaroid img-circle"/>
     {% else %}
-    <img src="/static/img/txdefault-small.jpg" class="img-polaroid img-circle"/>
+    <img src="/static/img/txdefault-small.jpg" class="img-polaroid img-circle" width=120 height=120/>
     {% endif %}
 </div>
 <div class="username text-center">

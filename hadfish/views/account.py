@@ -42,18 +42,18 @@ def register():
         elif not request.form["email"] or \
                 '@' not in request.form["email"]:
             error = u"亲，邮箱地址不正确哟!"
-        elif get_user_id(request.form["username"]):
+        elif get_user_id(request.form["username"].strip()):
             error = u"亲，用户名已经存在了哟！"
-        elif get_user_id_from_email(request.form["email"]):
+        elif get_user_id_from_email(request.form["email"].strip()):
             error = u"亲，邮箱已经存在了哟！"
 
         if error:
             flash(error, category="alert-error")
             return render_template("user/register.html", pre_data=request.form)
-        user = User(request.form["username"], request.form["email"],
+        user = User(request.form["username"].strip(), request.form["email"].strip(),
                     generate_password_hash(request.form["password"],
                                            config.PASSWORD_KEY),
-                    tel=request.form["tel"], qq=request.form["QQ"],
+                    tel=request.form["tel"].strip(), qq=request.form["QQ"].strip(),
                     school=u"上海建桥学院", profile=u"")
                     # address=request.form["address"])
 
@@ -67,7 +67,8 @@ def register():
 @account.route("/login", methods=["GET", "POST"])
 def login():
     if g.user:
-        return "已经登录了"
+        return redirect(url_for("common.index"))
+        # return "已经登录了"
     error = None
     if request.method == "POST":
         if '@' in request.form["username"]:
@@ -84,11 +85,12 @@ def login():
                 if request.form.get("login-auto"):
                     session.permanent = True
                 # return redirect(url_for(""))
-                return "登录成功"
+                return redirect(url_for("common.index"))
+                # return "登录成功"
         else:
             user = User.query.filter_by(name=request.form["username"]).first()
             if user is None:
-                error = u"用户名错误哟！"
+                error = u"用户不存在！"
             elif not check_password_hash(user.password,
                                          request.form["password"],
                                          config.PASSWORD_KEY):
@@ -98,8 +100,9 @@ def login():
                 session["user_id"] = user.id
                 if request.form.get("login-auto"):
                     session.permanent = True
-                return redirect(url_for("account.setting"))
-                return "登录成功"
+                # return redirect(url_for("account.setting"))
+                return redirect(url_for("common.index"))
+                # return "登录成功"
 
         flash(error, category="alert-error")
     return render_template("user/login.html")
@@ -111,8 +114,8 @@ def logout():
         session.pop('user_id', None)
         session.permanent = False
         flash(u"你已经成功登出！")
-    # return redirect(url_for())
-    return "已经成功登出"
+    return redirect(url_for("common.index"))
+    # return "已经成功登出"
 
 
 @account.route("/user/<int:uid>")
@@ -159,8 +162,9 @@ def setting():
 # @account.route("/setting/password", methods=["GET", "POST"])
 def setting_password():
     if not g.user:
+        return redirect(url_for("common.index"))
         # return redirect(url_for(""))
-        return "请先登录"
+        # return "请先登录"
     error = None
     if request.method == "POST":
         if not request.form["password[0]"] or \
@@ -189,8 +193,7 @@ def setting_password():
 @account.route("/setting/avatar", methods=["POST"])
 def setting_avatar():
     if not g.user:
-        # return redirect(url_for(""))
-        return "请先登录"
+        return redirect(url_for("common.index"))
     # error = None
     if request.method == "POST":
         try:

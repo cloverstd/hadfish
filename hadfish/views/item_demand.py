@@ -13,10 +13,13 @@ from hadfish.utils import get_kind, check_price, qiniu_token
 item = Module(__name__)
 
 
-def get_items(page=None):
+def get_items(page=None, kind_id=None):
     """全部 items"""
     if page is not None:
-        rv = ItemDemand.query.order_by("id desc").paginate(page, config.PER_PAGE)
+        if kind_id:
+            rv = ItemDemand.query.filter_by(kind_id=kind_id).order_by("id desc").paginate(page, config.PER_PAGE)
+        else:
+            rv = ItemDemand.query.order_by("id desc").paginate(page, config.PER_PAGE)
         items = list()
         for item in rv.items:
             items.append(get_item_by_id(item.id))
@@ -74,7 +77,7 @@ def add_item():
     if request.method == "POST":
         error = None
 
-        if request.form["name"] == '':
+        if request.form["name"].strip() == '':
             error = u"名称不能为空"
         elif not check_price(request.form["price"]):
             error = u"价格应该为数字"
@@ -91,11 +94,11 @@ def add_item():
             return render_template("item/demand/add.html",
                                    kinds=get_kind(),
                                    pre_data=request.form)
-        item = ItemDemand(name=request.form["name"],
+        item = ItemDemand(name=request.form["name"].strip(),
                                  price=float(request.form["price"]),
-                                 kind_id=request.form["kind"],
-                                 valid_date=request.form["valid_date"],
-                                 description=request.form["description"])
+                                 kind_id=int(request.form["kind"]),
+                                 valid_date=int(request.form["valid_date"]),
+                                 description=request.form["description"].strip())
         g.user.item_demands.append(item)
         item.user_id = g.user.id
         db.session.add(item)
@@ -103,6 +106,26 @@ def add_item():
         flash(u"发步需求成功", category="alert-success")
         return redirect(url_for("item_demand.show_item_by_id", item_id=item.id))
     return render_template("item/demand/add.html", kinds=get_kind())
+
+
+@item.route("/item/demand/delete/<int:item_id>", methods=["POST"])
+def delete_item(item_id):
+    if not g.user:
+        flash(u"请先登录", category="alert-warming")
+        return redirect(url_for("account.login"))
+    item = get_item_by_id(item_id)
+    if item is None:
+        abort(404)        
+    if g.user.id != item["user"]["id"]:
+        flash(u"亲，无法删除别人的商品", category="alert-warming")
+        return redirect(url_for("item_demand.show_item_by_id",
+                        item_id=item["item"]["id"]))
+
+    if request.method == "POST":
+        db.session.delete(ItemDemand.query.get(item_id))
+        db.session.commit()
+        flash(u"亲，删除成功", category="alert-success")
+        return redirect(url_for("item_demand.show_item"))
 
 
 @item.route("/item/demand/modify/<int:item_id>", methods=["GET", "POST"])
@@ -121,7 +144,7 @@ def modify_item(item_id):
     if request.method == "POST":
         error = None
 
-        if request.form["name"] == '':
+        if request.form["name"].strip() == '':
             error = u"名称不能为空"
         elif not check_price(request.form["price"]):
             error = u"价格应该为数字"
@@ -140,11 +163,11 @@ def modify_item(item_id):
                                    kinds=get_kind(),
                                    pre_data=request.form)
         item_db = ItemDemand.query.get(item_id)
-        item_db.name = request.form["name"]
+        item_db.name = request.form["name"].strip()
         item_db.price = float(request.form["price"])
         item_db.valid_date = int(request.form["valid_date"])
         item_db.kind_id = int(request.form["kind"])
-        item_db.description = request.form["description"]
+        item_db.description = request.form["description"].strip()
         db.session.commit()
         flash(u"修改完成", category="alert-success")
         return redirect(url_for("item_demand.show_item_by_id", item_id=item_id))
@@ -165,5 +188,10 @@ def show_item_by_id(item_id):
 @item.route("/item/demand/", defaults={"page": 1})
 @item.route("/item/demand/<int:page>")
 def show_item(page):
-    items = get_items(page)
-    return render_template("item/demand/show_all.html", items=items)
+    kind_id = None
+    if "kind_id" in request.args:
+        kind_id = int(request.args["kind_id"])
+        items = get_items(page, kind_id)
+    else:
+        items = get_items(page)
+    return render_template("item/demand/show_all.html", items=items, kinds=get_kind(), kind_id=kind_id)

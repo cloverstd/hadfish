@@ -2,9 +2,9 @@
 {% block title %}{{ item.item.name }}{% endblock %}
 
 {% block content %}
-<div class="sale-add-box">
+<div>
     <div class="row">
-        <div class="span9">
+        <div class="span10">
             <div class="box-head">
             <div class="box-head-text">
                 <strong>{{ item.item.name }}</strong>
@@ -21,6 +21,7 @@
         </div>
 
 
+        <div class="row">
         <div class="span6">
             <div class="img-player">
                 <div class="img-display text-center">
@@ -40,7 +41,7 @@
             </div>
         </div>
 
-        <div class="span2">
+        <div class="span4">
             <div class="item-sale-info">
             <div class="item-sale-price">
                 <h3>价格：{{ item.item.price }} 元</h3>
@@ -77,12 +78,11 @@
             </div>
             </div>
         </div>
-
-        <div class="span9">
-            <div class="item-sale-description">
-                <div class="item-sale-description-title">商品描述</div>
+    </div>
+    <hr/>
+        <div class="span10">
+                <h5>商品描述</h5>
                 {{ item.item.description }}
-            </div>
         </div>
     </div>
 </div>

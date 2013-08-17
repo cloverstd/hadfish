@@ -12,7 +12,7 @@ _DBHOST = None # 数据库服务器
 _DBNAME = None # 数据库名称
 _DBPORT = None # 数据库端口
 
-PER_PAGE = 8 # 每页显示商品数目
+PER_PAGE = 20 # 每页显示商品数目
 RE_PER_PAGE = 20 # 每页显示评论数目
 DEFAULT_TIMEZONE = "Asia/Shanghai" # 默认时区
 

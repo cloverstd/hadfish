@@ -4,23 +4,65 @@
 {% block navbar %}
 {% endblock %}
 
+{% block sider %}
+{{ super() }}
+{% endblock %}
+
 {% block content %}
-{% if g.user.name == user.name %}
-<a href="{{ url_for('account.setting') }}">修改个人资料</a></br>
-{% endif %}
-用户名：{{ user.name }}
-</br>
-邮箱：{{ user.email }}
-</br>
-QQ：{{ user.qq }}
-</br>
-电话：{{ user.tel }}
-</br>
-学校：{{ user.school }}
-</br>
-地址：{{ user.address }}
-</br>
-注册时间： {{ user.date | date_format }}
+<div class="row">
+        <div class="text-right">
+            <a href="{{ url_for('account.setting') }}">修改个人资料</a>
+        </div>
+    <div class="span10">
+        <h4>{{ user.name }} 的信息</h4>
+    {% if g.user.name == user.name %}
+    {% endif %}
+
+    <div class="row">
+        <div class="span6">
+            <div class="span3">
+                用户名：{{ user.name }}
+            </div>
+            <div class="span3">
+                邮箱：{{ user.email }}
+            </div>
+            <div class="span3">
+                QQ：{{ user.qq }}
+            </div>
+            <div class="span3">
+                电话：{{ user.tel }}
+            </div>
+            <!--div class="span3">
+                学校：{{ user.school }}
+            </div-->
+            <div class="span3">
+                地址：{{ user.address }}
+            </div>
+            <div class="span3">
+                注册时间： {{ user.date | date_format }}
+            </div>
+            <div class="span10">
+                个人简介： {{ user.profile }}
+            </div>
+        </div>
+        <div class="span4">
+            {% if g.user.avatar %}
+            <img src="http://hadfish-avatar.qiniudn.com/{{ g.user.avatar }}_100.100" class="img-polaroid img-circle"/>
+            {% else %}
+            <img src="/static/img/txdefault-small.jpg" class="img-polaroid img-circle" width=100 height=100/>
+            {% endif %}
+        </div>
+    </div>
+
+    </div>
+    <div class="span10">
+        <h4>{{ user.name }} 出售的商品</h4>
+
+    </div>
+    <div class="span10">
+        <h4>{{ user.name }} 求购的商品</h4>
+    </div>
+</div>
 {% endblock %}
 
 {% block solescript %}

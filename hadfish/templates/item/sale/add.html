@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}我有东西要出售{% endblock %}
 {% block content %}
-<div class="sale-add-box">
+<div>
 <form class="form-horizontal" action="{{ url_for('item_sale.add_item') }}" method="POST">
     <fieldset>
       <div id="legend" class="">
@@ -24,7 +24,7 @@
           <label class="control-label">商品原价</label>
           <div class="controls">
             <div class="input-append">
-              <input class="span3" name="original_price" placeholder="商品原价" type="text">
+              <input class="input-xlarge" name="original_price" placeholder="商品原价" type="text">
               <span class="add-on">元</span>
             </div>
             <p class="help-block">如果为空则现价作为原价</p>
@@ -36,7 +36,7 @@
           <label class="control-label">商品现价</label>
           <div class="controls">
             <div class="input-append">
-              <input class="span3" name="price" placeholder="商品现价" type="text">
+              <input class="input-xlarge" name="price" placeholder="商品现价" type="text">
               <span class="add-on">元</span>
             </div>
                <span class="must">*</span>
@@ -66,7 +66,7 @@
           <label class="control-label">商品成色</label>
           <div class="controls">
             <div class="input-append">
-            <select class="span3" name="level">
+            <select class="input-xlarge" name="level">
         <option value="0">1</option>
         <option value="1">2</option>
         <option value="2">3</option>
@@ -91,7 +91,7 @@
           <label class="control-label">有效期</label>
           <div class="controls">
             <div class="input-append">
-              <input class="span3" name="valid_date" value="150" placeholder="有效期" type="text">
+              <input class="input-xlarge" name="valid_date" value="150" placeholder="有效期" type="text">
               <span class="add-on">天</span>
             </div>
                <span class="must">*</span>
@@ -123,7 +123,7 @@
             <div class="textarea">
                   <textarea name="description" class="input-xlarge" rows="5"></textarea>
             </div>
-            <p class="help-block">不超过 200 个字</p>
+            <p class="help-block">请简要描述，不超过 200 个字</p>
           </div>
         </div>
 
@@ -137,12 +137,15 @@
     </fieldset>
 </form>
 </div>
+
 {% endblock %}
 
 {% block solescript %}
 <script type="text/javascript" src="{{ url_for('.static', filename='js/swfupload/swfupload.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('.static', filename='js/swfupload/uploadfile.js') }}"></script>
+
 <script type="text/javascript">
     window.onload = swfuInit;
 </script>
+
 {% endblock %}

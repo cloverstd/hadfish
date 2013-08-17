@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}帮助中心{% endblock %}
+
+{% block sider %}
+{% endblock %}
+
+{% block content %}
+<ul class="nav nav-tabs" id="myTab">
+  <li><a href="" data-toggle="tab">帮助中心</a></li>
+  <li><a href="#protocol" data-toggle="tab">用户协议</a></li>
+  <li><a href="#about" data-toggle="tab">关于我们</a></li>
+  <li><a href="#contact" data-toggle="tab">联系我们</a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="help">帮助中心</div>
+  <div class="tab-pane" id="protocol">用户协议</div>
+  <div class="tab-pane" id="about">关于我们</div>
+  <div class="tab-pane" id="contact">联系我们</div>
+</div>
+{% endblock %}
+
+{% block solescript %}
+<script type="text/javascript">
+    $(function () {
+        $('#myTab a[href="' + window.location.hash + '"]').tab('show');
+        $('#myTab a').click(function (e) {
+          e.preventDefault();
+          $(this).tab('show');
+        })
+    })
+</script>
+{% endblock %}

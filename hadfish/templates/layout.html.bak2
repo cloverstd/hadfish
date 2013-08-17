@@ -3,59 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} - 有鱼网</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    {% block solehead %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="{{ url_for('.static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('.static', filename='css/base.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('.static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet" media="screen">
-    {% endblock %}
+    {% block solehead %}{% endblock %}
 </head>
 <body>
 
 {# 导航条 #}
 <div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
+<div class="navbar-inner">
         <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#"><strong>hadfish</strong>.<small>com</small></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="{{ url_for('item_sale.show_item') }}">跳蚤市场</a></li>
+              <li><a href="{{ url_for('item_demand.show_item') }}">求购市场</a></li>
 
-            <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-
-            <a class="brand" href="/"><strong>hadfish</strong>.<small>com</small></a>
-
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                    <!--li><a class="brand" href="/"><strong>hadfish</strong>.<small>com</small></a></li-->
-                    <li><a href="{{ url_for('item_sale.show_item') }}">跳蚤市场</a></li>
-                    <li><a href="{{ url_for('item_demand.show_item') }}">求购市场</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li class="nav-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li>
                 </ul>
-
-                <ul class="nav pull-right">
-                    {% if g.user %}
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user icon-white"></i> {{ g.user.name }}<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ url_for('account.setting') }}"><i class="icon-wrench"></i> 个人设置</a></li>
-                            <li><a href="{{ url_for('item_sale.add_item') }}"><i class="icon-plus"></i> 发布商品</a></li>
-                            <li><a href="{{ url_for('item_demand.add_item') }}"><i class="icon-plus"></i> 发布求购</a></li>
-                            <li><a href="{{ url_for('account.logout') }}"><i class="icon-off"></i> 注销登录</a></li>
-                        </ul>
-                    </li>
-                    {% else %}
-                    <li><a href="{{ url_for('account.register') }}">注册</a></li>
-                    <li><a href="{{ url_for('account.login') }}">登录</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+              </li>
+            </ul>
+            <form class="navbar-form pull-right">
+              <input class="span2" type="text" placeholder="Email">
+              <input class="span2" type="password" placeholder="Password">
+              <button type="submit" class="btn">Sign in</button>
+            </form>
+          </div><!--/.nav-collapse -->
         </div>
-    </div>
+      </div>
 </div>
 
 
-<div class="container-fluid">
+<div class="container">
     {# 
     head_box 子模板 
     可以在子模板中 include 不同的 head_box 
@@ -64,12 +60,12 @@
     {% endblock %}
     
 
-    <div class="row-fluid">
+    <div class="row">
 
+        <div class="span2">
             
             {% block sider %}
-        <div class="span2">
-            <div class="hidden-phone">
+            <div>
                 {% if g.user %}
                     {% include "sider/userinfo.html" %}
                 {% else %}
@@ -78,9 +74,9 @@
                     </div>
                 {% endif %}
             </div>
-        </div>
             {% endblock %}
             
+        </div>
 
         <div class="span10">
             {# flash message #}
@@ -107,7 +103,7 @@
     </div>
 </div>
 
-    <div class="container-fluid">
+    <div class="container">
         <div class="span12">
             {% block footer %}
             {% include "footer/footer.html" %}
@@ -117,8 +113,6 @@
 
 </body>
 <script type="text/javascript" src="http://upcdn.b0.upaiyun.com/libs/jquery/jquery-1.9.1.min.js"></script>
-<script src="{{ url_for('.static', filename='js/jquery.scrolltotop.js') }}"></script>
 <script src="{{ url_for('.static', filename='js/bootstrap.min.js') }}"></script>
 {% block solescript %}{% endblock %}
-<script src="{{ url_for('.static', filename='js/base.js') }}"></script>
 </html>

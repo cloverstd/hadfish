@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block title %}帮助中心{% endblock %}
+
+{% block sider %}
+<div data-spy="affix" data-offset-top="200">...</div>
+{% endblock %}
+
+{% block content %}
+{% endblock %}

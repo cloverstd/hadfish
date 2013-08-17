@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Module, request, flash, g
+from flask import Module, request, flash, g, render_template
 from werkzeug import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
 from hadfish import config
@@ -40,4 +40,4 @@ def upload_image():
 
 @common.route("/")
 def index():
-    return "index"
+    return render_template("index.html")

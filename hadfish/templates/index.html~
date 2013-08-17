@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block title %}首页{% endblock %}
+{% block solehead %}
+{{ super() }}
+<style type="text/css">
+    body {
+
+        background-image:url();
+    }
+.banner {
+	position: relative;
+	width: 100%;
+	overflow: auto;
+
+	font-size: 18px;
+	line-height: 24px;
+	text-align: center;
+
+	color: rgba(255,255,255,.6);
+	text-shadow: 0 0 1px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.3);
+
+	background: #5b4d3d;
+	box-shadow: 0 1px 2px rgba(0,0,0,.25);
+}
+	.banner ul {
+		list-style: none;
+		width: 300%;
+	}
+	.banner ul li {
+		display: block;
+		float: left;
+		width: 33%;
+		min-height: 350px;
+
+		-o-background-size: 100% 100%;
+		-ms-background-size: 100% 100%;
+		-moz-background-size: 100% 100%;
+		-webkit-background-size: 100% 100%;
+		background-size: 100% 100%;
+
+		box-shadow: inset 0 -3px 6px rgba(0,0,0,.1);
+	}
+</style>
+{% endblock %}
+
+{% block sider %}
+{% endblock %}
+
+{% block content %}
+<div class="banner">
+    <ul>
+        <li style="background-image: url({{ url_for('.static', filename='img/banner/p1.jpg') }}) no-repeat 50% 50%;">测试</li>
+        <li style="background-image: url({{ url_for('.static', filename='img/banner/p2.jpg') }}) no-repeat 50% 50%;">测试</li>
+        <li style="background-image: url({{ url_for('.static', filename='img/banner/p3.jpg') }}) no-repeat 50% 50%;">测试</li>
+        <li style="background-image: url({{ url_for('.static', filename='img/banner/p4.jpg') }}) no-repeat 50% 50%;">测试</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block solescript %}
+<script type="text/javascript" src="{{ url_for('.static', filename='js/unslider.min.js') }}"></script>
+<script type="text/javascript">
+    $(function() {
+        $('.banner').unslider();
+    });
+</script>
+{% endblock %}
