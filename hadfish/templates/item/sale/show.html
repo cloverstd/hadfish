@@ -7,30 +7,19 @@
         	<h1>商品信息</h1>
   			<div class="product-img">
                 <div id="slider" class="slide-wp">
-                    <ul style="display: none;">
+                    <ul>
                     {% for img in item.item.images %}
-                    <li><img src="http://hadfish.qiniudn.com/{{ img }}_400.300" /></li>
+                    <li onClick="sliderto(nextIndex(currentIndex))"><img src="http://hadfish.qiniudn.com/{{ img }}_320.240" /></li>
                     {% endfor %}
                     </ul>
                 </div>
-            	<!--
-            	<div id="slider" class="slide-wp">
-                    <ul style="display: none;">
-                        <li><img src="saleimg/20121228161913251325.jpg" alt="" data-pinit="registered"></li>
-                        <li><img src="saleimg/20121228161935633563.jpg" alt="" data-pinit="registered"></li>
-                        <li><img src="saleimg/20121228161927312731.jpg" alt="" data-pinit="registered"></li>
-                        <li><img src="saleimg/20121228161936053605.jpg" alt="" data-pinit="registered"></li>
+                <div class="nav-wp">
+                    <ul id="nav" class="nav">
+                        {% for img in item.item.images %}
+                        <li onClick="sliderto({{ loop.index0 }})"><img src="http://hadfish.qiniudn.com/{{ img }}_42.42" /></li>
+                        {% endfor %}
                     </ul>
-                    <div style="position: absolute; left: 0px; top: 0px; width: 320px; height: 217px;"><a style="position: absolute; left: 0px; top: 0px; overflow: hidden;"><img alt="" src="http://hadfish.com/asp/saleimg/20121228161935633563.jpg" width="42" height="217" data-pinit="registered"><span style="position: absolute; left: 0px; top: 0px; font-size: 0px; overflow: hidden; width: 0px; height: 0px; border-color: black transparent transparent black; border-style: solid dashed dashed solid; border-width: 31.419791666666665px 21px;"></span><span style="position: absolute; left: 0px; bottom: 0px; font-size: 0px; overflow: hidden; width: 0px; height: 0px; border-color: transparent transparent black black; border-style: dashed dashed solid solid; border-width: 31.419791666666665px 21px;"></span></a><a style="position: absolute; top: 0px; right: 0px; overflow: hidden;"><img alt="" src="http://hadfish.com/asp/saleimg/20121228161927312731.jpg" width="278" height="217" data-pinit="registered"><span style="position: absolute; right: 0px; top: 0px; font-size: 0px; overflow: hidden; width: 0px; height: 0px; border-color: black black transparent transparent; border-style: solid solid dashed dashed; border-width: 4.746874999999999px 139px;"></span><span style="position: absolute; right: 0px; bottom: 0px; font-size: 0px; overflow: hidden; width: 0px; height: 0px; border-color: transparent black black transparent; border-style: dashed solid solid dashed; border-width: 4.746874999999999px 139px;"></span></a></div></div>
-                    <div class="nav-wp">
-                        <ul id="nav" class="nav">
-                            <li onclick="mySlider.pos(0)" class=""><img src="saleimg/20121228161913251325.jpg" alt=""></li>
-                            <li onclick="mySlider.pos(1)" class=""><img src="saleimg/20121228161935633563.jpg" alt=""></li>
-                            <li onclick="mySlider.pos(2)" class="cur"><img src="saleimg/20121228161927312731.jpg" alt=""></li>
-                            <li onclick="mySlider.pos(3)" class=""><img src="saleimg/20121228161936053605.jpg" alt=""></li>
-                        </ul>
-                    </div>
-                    -->
+                </div>
                 </div>
             <div class="product-simple">
                 <span class="simple-name">{{ item.item.name }}</span>
@@ -40,7 +29,7 @@
                 <span class="simple-baoxiu">上架时间：{{ item.item.date|date_format }}</span>
                 <span class="simple-saler">
                 	
-                    <span class="simple-phon">卖家：<a href="salers.asp?userID=43">{{ item.user.name }}</a></span>
+                    <span class="simple-phon">卖家：<a href="{{ url_for('account.userinfo', uid=item.user.id) }}">{{ item.user.name }}</a></span>
                     <span class="simple-phon">联系电话：{{ item.user.tel }}</span>
                     <span class="simple-phon">QQ：{{ item.user.qq }}
                         {% if item.user.qq %}
@@ -106,5 +95,25 @@
 {% endblock %}
 {% endblock %}
 {% block solescript %}
+<script type="text/javascript">
+    $('#slider ul li').eq(0).show();
+    var currentIndex = 0;
+    var sliderto = function(index) {
+        console.log(index);
+        console.log(currentIndex);
+        $('#slider ul li').eq(currentIndex).hide();
+        $('#slider ul li').eq(index).fadeIn();
+        //$('ul.nav li').eq(index).addClass("cur");
+        currentIndex = index;
+    };
+    var nextIndex = function(cur) {
+        cur++;
+        if (cur === 6) {
+            return 0;
+        }
+        else {
+            return cur;
+        }
+    };
 </script>
 {% endblock %}

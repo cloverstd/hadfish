@@ -56,10 +56,11 @@
 
 {% block sider %}
 	<div id="right-content">
-<div class="rightbox">
+        {% if g.user %}
+        <div class="rightbox">
 	
         <h1>个人信息</h1>
-        <div id="userpic"><a href="users.asp" title="cloverstd的头像" style="background-image:url(
+        <div id="userpic"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}" title="cloverstd的头像" style="background-image:url(
         face/20130802094538673867.png
             )">
         </a></div>
@@ -68,7 +69,7 @@
         	0
         	件
         </div>
-        <div id="userbuy">已买商品数：0件</div>
+        <!--div id="userbuy">已买商品数：0件</div-->
         <div id="userwant">已收藏商品数：
         	
         	<a href="productsmore.asp?kind=collect" title="点击查看详情">2</a>
@@ -76,12 +77,21 @@
         	件 
         </div>
         <div id="iwantsale"><a href="selectsale.asp" title="点击出售自己的物品"></a></div>
-    
-</div>
-<!--div class="rightbox">
+    </div>
+    {% else %}
+    <div class="rightbox">
+        <div class="regnow"><a href="{{ url_for('account.register') }}">立即注册</a></div>
+        <div class="youyujs">
+            <p>欢迎来到有鱼网！有鱼网是集二手、求购、出售为一体的校园交易平台~！无论你是大四即将毕业而无法处理自己的东西；还是刚进大学希望能买到实惠的东西；都欢迎来有鱼网淘金~~</p>
+            <p>有鱼，让有余有用起来~~！</p>
+        </div>
+    </div>
 
-</div-->
-</div>
+    {% endif %}
+    <!--div class="rightbox">
+
+    </div-->
+    </div>
 {% endblock %}
 
 {% endblock %}
