@@ -51,8 +51,11 @@
 {% endblock %}
 
 <!-- 这里是主体内容 -->
-{% block content %}{% endblock %}
+<div id="content">
+{% block content %}
 
+{% block sider %}
+	<div id="right-content">
 <div class="rightbox">
 	
         <h1>个人信息</h1>
@@ -75,15 +78,18 @@
         <div id="iwantsale"><a href="selectsale.asp" title="点击出售自己的物品"></a></div>
     
 </div>
+<!--div class="rightbox">
 
-<div class="rightbox">
-
+</div-->
 </div>
+{% endblock %}
 
-    </div>
+{% endblock %}
+
     <div class="clear"></div>
 </div>
 
+</div>
 <!-- 下面是底部导航 -->
 {% block footer %}
 {% include "footer.html" %}

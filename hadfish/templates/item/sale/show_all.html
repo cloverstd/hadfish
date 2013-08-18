@@ -39,91 +39,82 @@
 {% endblock %}
 
 {% block content %}
-<div id="content">
 	<div id="left-content">
 		
         {% for item in items.sales %}
-        <div class="fish inline">
-            <div id="fishpic"><a href="products.asp?fishID=89" title="点击查看详情"><img src="saleimg/20121228161913251325.jpg" width="280" height="190" alt="" /></a></div>
-            <div id="fishname"><a href="products.asp?fishID=89">111111</a></div>
-            <div id="fishprice"><a href="products.asp?fishID=89">去看看</a><span><b>￥</b>{{ item.item.price }}</span></div>
-        </div>
-        {% endfor %}
-
+    <div class="fish inline">
+        <div id="fishpic"><a href="{{ url_for('item_sale.show_item_by_id', item_id=item.item.id) }}" title="点击查看详情"><img src="http://hadfish.qiniudn.com/{{ item.item.images[0] }}_200.200" width="281" height="190" alt="" data-pinit="registered"></a></div>
+        <div id="fishname"><a href=""{{ url_for('item_sale.show_item_by_id', item_id=item.item.id) }}>{{ item.item.name }}</a></div>
+        <div id="fishprice"><a href=""{{ url_for('item_sale.show_item_by_id', item_id=item.item.id) }}>去看看</a><span><b>￥</b>1111</span></div>
+    </div>
+    {% endfor %}
+    
     
 			<div class="clear"></div>
 			<div class="yema">
-			  <a href="market.asp?keyword=&kind=all&price=no&page=0" class="nextpage">上一页</a>
-			<span class="yema_check">1</span><a href='market.asp?keyword=&kind=all&price=no&page=2' class="yema_nocheck">2</a>
-			  <a href="market.asp?keyword=&kind=all&price=no&page=2" class="nextpage">下一页</a>
 
+                {% if items.page == 1 %}
+			  <a href="javascript:void(0);" class="nextpage">第一页</a>
+              {% else %}
+			  <a href="{{ url_for('item_sale.show_item', page=1, kind_id=kind_id) }}" class="nextpage">第一页</a>
+              {% endif %}
+              {% if items.has_prev %}
+			  <a href="{{ url_for('item_sale.show_item', page=items.prev_num, kind_id=kind_id) }}" class="yema_nocheck"><</a>
+              {% else %}
+                <span class="yema_check"><</span>
+              {% endif %}
 
-    <div class="pagination pagination-centered pagination-small">
-  <ul>
+              {% if items.pages < 7 or items.page < 7 %}
+                {% if items.pages > 7 %}
+                    {% set end_page = 8 %}
+                {% else %}
+                    {% set end_page = items.pages + 1%}
+                {% endif %}
+                {% for i in range(1, end_page) %}
+                    {% if items.page == i %}
+                        <span class="yema_check">{{ i }}</span>
+                    {% else %}
+                        <a href="{{ url_for('item_sale.show_item', page=i, kind_id=kind_id) }}" class="yema_nocheck">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
 
-    {% if 1 == items.page %}
-    <li class="disabled hidden-phone"><span>第一页</span></li>
-    {% else %}
-    <li class="hidden-phone"><a href="{{ url_for('item_sale.show_item', page=1, kind_id=kind_id) }}" >第一页</a></li>
-    {% endif %}
-    {% if items.has_prev %}
-    <li><a href="{{ url_for('item_sale.show_item', page=items.prev_num, kind_id=kind_id) }}" ><</a></li>
-    {% else %}
-    <li class="disabled"><span><</span></li>
-    {% endif %}
-    
-    {% if items.pages < 7 or items.page < 7 %}
-        {% if items.pages > 7 %}
-            {% set end_page = 8 %}
-        {% else %}
-            {% set end_page = items.pages + 1 %}
-        {% endif %}
-        {% for i in range(1, end_page) %}
-            {% if items.page == i %}
-                <li class="active"><span>{{ i }}</span></li>
             {% else %}
-                <li><a href="{{ url_for('item_sale.show_item', page=i, kind_id=kind_id) }}" >{{ i }}</a></li>
-            {% endif %}
-        {% endfor %}
+                {% set start_page = items.page - items.page%6 %}
 
-    {% else %}
-        {% set start_page = items.page - items.page%6 %}
+                {% if items.pages < start_page + 6 %}
+                    {% set end_page = items.pages + 1 %}
+                {% else %}
+                    {% set end_page = start_page + 6 + 1 %}
+                {% endif %}
+                <a href="{{ url_for('item_sale.show_item', page=start_page-1, kind_id=kind_id) }}" class="nextpage">{{ start_page-1 }}</a>
+                {% for i in range(start_page, end_page) %}
+                    {% if items.page == i %}
+                        <span class="yema_check">{{ i }}</span>
+                    {% else %}
+                        <a href="{{ url_for('item_sale.show_item', page=i, kind_id=kind_id) }}" class="yema_nocheck">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% endif %}
+                
+                {% if items.has_next %}
+                <a href="{{ url_for('item_sale.show_item', page=items.next_num, kind_id=kind_id) }}" class="yema_nocheck">></a>
+                {% else %}
+                <span class="yema_check">></span>
+                {% endif %}
+                {% if items.pages == items.page %}
+			  <a href="javascript:void(0);" class="nextpage">最后一页</a>
+                {% else %}
+			  <a href="{{ url_for('item_sale.show_item', page=items.pages, kind_id=kind_id) }}" class="nextpage">最后一页</a>
+                {% endif %}
 
-        {% if items.pages < start_page + 6 %}
-            {% set end_page = items.pages + 1 %}
-        {% else %}
-            {% set end_page = start_page + 6 + 1 %}
-        {% endif %}
-        <li><a href="{{ url_for('item_sale.show_item', page=start_page-1, kind_id=kind_id) }}" >{{ start_page-1 }}</a></li>
-        {% for i in range(start_page, end_page) %}
-            {% if items.page == i %}
-                <li class="active"><span>{{ i }}</span></li>
-            {% else %}
-                <li><a href="{{ url_for('item_sale.show_item', page=i, kind_id=kind_id) }}" >{{ i }}</a></li>
-            {% endif %}
-        {% endfor %}
-
-    {% endif %}
-
-
-    {% if items.has_next %}
-    <li><a href="{{ url_for('item_sale.show_item', page=items.next_num, kind_id=kind_id) }}" >></a></li>
-    {% else %}
-    <li class="disabled"><span>></span></li>
-    {% endif %}
-    {% if items.pages == items.page %}
-    <li class="disabled hidden-phone"><span>最后一个</span></li>
-    {% else %}
-    <li class="hidden-phone"><a href="{{ url_for('item_sale.show_item', page=items.pages, kind_id=kind_id) }}" >最后一页</a></li>
-    {% endif %}
-    
-  </ul>
-
-</div>
 
 			</div>
             
 	</div>
+    
+    {% block sider %}
+    {{ super() }}
+    {% endblock %}
 {% endblock %}
 
 {% block solescript %}

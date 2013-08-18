@@ -5,6 +5,7 @@ from hadfish import app
 from hadfish.extensions import db
 from hadfish.databases import *
 from datetime import datetime
+from random import randint
 
 with app.test_request_context():
     # users = list()
@@ -13,20 +14,19 @@ with app.test_request_context():
         # users.append(user)
 
     # db.session.add_all(users)
-    item = ItemSale.query.get(1)
-    items = list()
-    for i in range(8 * 10):
-        rv = ItemDemand(item.name, item.price, item.kind_id)
-        rv.user_id = item.user_id
-        rv.images = item.images
-        items.append(rv)
+    # item = ItemSale.query.first()
+    # items = list()
+    # for i in range(8 * 10):
+        # rv = ItemSale(item.name, item.price, item.original_price, randint(1, 4))
+        # rv.user_id = item.user_id
+        # rv.images = item.images
+        # items.append(rv)
 
     # db.session.add_all(items)
 
-    # items = ItemSale.query.all()
-    # for item in items:
-        # if item.id != 1:
-            # db.session.delete(item)
+    items = ItemSale.query.all()
+    for item in items:
+        item.level = randint(0, 9)
 
     # user = User.query.filter_by(name="cloverstd").first()
     # user.power =  99
