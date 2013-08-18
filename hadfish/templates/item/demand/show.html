@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}求购-{{ item.item.name }}{% endblock %}
+{% block content %}
+{% if g.user.id == item.user.id %}
+<div class="modify text-right">
+<form action="{{ url_for('item_demand.delete_item', item_id=item.item.id) }}" method="POST">
+    <a class="btn btn-success btn-small" href="{{ url_for('item_demand.modify_item', item_id=item.item.id) }}">修改</a>
+<button class="btn btn-danger btn-small">删除</button>
+</form>
+</div>
+{% endif %}
+名称：{{ item.item.name }}
+<br/>
+价格：{{ item.item.price }}
+<br/>
+有效期：{{ item.item.valid_date }}
+<br/>
+类型：{{ item.item.kind }}
+<br/>
+描述：{{ item.item.description }}
+<br/>
+用户信息：
+<div class="item-saler-info">
+    <div class="item-saler-name">昵称：{{ item.user.name }}</div>
+    {% if item.user.qq %}
+    <div class="item-saler-QQ"><span class="qqTips">QQ：
+            <a ref="qqTips" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={{ item.user.qq }}&site=qq&menu=yes">{{ item.user.qq }}</a>
+        </span>
+    </div>
+    {% endif %}
+    {% if item.user.tel %}
+    <div class="item-saler-tel"><a id="telShow" class="btn btn-info" href="javascript:void(0);">显示号码</a></div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block solescript %} <script type="text/javascript">
+$(function(){
+        $("#telShow").click(function () {
+            $(this).hide();
+            $(this).parent().html("{{ item.user.tel }}");
+        });
+        $(".qqTips a").tooltip({
+            placement: "right",
+            title: "点击给我发送消息",
+        });
+    });
+</script>
+{% endblock %}

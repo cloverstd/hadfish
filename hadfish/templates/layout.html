@@ -1,0 +1,110 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>{% block title %}{% endblock %} - 有鱼网</title>
+<meta name="Description" content="有鱼网是集二手、求购、出售为一体的校园交易平台~！无论你是大四即将毕业而无法处理自己的东西；还是刚进大学希望能买到实惠的东西；都欢迎来有鱼网淘金~~
+有鱼，让有余有用起来~~！">
+<meta name="Keywords" content="有鱼,有鱼网,hadfish,HadFish,二手,二手交易,校内交易,学生创业,校园交易,校园二手">
+
+<link href="/static/css/css.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/append.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="/static/favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/static/favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+
+{% block head %}
+{% endblock %}
+</head>
+
+<body>
+<!-- 下面是顶部导航 -->
+<div id="head">
+	<span>
+        <div id="logo"><img src="/static/img/logo2.png"  alt="有鱼网" /></div>
+        <div id="head-list">
+        	<ul class="left">
+                <li class="left"><a href="index.asp">首页</a></li>
+                
+                <li class="left"><a href="users.asp">个人主页</a></li>
+                
+                <li class="left"><a href="market.asp">商品</a></li>
+                <li class="left"><a href="food.asp">美食预定</a></li>
+                <li class="left"><a href="#" onclick="alert('暂时还没上线哦！尽请期待(*^__^*)')">求购</a></li>
+                <li class="left"><a href="print.asp">在线打印</a></li>
+            </ul>
+            <ul class="right">
+            	
+                    <li class="right"><a href="logout.asp">退出</a></li>
+                    <li class="right"><a href="useredit.asp">设置</a></li>
+                    <li class="right"><a href="#">消息</a></li>
+                
+            </ul>
+        </div>
+    </span>
+</div>
+
+{% block search %}
+<!-- 下面是头部搜索和筛选 -->
+{% endblock %}
+
+<!-- 这里是主体内容 -->
+{% block content %}{% endblock %}
+
+<div class="rightbox">
+	
+        <h1>个人信息</h1>
+        <div id="userpic"><a href="users.asp" title="cloverstd的头像" style="background-image:url(
+        face/20130802094538673867.png
+            )">
+        </a></div>
+        <div id="username"><a href="users.asp">cloverstd</a></div>
+        <div id="usersale">我要出售：
+        	0
+        	件
+        </div>
+        <div id="userbuy">已买商品数：0件</div>
+        <div id="userwant">已收藏商品数：
+        	
+        	<a href="productsmore.asp?kind=collect" title="点击查看详情">2</a>
+        	
+        	件 
+        </div>
+        <div id="iwantsale"><a href="selectsale.asp" title="点击出售自己的物品"></a></div>
+    
+</div>
+
+<div class="rightbox">
+
+</div>
+
+    </div>
+    <div class="clear"></div>
+</div>
+
+<!-- 下面是底部导航 -->
+{% block footer %}
+{% include "footer.html" %}
+{% endblock %}
+
+<a id="toTop" href="#" style="display:none;"><em class="lx">◆</em><em class="jx">▋</em>返回顶部</a>
+<script type="text/javascript" src="/static/js/toTop.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var screenheight = $(window).height();
+		var bodyheight = $(document.body).height()+110;
+		if(bodyheight < screenheight){
+			var cha=screenheight - bodyheight;
+			$('#foot').css("margin-top",cha);
+		}
+	})
+	
+</script>
+</body>
+{% block solescript %}
+{% endblock %}
+</html>
+
+

@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% block title %}求购{% endblock %}
+{% block content %}
+            分类:
+            {% if not kind_id %}
+            <span class="label label-info">全部</span>
+            {% else %}
+            <a href="{{ url_for('item_demand.show_item', page=1) }}">全部</a>
+            {% endif %}
+            {% for kind in kinds.kinds %}
+                {% if kind_id and kind.id == kind_id %}
+                <span class="label label-info">{{ kind.name }}</span>
+                {% else %}
+                <a href="{{ url_for('item_demand.show_item', page=1, kind_id=kind.id) }}">{{ kind.name }}</a>
+                {% endif %}
+            {% endfor %}
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <td>#</td>
+                <td>名称</td>
+                <td>价格</td>
+                <td>有效期</td>
+                <td>描述</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items.demands %}
+            <tr>
+                <td>{{ loop.index0 }}</td>
+                <td>
+                    <a href="{{ url_for('item_demand.show_item_by_id', item_id=item.item.id) }}">
+                    {{ item.item.name }}
+                </a>
+                </td>
+                <td>{{ item.item.price }}</td>
+                <td>{{ item.item.valid_date }}</td>
+                <td>{{ item.item.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+<div class="pagination pagination-centered pagination-small">
+  <ul>
+
+    {% if 1 == items.page %}
+    <li class="disabled hidden-phone"><span>第一页</span></li>
+    {% else %}
+    <li class="hidden-phone"><a href="{{ url_for('item_demand.show_item', page=1, kind_id=kind_id) }}" >第一页</a></li>
+    {% endif %}
+    {% if items.has_prev %}
+    <li><a href="{{ url_for('item_demand.show_item', page=items.prev_num, kind_id=kind_id) }}" ><</a></li>
+    {% else %}
+    <li class="disabled"><span><</span></li>
+    {% endif %}
+    
+    {% if items.pages < 7 or items.page < 7 %}
+        {% if items.pages > 7 %}
+            {% set end_page = 8 %}
+        {% else %}
+            {% set end_page = items.pages + 1 %}
+        {% endif %}
+        {% for i in range(1, end_page) %}
+            {% if items.page == i %}
+                <li class="active"><span>{{ i }}</span></li>
+            {% else %}
+                <li><a href="{{ url_for('item_demand.show_item', page=i, kind_id=kind_id) }}" >{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+    {% else %}
+        {% set start_page = items.page - items.page%6 %}
+
+        {% if items.pages < start_page + 6 %}
+            {% set end_page = items.pages + 1 %}
+        {% else %}
+            {% set end_page = start_page + 6 + 1 %}
+        {% endif %}
+        <li><a href="{{ url_for('item_demand.show_item', page=start_page-1, kind_id=kind_id) }}" >{{ start_page-1 }}</a></li>
+        {% for i in range(start_page, end_page) %}
+            {% if items.page == i %}
+                <li class="active"><span>{{ i }}</span></li>
+            {% else %}
+                <li><a href="{{ url_for('item_demand.show_item', page=i, kind_id=kind_id) }}" >{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+    {% endif %}
+
+
+    {% if items.has_next %}
+    <li><a href="{{ url_for('item_demand.show_item', page=items.next_num, kind_id=kind_id) }}" >></a></li>
+    {% else %}
+    <li class="disabled"><span>></span></li>
+    {% endif %}
+    {% if items.pages == items.page %}
+    <li class="disabled hidden-phone"><span>最后一个</span></li>
+    {% else %}
+    <li class="hidden-phone"><a href="{{ url_for('item_demand.show_item', page=items.pages, kind_id=kind_id) }}" >最后一页</a></li>
+    {% endif %}
+    
+  </ul>
+</div>
+{% endblock %}
+{% block solescript %}
+{% endblock %}
