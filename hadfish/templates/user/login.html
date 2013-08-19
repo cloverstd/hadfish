@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block title %}登录{% endblock %}
+{% block content %}
+<div id="reg">
+<!--注册左边-->
+<div id="left-reg">
+</div>
+<!--注册左边结束-->
+
+<!--注册主体-->
+<div id="right-reg">
+	<form id="loginform" action="{{ url_for('account.login') }}" method="post" name="login">
+	<div id="reg-box">
+    	<div class="regbox-list">
+        	<div class="regbox-list-bt"><span>用户名</span></div>
+            <div class="regbox-list-text"><input class="reginput" type="text" name="username"/></div>
+            <div class="regbox-list-alert">
+                <!-- 
+                <span class="alert-wrong" id="regname-no"></span>
+                -->
+                <span class="alert-right"></span>
+            </div>
+            <div class="regbox-list-tip"><span>您在有鱼网的用户名</span></div>
+        </div>
+
+    	<div class="regbox-list">
+        	<div class="regbox-list-bt"><span>密码</span></div>
+            <div class="regbox-list-text"><input class="reginput" type="password" name="password"/></div>
+            <div class="regbox-list-alert">
+                <!-- 
+                <span class="alert-wrong" id="regname-no"></span>
+                -->
+                <span class="alert-right"></span>
+            </div>
+            <div class="regbox-list-tip"><span>您在有鱼网的密码</span></div>
+        </div>
+
+        <div class="regbox-list xieyi">
+            <input name="login-auto" type="checkbox" value="1" checked />&nbsp;&nbsp;记住我的登录状态
+
+        </div>
+        <div class="regbox-list areg">
+            <a href="javascript:document.login.submit();" class="login-button" id="loginbutton">登录</a>
+
+
+    </div>
+    </div>
+    </form>
+</div>
+</div>
+
+{% endblock %}
+
+{% block solescript %}
+<script type="text/javascript" src="/static/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/static/js/validate.js"></script>
+{% endblock %}

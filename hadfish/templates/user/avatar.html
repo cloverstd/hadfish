@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}设置{% endblock %}
+{% block solehead %}
+{% endblock %}
+
+{% block content %}
+<form action="{{ url_for('account.setting_avatar') }}" method="POST" enctype="multipart/form-data">
+    <label>原头像</label>
+    {%if user.avatar %}
+    <img src="{{ user.avatar | avatar_url }}!100.100" />
+    {% else %}
+    <img src="{{ url_for('.static', filename='img/txdefault-small.jpg') }}">
+    {% endif %}
+</br>
+    <label>新头像</label>
+    <input type="file" name="avatar">
+    <button type="submit">上传</button>
+
+</form>
+{% endblock %}
+
+{% block solescript %}
+{% endblock %}
