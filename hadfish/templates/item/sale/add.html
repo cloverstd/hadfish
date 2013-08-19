@@ -1,142 +1,80 @@
 {% extends "layout.html" %}
 {% block title %}我有东西要出售{% endblock %}
 {% block content %}
-<div>
-<form class="form-horizontal" action="{{ url_for('item_sale.add_item') }}" method="POST">
-    <fieldset>
-      <div id="legend" class="">
-        <legend class="">出售</legend>
-      </div>
-    <div class="control-group">
-
-          <!-- Text input-->
-          <label class="control-label" for="input01">商品名称</label>
-          <div class="controls">
-            <input type="text" name="name" placeholder="商品名称" class="input-xlarge">
-            <span class="must">*</span>
-            <p class="help-block">请不要超过 100 个字</p>
-          </div>
-        </div>
-
-    <div class="control-group">
-
-          <!-- Appended input-->
-          <label class="control-label">商品原价</label>
-          <div class="controls">
-            <div class="input-append">
-              <input class="input-xlarge" name="original_price" placeholder="商品原价" type="text">
-              <span class="add-on">元</span>
-            </div>
-            <p class="help-block">如果为空则现价作为原价</p>
-          </div>
-
-        </div><div class="control-group">
-
-          <!-- Appended input-->
-          <label class="control-label">商品现价</label>
-          <div class="controls">
-            <div class="input-append">
-              <input class="input-xlarge" name="price" placeholder="商品现价" type="text">
-              <span class="add-on">元</span>
-            </div>
-               <span class="must">*</span>
-            <p class="help-block">商品出售价格</p>
-          </div>
-
-        </div><div class="control-group">
-
-          <!-- Select Basic -->
-          <label class="control-label">商品类型</label>
-          <div class="controls">
-            <select class="input-xlarge" name="kind">
-            {% for kind in kinds.kinds %}
-                <option value="{{ kind.id }}">{{ kind.name }}</option>
-            {% endfor %}
-            </select>
-               <span class="must">*</span>
-          </div>
-
-        </div>
-
-    
-
-    <div class="control-group">
-
-          <!-- Select Basic -->
-          <label class="control-label">商品成色</label>
-          <div class="controls">
-            <div class="input-append">
-            <select class="input-xlarge" name="level">
-        <option value="0">1</option>
-        <option value="1">2</option>
-        <option value="2">3</option>
-        <option value="3">4</option>
-        <option value="4">5</option>
-        <option value="5">6</option>
-        <option value="6">7</option>
-        <option value="7">8</option>
-        <option value="8">9</option>
-        <option value="9">10</option>
-      </select>
-              <span class="add-on">成新</span>
-            </div>
-               <span class="must">*</span>
-            <p class="help-block">10 成新表示全新</p>
-          </div>
-
-        </div>
-    <div class="control-group">
-
-          <!-- Appended input-->
-          <label class="control-label">有效期</label>
-          <div class="controls">
-            <div class="input-append">
-              <input class="input-xlarge" name="valid_date" value="150" placeholder="有效期" type="text">
-              <span class="add-on">天</span>
-            </div>
-               <span class="must">*</span>
-            <p class="help-block">商品上架直到有效期后下架，最大为 150 天</p>
-          </div>
-
-        </div>
-
-    <div class="control-group">
-        <label class="control-label">商品图片</label>
-          <div class="controls">
-    <div id="publish-list">
-        <ul class="postimg inline"></ul>
-        <input type="hidden" id="postimg-ipt" name="img" value=""/>
-        <script type="text/javascript">
-            QINIU = {name: "hadfish", token: "{{ token }}", uid: {{ g.user.id }}, count: 0};
-            SETTINGS = {file_upload_limit: "6"};
-        </script>
-    </div>
-    <span id="buttonUpload"></span>
-            <p class="help-block" id="errorMsg">最多可上传 6 张图片</p>
-    </div>
-    </div>
-    <div class="control-group">
-
-          <!-- Textarea -->
-          <label class="control-label">商品描述</label>
-          <div class="controls">
-            <div class="textarea">
-                  <textarea name="description" class="input-xlarge" rows="5"></textarea>
-            </div>
-            <p class="help-block">请简要描述，不超过 200 个字</p>
-          </div>
-        </div>
-
-    <div class="control-group">
-
-          <!-- Button -->
-          <div class="controls">
-            <button type="submit" class="btn btn-primary">添加</button>
-          </div>
-        </div>
-    </fieldset>
-</form>
+<div id="left-content">
+    	<div class="saleedit">
+            <h1>编辑待售商品信息</h1>
+            <form action="saleedit-do.asp" method="post">
+            <div class="saleedit-simple">
+            	<ul>
+                	<li class="salename"><label>商品名称：</label><input type="text" maxlength="100" name="salename"/><em class="saletishi">（*不得超过100字）</em></li>
+                    <li class="saleprice">
+                      <label>价格：</label><input type="text" maxlength="7" name="saleprice" /><em>元</em><em class="saletishi">（*最多精确到小数点后两位，总共不得超过7个字符）</em></li>
+                    <li><label>类型：</label><select name="salekind" >
+                      <option value="服装">服装</option>
+                      <option value="日常用品" selected="selected">日常用品</option>
+                      <option value="食品">食品</option>
+                      <option value="数码">数码</option>
+                      <option value="文化用品">文化用品</option>
+                      <option value="其他">其他</option>
+                  </select><em class="saletishi">（*请选择商品所属种类）</em></li>
+                    <li class="saletime"><label>购买时间：</label><input type="text" maxlength="4"  name="saleyear"/><em>年</em><input type="text" maxlength="2"  name="salemonth"/><em>月</em><em class="saletishi">（*如不是二手商品请不用填写）</em></li>
+                    <li class="salenew"><label>成色：</label><select name="salenew" >
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10" selected="selected">10</option>
+                    </select><em>成新</em><em class="saletishi">（*请如实选择商品成色）</em></li>
+                    <li class="salebaoxiu"><label>保修期：</label><input name="salebaoxiu" type="radio" value="已过" checked="checked" /><em>已过</em> <input name="salebaoxiu" type="radio" value="未过" /><em>未过</em></li>
+                    <li><label>详细描述：</label></li>
+            	</ul>
+                <div class="saleimg">
+                	<div id="upload">
+	<div id="buttonArea">
+        <div class="divAddFiles1">
+        <span id="divAddFiles"></span></div>
+	</div>
+	<div id="listArea"></div>
+    <div style="padding:3px" class="clearfix">
+        <div class="actButton">
+            <input class="divAddFiles1" type="button" id="startU" disabled="disabled" value="开始上传" onclick="startUploadFiles();" /></div>
+            <div id="progressArea">
+                <ul>
+                    <li id="processer"></li>
+                    <li class="all-text"></li>
+                    <li class="clear"></li>
+                </ul>
+        	</div>
+            <div class="clear"></div>
+       </div>
+    <textarea id="fileUploaded" cols="55" style="width:436px;padding:3px; margin:3px; border:1px #efefef dashed" rows="10" name="saleimg">已上传文件：</textarea>
 </div>
+                    <input name="saleimg1" type="hidden" id="saleimg1"/>
+                    <input name="saleimg2" type="hidden" id="saleimg2"/>
+                    <input name="saleimg3" type="hidden" id="saleimg3"/>
+                    <input name="saleimg4" type="hidden" id="saleimg4"/>
+                </div>
+                <div class="salexiangxi">
+                        <p>
+                        <textarea name="editor1" rows="8" cols="60">&lt;p&gt;This is some &lt;strong&gt;sample text&lt;/strong&gt;.&lt;/p&gt;</textarea>
+<script type="text/javascript" src="ckeditor/ckeditor.js?t=C6HH5UF"></script>
+<script type="text/javascript">//<![CDATA[
+CKEDITOR.replace('editor1', null);
+//]]></script>
+
+                          <input type="submit" value="提交商品"/>
+                          </p>
+                </div>
+            </div>
+            </form>
+        </div>    
+    </div>
 
 {% endblock %}
 

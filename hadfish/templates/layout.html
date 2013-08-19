@@ -26,25 +26,45 @@
         <div id="logo"><img src="/static/img/logo2.png"  alt="有鱼网" /></div>
         <div id="head-list">
         	<ul class="left">
-                <li class="left"><a href="index.asp">首页</a></li>
+                <li class="left"><a href="{{ url_for('common.index') }}">首页</a></li>
                 
-                <li class="left"><a href="users.asp">个人主页</a></li>
+                {% if g.user %}
+                    <li class="left"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}">个人主页</a></li>
+                {% endif %}
                 
-                <li class="left"><a href="market.asp">商品</a></li>
+                <li class="left"><a href="{{ url_for('item_sale.show_item') }}">跳蚤市场</a></li>
                 <li class="left"><a href="food.asp">美食预定</a></li>
                 <li class="left"><a href="#" onclick="alert('暂时还没上线哦！尽请期待(*^__^*)')">求购</a></li>
                 <li class="left"><a href="print.asp">在线打印</a></li>
             </ul>
             <ul class="right">
+                {% if g.user %}
+                <li class="right"><a href="{{ url_for('account.logout') }}">注销</a>
+                <li class="right"><a href="{{ url_for('account.setting') }}">设置</a>
+                {% else %}
+                <li class="right"><a href="{{ url_for('account.login') }}">登录</a></li>
+                <li class="right"><a href="{{ url_for('account.register') }}">注册</a></li>
+                {% endif %}
             	
-                    <li class="right"><a href="logout.asp">退出</a></li>
-                    <li class="right"><a href="useredit.asp">设置</a></li>
-                    <li class="right"><a href="#">消息</a></li>
                 
             </ul>
         </div>
     </span>
 </div>
+
+    {# flash message #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+<div id="navigate">
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+</div>
+    {% endif %}
+    {% endwith %}
+
 
 {% block search %}
 <!-- 下面是头部搜索和筛选 -->
@@ -61,10 +81,10 @@
 	
         <h1>个人信息</h1>
         <div id="userpic"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}" title="cloverstd的头像" style="background-image:url(
-        face/20130802094538673867.png
-            )">
+        {{ g.user.avatar | avatar_url }}_170.170
+            );background-repeat: no-repeat;">
         </a></div>
-        <div id="username"><a href="users.asp">cloverstd</a></div>
+        <div id="username"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}">cloverstd</a></div>
         <div id="usersale">我要出售：
         	0
         	件
@@ -76,7 +96,11 @@
         	
         	件 
         </div>
-        <div id="iwantsale"><a href="selectsale.asp" title="点击出售自己的物品"></a></div>
+        <!--
+        <div id="iwantsale"><a href="{{ url_for('item_sale.add_item') }}" title="点击出售自己的物品"></a></div>
+        -->
+        <a href="{{ url_for('item_sale.add_item') }}" title="点击出售自己的物品">我要卖</a>
+        <a href="{{ url_for('item_demand.add_item') }}" title="点击出售自己的物品">我要买</a>
     </div>
     {% else %}
     <div class="rightbox">
@@ -88,9 +112,14 @@
     </div>
 
     {% endif %}
-    <!--div class="rightbox">
+    <div class="rightbox">
+        <div class="followus"><span>关注我们</span></div>
+        <div class="weixin">
+            <img src="/static/img/weixinQR.jpg" />
+            <p>微信扫一扫或者添加<span class="weixin-hadfish">有鱼网</span></p>
+        </div>
+    </div>
 
-    </div-->
     </div>
 {% endblock %}
 
@@ -118,9 +147,10 @@
 	})
 	
 </script>
-</body>
+
 {% block solescript %}
 {% endblock %}
+</body>
 </html>
 
 
