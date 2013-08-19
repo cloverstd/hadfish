@@ -7,13 +7,13 @@
             <form name="saleform" action="{{ url_for('item_sale.add_item') }}" method="post">
             <div class="saleedit-simple">
             	<ul>
-                	<li class="salename"><label>商品名称：</label><input type="text" maxlength="80" name="name"/><em class="saletishi">（*不得超过80字）</em></li>
+                	<li class="salename"><label>商品名称：</label><input type="text" maxlength="100" name="name"/><em class="saletishi">（*不得超过80字）</em></li>
                     <li class="saleprice">
                       <label>原价：</label><input type="text" maxlength="7" name="original_price" /><em>元</em><em class="saletishi"></em></li>
                     <li class="saleprice">
                       <label>价格：</label><input type="text" maxlength="7" name="price" /><em>元</em><em class="saletishi">*</em></li>
                     <li class="saleprice">
-                      <label>有效期：</label><input type="text" maxlength="3" value=150 name="valid_date" /><em>天</em><em class="saletishi">(此商品在有效期内有效)</em></li>
+                      <label>有效期：</label><input type="text" maxlength="3" name="valid_date" /><em>天</em><em class="saletishi">(此商品在有效期内有效)</em></li>
                     <li><label>类型：</label><select name="kind" >
             {% for kind in kinds.kinds %}
                 <option value="{{ kind.id }}">{{ kind.name }}</option>
@@ -33,9 +33,8 @@
                         <option value="9">全新</option>
                     </select><em>成新</em><em class="saletishi">（*请如实选择商品成色）</em></li>
             	</ul>
-		{#
                 <div class="saleimg">
-                    <label>上传图片</label>
+                    <label>上传图片<label>
                     <div id="publish-list">
                         <ul class="postimg"></ul>
                         <input type="hidden" id="postimg-ipt" name="img" value=""/>
@@ -47,27 +46,6 @@
                     <span id="buttonUpload"></span>
                             <p class="help-block" id="errorMsg">最多可上传 6 张图片</p>
                 </div>
-		#}
-                        <span id="buttonUpload"></span>
-<div class="uploadfish-list clearfix">
-						<span class="uploadfish-listname">商品图片:</span>
-                        <span class="uploadfish-listtip"><span id="imgerror">请选择文件，最多6张图片</span><span id="imgprocess"></span></span>
-        <script type="text/javascript">
-            QINIU = {name: "hadfish", token: "{{ token }}", uid: {{ g.user.id }}, count: 0};
-            SETTINGS = {file_upload_limit: "6"};
-        </script>
-						<div id="wait-uploadimg">
-							<!--
-							<span><img src="image/wait-upimg.jpg" class="wait-uploadimg-img" sta="0" data=""><a href="javascript:void(0);" class="setcover">设为封面</a></span>
-							<span><img src="image/wait-upimg.jpg" class="wait-uploadimg-img" sta="0" data=""><a href="javascript:void(0);" class="setcover">设为封面</a></span>
-							<span><img src="image/wait-upimg.jpg" class="wait-uploadimg-img" sta="0" data=""><a href="javascript:void(0);" class="setcover">设为封面</a></span>
-							<span><img src="image/wait-upimg.jpg" class="wait-uploadimg-img" sta="0" data=""><a href="javascript:void(0);" class="setcover">设为封面</a></span>
-							<span><img src="image/wait-upimg.jpg" class="wait-uploadimg-img" sta="0" data=""><a href="javascript:void(0);" class="setcover">设为封面</a></span>
-							<span><img src="image/wait-upimg.jpg" class="wait-uploadimg-img" sta="0" data=""><a href="javascript:void(0);" class="setcover">设为封面</a></span>
-                            -->
-						</div>
-                <input type="hidden" id="postimg-ipt" name="img" value=""/>
-					</div>		
                 <div class="salexiangxi">
                     <div class="sale-label">
                         <label>商品描述：</label>

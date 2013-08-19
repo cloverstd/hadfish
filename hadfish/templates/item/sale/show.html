@@ -4,7 +4,15 @@
 {% block content %}
 <div id="left-content">
 		<div class="productinformation">
-        	<h1>商品信息</h1>
+            <h1>商品信息
+            {% if g.user.id == item.user.id %}
+            <a class="item-mod" href="{{ url_for('item_sale.modify_item', item_id=item.item.id) }}">修改</a>
+            
+            <a class="item-mod" href="javascript:document.moditemform.submit();">删除</a>
+            <form name="moditemform" action="{{ url_for('item_sale.delete_item', item_id=item.item.id) }}" method="POST">
+            </form>
+                {% endif %}
+            </h1>
   			<div class="product-img">
                 <div id="slider" class="slide-wp">
                     <ul>
@@ -39,27 +47,13 @@
                     </span>
                     
                 </span>
-                <span class="simple-buy">
                     <!--
+                <span class="simple-buy">
                 <a href="#" id="buynow">立即购买</a>
-                -->
-                <!--
                 <a href="#" class="joincart">加入购物车</a>
-              -->
                 <div class="clear"></div>
                 </span>
-                <script type="text/javascript">
-                  $(function(){
-                    $("#buynow").click(function(){
-                      $("#tkbg").css("display","block");
-                      $("#tknr").css("display","block");
-                    })
-                    $("#orderquxiao").click(function(){
-                      $("#tkbg").css("display","none");
-                      $("#tknr").css("display","none");
-                    })
-                  })
-                </script>
+                -->
                 <span class="simple-collect">
                 
                 <!-- JiaThis Button BEGIN -->

@@ -2,95 +2,88 @@
 {% block title %}我需要一些东西{% endblock %}
 
 {% block content %}
-
-<form class="form-horizontal" action="{{ url_for('item_demand.add_item') }}" method="POST">
-    <fieldset>
-      <div id="legend" class="">
-        <legend class="">求购</legend>
-      </div>
-    
-
-    <div class="control-group">
-
-          <!-- Text input-->
-          <label class="control-label" for="input01">名称</label>
-          <div class="controls">
-            <input type="text" name="name" placeholder="需求名称" class="input-xlarge">
-            <span class="must">*</span>
-            <p class="help-block">请不要超过20个字</p>
-          </div>
-        </div>
-
-    <div class="control-group">
-
-          <!-- Appended input-->
-          <label class="control-label">价格</label>
-          <div class="controls">
-            <div class="input-append">
-              <input class="input-xlarge" name="price" placeholder="愿意付出的价格" type="text">
-              <span class="add-on">元</span>
+<div id="left-content">
+    	<div class="saleedit">
+            <h1>出售商品</h1>
+            <form name="saleform" action="/item/sale/add" method="post">
+            <div class="saleedit-simple">
+            	<ul>
+                	<li class="salename"><label>商品名称：</label><input type="text" maxlength="80" name="name"/><em class="saletishi">（*不得超过80字）</em></li>
+                    <li class="saleprice">
+                      <label>原价：</label><input type="text" maxlength="7" name="original_price" /><em>元</em><em class="saletishi"></em></li>
+                    <li class="saleprice">
+                      <label>价格：</label><input type="text" maxlength="7" name="price" /><em>元</em><em class="saletishi">*</em></li>
+                    <li class="saleprice">
+                      <label>有效期：</label><input type="text" maxlength="3" value=150 name="valid_date" /><em>天</em><em class="saletishi">(此商品在有效期内有效)</em></li>
+                    <li><label>类型：</label><select name="kind" >
+            
+                <option value="1">日用品</option>
+            
+                <option value="2">衣物</option>
+            
+                <option value="3">书籍</option>
+            
+                <option value="4">3C</option>
+            
+                <option value="5">其他</option>
+            
+                    </select>
+                    <em class="saletishi">（*请选择商品所属种类）</em></li>
+                    <li class="salenew"><label>成色：</label><select name="level" >
+                        <option value="0">1</option>
+                        <option value="1">2</option>
+                        <option value="2">3</option>
+                        <option value="3">4</option>
+                        <option value="4">5</option>
+                        <option value="5">6</option>
+                        <option value="6">7</option>
+                        <option value="7">8</option>
+                        <option value="8" selected>9</option>
+                        <option value="9">全新</option>
+                    </select><em>成新</em><em class="saletishi">（*请如实选择商品成色）</em></li>
+            	</ul>
+		
+                        <span id="buttonUpload"></span>
+<div class="uploadfish-list clearfix">
+						<span class="uploadfish-listname">商品图片:</span>
+                        <span class="uploadfish-listtip"><span id="imgerror">请选择文件，最多6张图片</span><span id="imgprocess"></span></span>
+        <script type="text/javascript">
+            QINIU = {name: "hadfish", token: "mTjx-jhzEBaeRpY60t--XLCVdKWDopZK4TqIRPDj:r5AHUsJLIzrfgljtmjTQ8wDKCFM=:eyJzY29wZSI6ICJoYWRmaXNoIiwgImRlYWRsaW5lIjogMTM3NjkyNDM1NCwgImNhbGxiYWNrQm9keVR5cGUiOiAiYXBwbGljYXRpb24vanNvbiJ9", uid: 1, count: 0};
+            SETTINGS = {file_upload_limit: "6"};
+        </script>
+						<div id="wait-uploadimg">
+							<!--
+							<span><img src="image/wait-upimg.jpg" class="wait-uploadimg-img" sta="0" data=""><a href="javascript:void(0);" class="setcover">设为封面</a></span>
+							<span><img src="image/wait-upimg.jpg" class="wait-uploadimg-img" sta="0" data=""><a href="javascript:void(0);" class="setcover">设为封面</a></span>
+							<span><img src="image/wait-upimg.jpg" class="wait-uploadimg-img" sta="0" data=""><a href="javascript:void(0);" class="setcover">设为封面</a></span>
+							<span><img src="image/wait-upimg.jpg" class="wait-uploadimg-img" sta="0" data=""><a href="javascript:void(0);" class="setcover">设为封面</a></span>
+							<span><img src="image/wait-upimg.jpg" class="wait-uploadimg-img" sta="0" data=""><a href="javascript:void(0);" class="setcover">设为封面</a></span>
+							<span><img src="image/wait-upimg.jpg" class="wait-uploadimg-img" sta="0" data=""><a href="javascript:void(0);" class="setcover">设为封面</a></span>
+                            -->
+						</div>
+                <input type="hidden" id="postimg-ipt" name="img" value=""/>
+					</div>		
+                <div class="salexiangxi">
+                    <div class="sale-label">
+                        <label>商品描述：</label>
+                    </div>
+                    <div class="sale-description">
+                        <textarea name="description" rows="8" cols="60"></textarea>
+                    </div>
+                </div>
             </div>
-            <span class="must">*</span>
-            <p class="help-block">请填写合理的价格</p>
-          </div>
-
+            </form>
+            <div class="sale-submit">
+            <a class="btn" href="javascript:document.saleform.submit();">发布</a>
         </div>
+        </div>    
+    </div>
 
-    <div class="control-group">
 
-          <!-- Text input-->
-          <label class="control-label" for="input01">有效期</label>
-          <div class="controls">
-            <div class="input-append">
-              <input class="input-xlarge" name="valid_date" placeholder="有效期" value=150 type="text">
-              <span class="add-on">天</span>
-            </div>
-            <span class="must">*</span>
-            <p class="help-block">有效期最大为 150 天，超过将失效</p>
-          </div>
-        </div>
 
-    
-
-    
-
-    <div class="control-group">
-
-          <!-- Select Basic -->
-          <label class="control-label">类型</label>
-          <div class="controls">
-            <select class="input-xlarge" name="kind">
-            {% for kind in kinds.kinds %}
-        	<option value="{{ kind.id }}">{{ kind.name }}</option>
-        	{% endfor %}
-        </select>
-          </div>
-
-        </div>
-
-    <div class="control-group">
-
-          <!-- Textarea -->
-          <label class="control-label">描述信息</label>
-          <div class="controls">
-            <div class="textarea">
-                  <textarea type="" class="input-xlarge" rows=5 name="description"></textarea>
-            </div>
-          </div>
-        </div>
-
-    <div class="control-group">
-          <label class="control-label"></label>
-
-          <!-- Button -->
-          <div class="controls">
-            <button class="btn btn-info">发布</button>
-          </div>
-        </div>
-
-    </fieldset>
-  </form>
-
+{% block sider %}
+{{ super() }}
+{% endblock %}
 {% endblock %}
 
 {% block solescript %}

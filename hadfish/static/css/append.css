@@ -109,3 +109,251 @@ input.demand {
     margin-left: 5px;
     width: 50px;
 }
+
+a.btn {
+    padding: 5px 10px 5px 10px;
+	border-radius:4px;
+	background:#3FA7CB;
+	color:#fff;
+	font-size:24px;
+	text-align:center;
+	line-height:60px;
+	box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+	-moz-box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+	-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.sale-submit {
+	text-align:right;
+	margin-right: 60px;
+}
+
+.sale-label {
+    padding-top: 5px;
+    border-top:2px #D4D4D4 dashed;
+}
+.salexiangxi div label{
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.sale-description {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.sale-description textarea {
+    border: 1px solid #CCC;
+    width: 650px;
+    box-shadow: 1px 2px 3px #F0F0F0 inset;
+    -moz-box-shadow: 1px 2px 3px #F0F0F0 inset;
+    -webkit-box-shadow: 1px 2px 3px #F0F0F0 inset;
+    background-color: white;
+    vertical-align: middle;
+    font-size: 12px;
+}
+
+.saleimg {
+    border: 1px #D4D4D4 solid;
+    height: 50px;
+}
+
+/* 商品上传 */
+.uploadfish-list{
+	padding: 10px;
+	border-bottom: 1px dotted #d1cdcd;
+}
+.uploadfish-listname,
+.uploadfish-listinput,
+.uploadfish-listtip{
+	display: block;
+	float: left;
+	margin-right: 10px;
+	height: 40px;
+	line-height: 40px;
+}
+.uploadfish-list input[type=text]{
+	margin-top: 1px;
+}
+.uploadfish-fishname input{ width: 350px; }
+.uploadfish-fishprice input{
+	width: 100px;
+}
+.uploadfish-fisholdprice input{
+	width: 100px;
+}
+.uploadfish-fishdetail{
+	height: 310px;
+}
+.uploadfish-listtip{
+	margin-left: 20px;
+	color: #ff0000;
+}
+
+#wait-uploadimg{
+	clear: both;
+	margin: 15px;
+}
+#wait-uploadimg span{
+	display: block;
+	position: relative;
+	float: left;
+	width: 90px;
+	height: 90px;
+	border: 3px dashed #ccc;
+	margin: 0 10px 0 0;
+}
+.wait-uploadimg-img{
+	display: block;
+	width: 90px;
+	height: 90px;
+	overflow: hidden;
+}
+
+.delimg {
+    position: absolute;
+    top: 15%;
+    left: 116%;
+    margin: -13px 0 0 -35px;
+    width: 20px;
+    height: 20x;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    background: #000;
+    border-radius: 3px;
+    opacity: 0.7;
+}
+
+.imgprocess {
+position: absolute;
+top: 55%;
+left: 70%;
+margin: -13px 0 0 -35px;
+/*
+width: 20px;
+height: 20x;
+line-height: 20px;
+text-align: center;
+color: #fff;
+background: #000;
+border-radius: 3px;
+opacity: 0.7;
+*/
+}
+
+.item-mod {
+    float: right;
+    margin-right: 5px;
+}
+
+a.item-mod {
+    /*padding: 5px 10px 5px 10px;*/
+    padding: 0 5px 0 5px;
+	border-radius:4px;
+	background:#3FA7CB;
+	color:#fff;
+	/*font-size:24px;*/
+	/*text-align:center;*/
+	/*line-height:60px;*/
+	box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+	-moz-box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+	-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.demand-box {
+    background:#FFF;
+	margin-bottom:10px;
+	border-top:1px #D4D4D4 solid;
+	border-left:1px #D4D4D4 solid;
+	border-right:1px #D4D4D4 solid;
+	border-bottom:2px #D4D4D4 solid;
+}
+
+.demand-box ul{
+	margin-left:15px;
+	margin-top:10px;
+	margin-bottom:5px;
+}
+
+#demand-list{
+	width: 700px;
+	margin: 0 auto;
+}
+#demand-list ul{
+	overflow-x:hidden;
+	overflow-y:auto;
+	display: block;
+	width:670px;
+	scrollbar-face-color:#3FA7CB;
+	scrollbar-highlight-color:#e3eef8;
+	scrollbar-3dlight-color:transparent;
+	scrollbar-darkshadow-color:#fff;
+	scrollbar-shadow-color:transparent;
+	scrollbar-arrow-color:transparent;
+	scrollbar-track-color:#ddd;
+}
+#demand-list ul li{
+	width: 650px;
+	border-bottom:1px dashed #ddd;
+	padding: 5px 0 5px 0;
+}
+#demand-list ul li:hover{
+	background:#e3eff2;
+}
+#demand-list span{
+	margin: 0;
+	padding: 0;
+	display: block;
+	float: left;
+}
+#demand-list .qiugouno{
+	margin: 10px 10px;
+	width: 680px;
+	height: 25px;
+	line-height: 25px;
+	font-size: 14px;
+	background:#e3eef8;
+	border:1px solid #B8D4E8;
+	text-align: center;
+}
+#demand-list h2{
+	background:#e3eef8;
+	border:1px solid #B8D4E8;
+	font-weight:normal;
+	height:25px;
+	line-height:25px;
+	text-align:center;
+	margin:10px 15px;
+}
+#demand-list h2 b{
+	color: #0164AB;
+	margin: 0 5px;
+}
+#demand-list .qiugounr{
+	width: 500px;
+	font-size: 14px;
+	color: #595959;
+}
+#demand-list .qiugouzt{
+	float: right;
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	text-align:center;
+	border-radius: 15px;
+	border: 1px solid #ddd;
+}
+#demand-list .qiugouzt a{
+	font-weight: normal;
+}
+#demand-list .qiugoufl{
+	width:120px;
+	margin-top: 15px;
+	color: #B8B7B7;
+}
+#demand-list .qiugousj{
+	width: 200px;
+	color: #B8B7B7;
+	margin-top: 15px;
+}

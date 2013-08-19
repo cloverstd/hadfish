@@ -1,107 +1,126 @@
 {% extends "layout.html" %}
-{% block title %}求购{% endblock %}
-{% block content %}
-            分类:
+{% block title %}求购中心{% endblock %}
+
+{% block search %}
+<div id="navigate">
+    <div id="search">
+    	<!--form name="sousuo" method="post" action="market.asp">
+    	  <input type="text" value="请输入商品名称或相关" name="keyword" class="sousuo" onfocus="if(value=='请输入商品名称或相关'){value=''}" onblur="if(value==''){value='请输入商品名称或相关'}"/>
+    	  <a href="javascript:document.sousuo.submit();">搜索</a>
+    	</form-->
+    </div>
+    <div id="menu">
+        <ul>
+        	<li class="inline"><h1>分类:</h1></li>
             {% if not kind_id %}
-            <span class="label label-info">全部</span>
+            <li class="inline"><a href="javascript:void(0);"class="select" >全部</a></li>
             {% else %}
-            <a href="{{ url_for('item_demand.show_item', page=1) }}">全部</a>
+            <li class="inline"><a href="{{ url_for('item_demand.show_item', page=1) }}" >全部</a></li>
             {% endif %}
             {% for kind in kinds.kinds %}
                 {% if kind_id and kind.id == kind_id %}
-                <span class="label label-info">{{ kind.name }}</span>
+                <li class="inline"><a href="javascript:void(0);" class="select" >{{ kind.name }}</a></li>
                 {% else %}
-                <a href="{{ url_for('item_demand.show_item', page=1, kind_id=kind.id) }}">{{ kind.name }}</a>
+                <li class="inline"><a href="{{ url_for('item_demand.show_item', page=1, kind_id=kind.id) }}" >{{ kind.name }}</a></li>
                 {% endif %}
             {% endfor %}
-    <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <td>#</td>
-                <td>名称</td>
-                <td>价格</td>
-                <td>有效期</td>
-                <td>描述</td>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in items.demands %}
-            <tr>
-                <td>{{ loop.index0 }}</td>
-                <td>
-                    <a href="{{ url_for('item_demand.show_item_by_id', item_id=item.item.id) }}">
-                    {{ item.item.name }}
-                </a>
-                </td>
-                <td>{{ item.item.price }}</td>
-                <td>{{ item.item.valid_date }}</td>
-                <td>{{ item.item.description }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-      </table>
-
-<div class="pagination pagination-centered pagination-small">
-  <ul>
-
-    {% if 1 == items.page %}
-    <li class="disabled hidden-phone"><span>第一页</span></li>
-    {% else %}
-    <li class="hidden-phone"><a href="{{ url_for('item_demand.show_item', page=1, kind_id=kind_id) }}" >第一页</a></li>
-    {% endif %}
-    {% if items.has_prev %}
-    <li><a href="{{ url_for('item_demand.show_item', page=items.prev_num, kind_id=kind_id) }}" ><</a></li>
-    {% else %}
-    <li class="disabled"><span><</span></li>
-    {% endif %}
-    
-    {% if items.pages < 7 or items.page < 7 %}
-        {% if items.pages > 7 %}
-            {% set end_page = 8 %}
-        {% else %}
-            {% set end_page = items.pages + 1 %}
-        {% endif %}
-        {% for i in range(1, end_page) %}
-            {% if items.page == i %}
-                <li class="active"><span>{{ i }}</span></li>
-            {% else %}
-                <li><a href="{{ url_for('item_demand.show_item', page=i, kind_id=kind_id) }}" >{{ i }}</a></li>
-            {% endif %}
-        {% endfor %}
-
-    {% else %}
-        {% set start_page = items.page - items.page%6 %}
-
-        {% if items.pages < start_page + 6 %}
-            {% set end_page = items.pages + 1 %}
-        {% else %}
-            {% set end_page = start_page + 6 + 1 %}
-        {% endif %}
-        <li><a href="{{ url_for('item_demand.show_item', page=start_page-1, kind_id=kind_id) }}" >{{ start_page-1 }}</a></li>
-        {% for i in range(start_page, end_page) %}
-            {% if items.page == i %}
-                <li class="active"><span>{{ i }}</span></li>
-            {% else %}
-                <li><a href="{{ url_for('item_demand.show_item', page=i, kind_id=kind_id) }}" >{{ i }}</a></li>
-            {% endif %}
-        {% endfor %}
-
-    {% endif %}
-
-
-    {% if items.has_next %}
-    <li><a href="{{ url_for('item_demand.show_item', page=items.next_num, kind_id=kind_id) }}" >></a></li>
-    {% else %}
-    <li class="disabled"><span>></span></li>
-    {% endif %}
-    {% if items.pages == items.page %}
-    <li class="disabled hidden-phone"><span>最后一个</span></li>
-    {% else %}
-    <li class="hidden-phone"><a href="{{ url_for('item_demand.show_item', page=items.pages, kind_id=kind_id) }}" >最后一页</a></li>
-    {% endif %}
-    
-  </ul>
+        </ul>
+    </div>
 </div>
+{% endblock %}
+
+
+{% block content %}
+ 
+	<div id="left-content">
+
+        <div class="demand-box">
+            <div id="demand-list">
+                <ul>                        
+                    {% for item in items.demands %}
+                    <li>
+                    <span class="qiugounr"><a href="{{ url_for('item_demand.show_item_by_id', item_id=item.item.id) }}">{{ item.item.name }}</a></span>
+                    <span style="margin-top:10px;">{{ item.item.description }}</span>
+                        <a href="{{ url_for('account.userinfo', uid=item.user.id) }}" class="qiugouzt">
+                            {{ item.user.name }}
+                        </a>
+                        <div class="clear"></div>
+                        <span class="qiugoufl">求购分类：{{ item.item.kind }}</span>
+                        <span class="qiugousj">发布时间：{{ item.item.date|date_format }}</span>
+                        <div class="clear"></div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="clear"></div>
+                
+            </div>
+            <div class="clear"></div>
+        </div>
+
+			<div class="clear"></div>
+			<div class="yema">
+
+                {% if items.page == 1 %}
+			  <a href="javascript:void(0);" class="nextpage">第一页</a>
+              {% else %}
+			  <a href="{{ url_for('item_demand.show_item', page=1, kind_id=kind_id) }}" class="nextpage">第一页</a>
+              {% endif %}
+              {% if items.has_prev %}
+			  <a href="{{ url_for('item_demand.show_item', page=items.prev_num, kind_id=kind_id) }}" class="yema_nocheck"><</a>
+              {% else %}
+                <span class="yema_check"><</span>
+              {% endif %}
+
+              {% if items.pages < 7 or items.page < 7 %}
+                {% if items.pages > 7 %}
+                    {% set end_page = 8 %}
+                {% else %}
+                    {% set end_page = items.pages + 1%}
+                {% endif %}
+                {% for i in range(1, end_page) %}
+                    {% if items.page == i %}
+                        <span class="yema_check">{{ i }}</span>
+                    {% else %}
+                        <a href="{{ url_for('item_demand.show_item', page=i, kind_id=kind_id) }}" class="yema_nocheck">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+
+            {% else %}
+                {% set start_page = items.page - items.page%6 %}
+
+                {% if items.pages < start_page + 6 %}
+                    {% set end_page = items.pages + 1 %}
+                {% else %}
+                    {% set end_page = start_page + 6 + 1 %}
+                {% endif %}
+                <a href="{{ url_for('item_demand.show_item', page=start_page-1, kind_id=kind_id) }}" class="nextpage">{{ start_page-1 }}</a>
+                {% for i in range(start_page, end_page) %}
+                    {% if items.page == i %}
+                        <span class="yema_check">{{ i }}</span>
+                    {% else %}
+                        <a href="{{ url_for('item_demand.show_item', page=i, kind_id=kind_id) }}" class="yema_nocheck">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% endif %}
+                
+                {% if items.has_next %}
+                <a href="{{ url_for('item_demand.show_item', page=items.next_num, kind_id=kind_id) }}" class="yema_nocheck">></a>
+                {% else %}
+                <span class="yema_check">></span>
+                {% endif %}
+                {% if items.pages == items.page %}
+			  <a href="javascript:void(0);" class="nextpage">最后一页</a>
+                {% else %}
+			  <a href="{{ url_for('item_demand.show_item', page=items.pages, kind_id=kind_id) }}" class="nextpage">最后一页</a>
+                {% endif %}
+            </div>
+
+        </div>
+
+
+    {% block sider %}
+    {{ super() }}
+    {% endblock %}
 {% endblock %}
 {% block solescript %}
 {% endblock %}

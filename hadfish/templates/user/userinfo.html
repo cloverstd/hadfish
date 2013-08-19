@@ -45,7 +45,6 @@
             {% endif %}
         </div>
 
-        {% if g.user %}
         <div class="userinformation qiugou">
             <h1>求购信息</h1>
             <div id="qiugoujg">
@@ -69,7 +68,6 @@
             </div>
             <div class="clear"></div>
         </div>
-        {% endif %}
         
         <div class="userinformation">
             <h1><b>我是卖家</b>
@@ -80,14 +78,14 @@
             <ul class="userinformation-saler">
             	
                 {% for item in item_sales %}
-                <li><a href="{{ url_for('item_sale.show_item_by_id', item_id=item.id) }}">
+                <li><a href="{{ url_for('item_sale.show_item_by_id', item_id=item.id) }}" title="{{ item.name }}">
                     <dl>
                         {% if item.images|count > 0 %}
                         <dt><img name="" src="http://hadfish.qiniudn.com/{{ item.images[0] }}_115.68" width="115" height="68" alt="" /></dt>
                         {% else %}
                         <dt><img name="" src="" width="115" height="68" alt="" /></dt>
                         {% endif %}
-                    <dt>{{ item.name }}</dt>
+                        <dt>{{ item.name[:6] }}<span style="float:right;">￥{{ item.price }}</span></dt>
                     </dl>
                 </a>
                 </li>
