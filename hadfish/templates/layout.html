@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>{% block title %}{% endblock %} - 有鱼网</title>
 <meta name="Description" content="有鱼网是集二手、求购、出售为一体的校园交易平台~！无论你是大四即将毕业而无法处理自己的东西；还是刚进大学希望能买到实惠的东西；都欢迎来有鱼网淘金~~
 有鱼，让有余有用起来~~！">
@@ -34,9 +34,9 @@
                 
                 <li class="left"><a href="{{ url_for('item_sale.show_item') }}">跳蚤市场</a></li>
                 <li class="left"><a href="{{ url_for('item_demand.show_item') }}">求购中心</a></li>
-                <li class="left"><a href="food.asp">美食预定</a></li>
-                <li class="left"><a href="#" onclick="alert('暂时还没上线哦！尽请期待(*^__^*)')">求购</a></li>
-                <li class="left"><a href="print.asp">在线打印</a></li>
+                <li class="left"><a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">美食预定</a></li>
+                <li class="left"><a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">求购</a></li>
+                <li class="left"><a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">在线打印</a></li>
             </ul>
             <ul class="right">
                 {% if g.user %}
@@ -57,6 +57,7 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
 <div id="navigate">
+    <!--div class="alert-close">X</div-->
             {% for category, message in messages %}
                 <div class="alert {{ category }}">
                     {{ message }}
@@ -134,21 +135,6 @@
 {% block footer %}
 {% include "footer.html" %}
 {% endblock %}
-
-<a id="toTop" href="#" style="display:none;"><em class="lx">◆</em><em class="jx">▋</em>返回顶部</a>
-<script type="text/javascript" src="/static/js/toTop.js"></script>
-<script type="text/javascript">
-	$(function(){
-		var screenheight = $(window).height();
-		var bodyheight = $(document.body).height()+110;
-		if(bodyheight < screenheight){
-			var cha=screenheight - bodyheight;
-			$('#foot').css("margin-top",cha);
-		}
-	})
-	
-</script>
-
 {% block solescript %}
 {% endblock %}
 </body>

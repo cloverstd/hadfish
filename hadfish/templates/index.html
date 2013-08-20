@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wb=“http://open.weibo.com/wb”>
+<head>
+<meta property="wb:webmaster" content="a3cf88557d4564b2" />
+<meta property="qc:admins" content="1032205257601461306375" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>有鱼-让有余变得有用起来</title>
+<meta name="Description" content="有鱼网是集二手、求购、出售为一体的校园交易平台~！无论你是大四即将毕业而无法处理自己的东西；还是刚进大学希望能买到实惠的东西；都欢迎来有鱼网淘金~~
+有鱼，让有余有用起来~~！">
+<meta name="Keywords" content="有鱼,有鱼网,hadfish,HadFish,二手,二手交易,校内交易,学生创业,校园交易,校园二手">
+<link href="/static/css/css.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/append.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="/static/favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/static/favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body style="padding-top:0;">
+<div id="index-top">
+	<div id="index-top-wrap">
+		<div id="index-guanzhu">
+			<wb:follow-button uid="3089589865" type="red_1" width="80px" height="29px" style="display:block;float:left;width:80px;height:29px">官方微博</wb:follow-button>
+			<iframe scrolling="no" frameborder="0" allowtransparency="true" src="http://widget.renren.com/plugin/followbutton?page_id=601578383&color=0&model=0" style="display:block;float:left;width:76px;height:23px;" ></iframe>
+		</div>
+		<div id="index-reg">
+            {% if not g.user %}
+            <a href="{{ url_for('account.register') }}">注册</a>
+			<span class="link-split"></span>
+            <a href="{{ url_for('account.login') }}">登录</a>
+            {% else %}
+            <a href="{{ url_for('account.userinfo', uid=g.user.id) }}">个人主页</a>
+            <a href="{{ url_for('account.logout') }}">注销登录</a>
+            {% endif %}
+            <!--
+			<span class="link-split"></span>
+			<a href="help.asp">帮助</a>
+            -->
+		</div>
+	</div>
+</div>
+<div id="index-head">
+	<div id="index-head-wrap" class="clearfix">
+		<div id="index-logo"><img src="/static/img/index-logo.png"></div>
+		<div id="index-dh" class="clearfix">
+            <a href="{{ url_for('item_sale.show_item') }}">跳蚤市场</a>
+            <a href="{{ url_for('item_demand.show_item') }}">商品求购</a>
+			<a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">美食预定</a>
+			<a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">在线打印</a>
+		</div>
+	</div>
+</div>
+
+<!--以下是图片轮播-->
+<div id="index-lunbo">
+	<div id="banner"> 
+	    <ul> 
+	        <li class="1"></li> 
+	        <li class="2"></li> 
+	        <li class="3"></li> 
+	        <li class="4"></li>
+	    </ul> 
+	    <div id="banner_list"> 
+	        <a style="background:url(/static/img/banner/p1.jpg) no-repeat 50% 50%;"></a> 
+	        <a style="background:url(/static/img/banner/p2.jpg) no-repeat 50% 50%;"></a> 
+	        <a style="background:url(/static/img/banner/p3.jpg) no-repeat 50% 50%;"></a> 
+	        <a style="background:url(/static/img/banner/p4.jpg) no-repeat 50% 50%;"></a>
+	    </div> 
+	</div>
+	<div id="index-login">
+		
+					<div id="index-nologin">
+                        {% if not g.user %}
+                        <form method="post" action="{{ url_for('account.login') }}">
+                        <div class="index-login-name">用户名：</div>
+                        <div class="index-login-wbk"><input type="text" maxlength="20" name="username" /></div>
+                        <div class="index-login-name">密码：</div>
+                        <div class="index-login-wbk"><input type="password" maxlength="32" name="password" /></div>
+                        <div class="index-login-jz clearfix"><span><input type="checkbox" name="login-auto" /></span><label>自动登录</label></div>
+                        <div class=""><input type="submit" value="登    录" class="index-login-submit" onmouseover="this.className='index-login-submit-hover'" onmouseout="this.className='index-login-submit'" /></div>
+                        </form>
+                        {% else %}
+                        欢迎您，{{ g.user.name }}
+                        <!--
+                        <div class=""><a class="index-login-submit" onmouseover="this.className='index-login-submit-hover'" onmouseout="this.className='index-login-submit'">我的个人主页</a></div>
+                        -->
+                        <div class=""><a href="{{ url_for('account.userinfo', uid=g.user.id) }}" class="btn">我的个人主页</a></div>
+                        {% endif %}
+					</div>
+					
+	</div>
+</div>
+<script type="text/javascript"> 
+	var t = n = 0, count; 
+	$(document).ready(function(){ 
+		count=$("#banner_list a").length; 
+		$("#banner_list a:not(:first-child)").hide(); 
+		$("#banner li").click(function() { 
+			var i = $(this).attr("class") - 1;//获取Li class值，即1，2，3，4 
+			n = i; 
+			if (i >= count) return; 
+			$("#banner_list a").filter(":visible").fadeOut(500).parent().children().eq(i).fadeIn(1000); 
+			//$(this).css("background","url(images/bannerli.png) no-repeat 0 100%");
+			$(this).css("background","url(/static/img/bannerli.png) no-repeat 0 -12px").siblings().css("background","url(/static/img/bannerli.png) no-repeat 0 0"); 
+		}); 
+	t = setInterval("showAuto()", 3000); 
+	$("#banner").hover(function(){clearInterval(t)}, function(){t = setInterval("showAuto()", 3000);}); 
+	}) 
+	function showAuto() 
+	{ 
+		n = n >=(count - 1) ? 0 : ++n; 
+		$("#banner li").eq(n).trigger('click'); 
+	} 
+</script>  
+
+<div id="index-content">
+	<div id="index-fuwu"></div>
+	<div></div>
+</div>
+
+
+
+<!--以下是商品分类导航-->
+<!--
+<div class="index-biaoti">商品分类</div>
+<div id="product-kind">
+    <ul>
+        <li><a href="market.asp" class="kind-all"></a></li>
+        <li><a href="market.asp?kind=服装" class="kind-fuzhuang"></a></li>
+        <li><a href="market.asp?kind=日常用品" class="kind-richang"></a></li>
+        <li><a href="market.asp?kind=食品" class="kind-shipin"></a></li>
+        <li><a href="market.asp?kind=数码" class="kind-shuma"></a></li>
+        <li><a href="market.asp?kind=文化用品" class="kind-wenhua"></a></li>
+        <li><a href="market.asp?kind=其他" class="kind-qita"></a></li>
+        <div class="clear"></div>
+    </ul>
+</div>
+-->
+
+<!--以下是广告滚动-->
+<div class="index-biaoti">出售中的商品</div>
+<div id="admarqueen">
+	<div id="admarqueen0">
+	<div id="admarqueen1">
+        {% for item in items.sales %}
+        <a href="{{ url_for('item_sale.show_item_by_id', item_id=item.item.id) }}"><img src="http://hadfish.qiniudn.com/{{ item.item.images[0] }}_126.96" border="0" /></a>
+        {% endfor %}
+        <!--
+		<a href="#"><img src="http://www.codefans.net/jscss/demoimg/wall_s1.jpg" border="0" /></a>
+		<a href="#"><img src="http://www.codefans.net/jscss/demoimg/wall_s2.jpg" border="0" /></a>
+		<a href="#"><img src="http://www.codefans.net/jscss/demoimg/wall_s3.jpg" border="0" /></a>
+		<a href="#"><img src="http://www.codefans.net/jscss/demoimg/wall_s4.jpg" border="0" /></a>
+		<a href="#"><img src="http://www.codefans.net/jscss/demoimg/wall_s5.jpg" border="0" /></a>
+		<a href="#"><img src="http://www.codefans.net/jscss/demoimg/wall_s6.jpg" border="0" /></a>
+		<a href="#"><img src="http://www.codefans.net/jscss/demoimg/wall_s6.jpg" border="0" /></a>
+		<a href="#"><img src="http://www.codefans.net/jscss/demoimg/wall_s6.jpg" border="0" /></a>
+		<a href="#"><img src="http://www.codefans.net/jscss/demoimg/wall_s6.jpg" border="0" /></a>
+		<a href="#"><img src="http://www.codefans.net/jscss/demoimg/wall_s6.jpg" border="0" /></a>
+		<a href="#"><img src="http://www.codefans.net/jscss/demoimg/wall_s6.jpg" border="0" /></a>
+        -->
+	</div>
+	<div id="admarqueen2"></div>
+	</div>
+	<!--
+	<div style="color:#38B6E8;">有鱼网广告位招租</div>
+    -->
+</div>
+<script>
+<!--
+var speed=40;
+var tab=document.getElementById("admarqueen");
+var tab1=document.getElementById("admarqueen1");
+var tab2=document.getElementById("admarqueen2");
+tab2.innerHTML=tab1.innerHTML;
+function Marquee(){
+if(tab2.offsetWidth-tab.scrollLeft<=0)
+tab.scrollLeft-=tab1.offsetWidth
+else{
+tab.scrollLeft++;
+}
+}
+var MyMar=setInterval(Marquee,speed);
+tab.onmouseover=function() {clearInterval(MyMar)};
+tab.onmouseout=function() {MyMar=setInterval(Marquee,speed)};
+-->
+</script>
+
+<!-- 下面是底部导航 -->
+{% include "footer.html" %}
+</body>
+</html>
+
+

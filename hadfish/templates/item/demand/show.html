@@ -17,6 +17,7 @@
                 <div class="product-simple">
                     <span class="simple-name">{{ item.item.name }}</span>
                     <span class="simple-baoxiu">时间：2013年8月18日</span>
+                    <span class="simple-price">价格：<b>￥</b><a>{{ item.item.price }}</a></span>
                 <span class="simple-saler">
                 	
                     <span class="simple-phon">求购者：<a href="{{ url_for('account.userinfo', uid=item.user.id) }}">{{ item.user.name }}</a></span>
@@ -27,7 +28,6 @@
                         
                     
                     </span>
-                    
                 </span>
                     <!--
                 <span class="simple-buy">

@@ -1,9 +1,23 @@
 
 <div id="foot">
 	<div>
-    	<a href="help.asp">帮助中心</a>&nbsp;|&nbsp;<a href="agreement.asp">用户协议</a>&nbsp;|&nbsp;<a href="aboutus.asp">关于我们</a>&nbsp;|&nbsp;<a href="joinus.asp">加入我们</a>
+        <a href="{{ url_for('page.page_ui', slug='help') }}">帮助中心</a>&nbsp;|&nbsp;<a href="{{ url_for('page.page_ui', slug='agreement') }}">用户协议</a>&nbsp;|&nbsp;<a href="{{ url_for('page.page_ui', slug='about') }}">关于我们</a>&nbsp;|&nbsp;<a href="{{ url_for('page.page_ui', slug='joinus') }}">加入我们</a>
     </div>
-    <div>Copyright  &copy;  2011-2012 hadfish.com, All Rights Reserved</div>
+    <div>Copyright  &copy;  2012-2013 hadfish.com, All Rights Reserved</div>
     <div>沪ICP备11005549号-3</div>
-    <div>[请使用IE7以上浏览器浏览,推荐<a href="http://www.google.cn/intl/zh-CN/chrome/browser/" target="_blank">Chrome</a>、<a href="http://www.firefox.com.cn/download/" target="_blank">火狐浏览器</a>，体验最佳浏览效果]</div>
+    <div>[请使用IE8以上浏览器浏览,推荐<a href="http://www.google.cn/intl/zh-CN/chrome/browser/" target="_blank">Chrome</a>、<a href="http://www.firefox.com.cn/download/" target="_blank">火狐浏览器</a>，体验最佳浏览效果]</div>
 </div>
+
+<a id="toTop" href="#" style="display:none;"><em class="lx">◆</em><em class="jx">▋</em>返回顶部</a>
+<script type="text/javascript" src="/static/js/toTop.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var screenheight = $(window).height();
+		var bodyheight = $(document.body).height()+110;
+		if(bodyheight < screenheight){
+			var cha=screenheight - bodyheight;
+			$('#foot').css("margin-top",cha);
+		}
+	})
+	
+</script>
