@@ -25,8 +25,8 @@
     {# flash message #}
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-<div id="navigate">
-    <!--div class="alert-close">X</div-->
+<div class="alert-box">
+    <div class="alert-close"><a href="#" onClick="$(this).parent().parent().remove()">X</a></div>
             {% for category, message in messages %}
                 <div class="alert {{ category }}">
                     {{ message }}
@@ -87,7 +87,7 @@
         <div class="followus"><span>关注我们</span></div>
         <div class="weixin">
             <img src="/static/img/weixinQR.jpg" />
-            <p>微信扫一扫或者添加<span class="weixin-hadfish">有鱼网</span></p>
+            <span>微信扫一扫或者搜索<span class="weixin-hadfish">有鱼网</span></span>
         </div>
     </div>
 
