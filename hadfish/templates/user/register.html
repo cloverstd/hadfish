@@ -9,7 +9,7 @@
 
 <!--注册主体-->
 <div id="right-reg">
-	<form id="regform" action="reg-do.asp" method="post" name="reg">
+    <form id="regform" action="{{ url_for('account.register') }}" method="post" name="reg">
 	<div id="reg-box">
     	<div class="regbox-list">
         	<div class="regbox-list-bt"><span>用户名</span></div>
@@ -48,6 +48,18 @@
         </div>
 
     	<div class="regbox-list">
+        	<div class="regbox-list-bt"><span>邮箱</span></div>
+            <div class="regbox-list-text"><input class="reginput" type="text" name="email"/></div>
+            <div class="regbox-list-alert">
+                <!-- 
+                <span class="alert-wrong" id="regname-no"></span>
+                -->
+                <span class="alert-right"></span>
+            </div>
+            <div class="regbox-list-tip"><span>您的邮箱，用于接收信息</span></div>
+        </div>
+
+    	<div class="regbox-list">
         	<div class="regbox-list-bt"><span>手机号码</span></div>
             <div class="regbox-list-text"><input class="reginput" type="text" name="tel"/></div>
             <div class="regbox-list-alert">
@@ -71,7 +83,7 @@
             <div class="regbox-list-tip"><span>选填</span></div>
         </div>
         <div class="regbox-list xieyi">
-            <input name="xieyi" type="checkbox" value="1" checked />&nbsp;&nbsp;我已阅读并接受<a href="{{ url_for('page', slug='agreement') }}">有鱼用户协议</a>
+            <input name="xieyi" type="checkbox" value="1" checked />&nbsp;&nbsp;我已阅读并接受<a href="{{ url_for('page.page_ui', slug='agreement') }}">有鱼用户协议</a>
         </div>
         <div class="regbox-list areg">
             <a href="javascript:document.reg.submit();" class="login-button" id="regbutton">注册</a>
