@@ -7,7 +7,7 @@ _CURRENT_PATH = os.path.dirname(__file__)
 _DB_SQLITE_PATH = os.path.join(_CURRENT_PATH, 'hadfish.sqlite')
 
 _DBUSER = "hadfish" # 数据库用户名
-_DBPASS = "hadfish" # 数据库密码
+_DBPASS = "aGFkZmlzaHhXczI3MzA1NTguCg==" # 数据库密码
 _DBHOST = "localhost" # 数据库服务器
 _DBNAME = "hadfish" # 数据库名称
 _DBPORT = 3306 # 数据库端口
@@ -57,4 +57,4 @@ class DevConfig(BaseConfig):
 
 class ProConfig(BaseConfig):
     # SQLALCHEMY_DATABASE_URI = 'mysql://%s:%s@%s/%s:%d?charset=utf8"' % (_DBUSER, _DBPASS, _DBHOST, _DBNAME, _DBPORT)
-    SQLALCHEMY_DATABASE_URI = 'mysql://%s:%s@%s/%s?charset=utf8' % (_DBUSER, _DBPASS, _DBHOST, _DBNAME)
+    SQLALCHEMY_DATABASE_URI = 'mysql://%s:%s@%s:%d/%s?charset=utf8' % (_DBUSER, _DBPASS, _DBHOST, _DBPORT, _DBNAME)
