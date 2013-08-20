@@ -33,6 +33,7 @@ def get_sale_item_by_user(uid):
     items = list()
     for item in rv:
         kind = Kind.query.filter_by(id=item.kind_id).first().name
+        images = list(img.name for img in item.images)
         items.append(dict(id=item.id,
                           name=item.name,
                           original_price=item.original_price,
@@ -122,7 +123,7 @@ def login():
             else:
                 flash(u"登录成功！", category="alert-success")
                 session["user_id"] = user.id
-                if request.form.get("login-auto"):
+                if request.form.get("login-auto") == "1":
                     session.permanent = True
                 # return redirect(url_for(""))
                 return redirect(url_for("common.index"))
@@ -138,7 +139,7 @@ def login():
             else:
                 flash(u"登录成功！", category="alert-success")
                 session["user_id"] = user.id
-                if request.form.get("login-auto"):
+                if request.form.get("login-auto") == "1":
                     session.permanent = True
                 # return redirect(url_for("account.setting"))
                 return redirect(url_for("common.index"))

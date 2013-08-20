@@ -1,37 +1,76 @@
 {% extends "layout.html" %}
 {% block title %}求购-{{ item.item.name }}{% endblock %}
+
 {% block content %}
-{% if g.user.id == item.user.id %}
-<div class="modify text-right">
-<form action="{{ url_for('item_demand.delete_item', item_id=item.item.id) }}" method="POST">
-    <a class="btn btn-success btn-small" href="{{ url_for('item_demand.modify_item', item_id=item.item.id) }}">修改</a>
-<button class="btn btn-danger btn-small">删除</button>
-</form>
+<div id="left-content">
+<div class="productinformation">
+            <h1>需求信息
+            {% if g.user.id == item.user.id %}
+            <a class="item-mod" href="{{ url_for('item_demand.modify_item', item_id=item.item.id) }}">修改</a>
+            
+            <a class="item-mod" href="javascript:document.moditemform.submit();">删除</a>
+            <form name="moditemform" action="{{ url_for('item_demand.delete_item', item_id=item.item.id) }}" method="POST">
+            </form>
+                {% endif %}
+            </h1>
+
+                <div class="product-simple">
+                    <span class="simple-name">{{ item.item.name }}</span>
+                    <span class="simple-baoxiu">时间：2013年8月18日</span>
+                    <span class="simple-price">价格：<b>￥</b><a>{{ item.item.price }}</a></span>
+                <span class="simple-saler">
+                	
+                    <span class="simple-phon">求购者：<a href="{{ url_for('account.userinfo', uid=item.user.id) }}">{{ item.user.name }}</a></span>
+                    <span class="simple-phon">联系电话：{{ item.user.tel }}</span>
+                    <span class="simple-phon">QQ：{{ item.user.qq }}
+                        
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin={{ item.user.qq }}&amp;site=qq&amp;menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:{{ item.user.qq }}:41" alt="点击给{{ item.user.name }}发消息" title="点击给{{ item.user.name }}发消息"></a>
+                        
+                    
+                    </span>
+                </span>
+                    <!--
+                <span class="simple-buy">
+                <a href="#" id="buynow">立即购买</a>
+                <a href="#" class="joincart">加入购物车</a>
+                <div class="clear"></div>
+                </span>
+                -->
+                <span class="simple-collect">
+                
+                <!-- JiaThis Button BEGIN -->
+                <!--
+                    <div id="ckepop">
+                        <span class="jiathis_txt">分享到：</span>
+                        <a class="jiathis_button_renren" title="分享到人人网"><span class="jiathis_txt jtico jtico_renren"></span></a>
+                        <a class="jiathis_button_tsina" title="分享到新浪微博"><span class="jiathis_txt jtico jtico_tsina"></span></a>
+                        <a class="jiathis_button_qzone" title="分享到QQ空间"><span class="jiathis_txt jtico jtico_qzone"></span></a>
+                        <a class="jiathis_button_tqq" title="分享到腾讯微博"><span class="jiathis_txt jtico jtico_tqq"></span></a>
+                        <a class="jiathis_button_kaixin001" title="分享到开心网"><span class="jiathis_txt jtico jtico_kaixin001"></span></a>
+                        <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank" style=""></a>
+                        <a class="jiathis_counter_style"><span class="jiathis_button_expanded jiathis_counter jiathis_bubble_style" id="jiathis_counter_20" title="累计分享0次">0</span></a>
+                    </div>
+                    <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1344507302588291" charset="utf-8"></script><script type="text/javascript" src="http://v3.jiathis.com/code/plugin.client.js" charset="utf-8"></script><div style="position:absolute;width:0px;height:0px;"><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="0" height="0" id="JIATHISSWF" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab"><param name="allowScriptAccess" value="always"><param name="swLiveConnect" value="true"><param name="movie" value="http://www.jiathis.com/code/swf/m.swf"><param name="FlashVars" value="z=a"><embed name="JIATHISSWF" src="http://www.jiathis.com/code/swf/m.swf" flashvars="z=a" width="0" height="0" allowscriptaccess="always" swliveconnect="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"></object></div>
+                    -->
+                <!-- JiaThis Button END -->
+
+                </span>
+        	</div>
+        	<div class="clear"></div>
+        </div>
+        <div class="productinformation">
+            <h1>描述</h1>
+            <div class="productinformation-xq"><p style="font-size:16px;color:#000;">
+                {{ item.item.description }}
+            </div>
+        </div>
 </div>
-{% endif %}
-名称：{{ item.item.name }}
-<br/>
-价格：{{ item.item.price }}
-<br/>
-有效期：{{ item.item.valid_date }}
-<br/>
-类型：{{ item.item.kind }}
-<br/>
-描述：{{ item.item.description }}
-<br/>
-用户信息：
-<div class="item-saler-info">
-    <div class="item-saler-name">昵称：{{ item.user.name }}</div>
-    {% if item.user.qq %}
-    <div class="item-saler-QQ"><span class="qqTips">QQ：
-            <a ref="qqTips" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={{ item.user.qq }}&site=qq&menu=yes">{{ item.user.qq }}</a>
-        </span>
-    </div>
-    {% endif %}
-    {% if item.user.tel %}
-    <div class="item-saler-tel"><a id="telShow" class="btn btn-info" href="javascript:void(0);">显示号码</a></div>
-    {% endif %}
-</div>
+
+{% block sider %}
+
+{{ super() }}
+{% endblock %}
+
 {% endblock %}
 
 {% block solescript %} <script type="text/javascript">

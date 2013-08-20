@@ -1,89 +1,47 @@
 {% extends "layout.html" %}
 {% block title %}修改-{{ item.item.name }}{% endblock %}
+
 {% block content %}
-<form class="form-horizontal" action="{{ url_for('item_demand.modify_item', item_id=item.item.id) }}" method="POST">
-
-    <div class="control-group">
-
-          <!-- Text input-->
-          <label class="control-label" for="input01">名称</label>
-          <div class="controls">
-              <input type="text" name="name" value="{{ item.item.name }}" placeholder="需求名称" class="input-xlarge">
-            <span class="must">*</span>
-            <p class="help-block">请不要超过20个字</p>
-          </div>
-        </div>
-
-    <div class="control-group">
-
-          <!-- Appended input-->
-          <label class="control-label">价格</label>
-          <div class="controls">
-            <div class="input-append">
-                <input class="input-xlarge" name="price" value="{{ item.item.price }}" placeholder="愿意付出的价格" type="text">
-              <span class="add-on">元</span>
-            </div>
-            <span class="must">*</span>
-            <p class="help-block">请填写合理的价格</p>
-          </div>
-
-        </div>
-
-    <div class="control-group">
-
-          <!-- Text input-->
-          <label class="control-label" for="input01">有效期</label>
-          <div class="controls">
-            <div class="input-append">
-                <input class="input-xlarge" name="valid_date" placeholder="有效期" value={{ item.item.valid_date }} type="text">
-              <span class="add-on">天</span>
-            </div>
-            <span class="must">*</span>
-            <p class="help-block">有效期最大为 150 天，超过将失效</p>
-          </div>
-        </div>
-
-    
-
-    
-
-    <div class="control-group">
-
-          <!-- Select Basic -->
-          <label class="control-label">类型</label>
-          <div class="controls">
-            <select class="input-xlarge" name="kind">
+<div id="left-content">
+    	<div class="saleedit">
+            <h1>需求信息</h1>
+            <form name="demandform" action="{{ url_for('item_demand.modify_item', item_id=item.item.id) }}" method="post">
+            <div class="saleedit-simple">
+            	<ul>
+                    <li class="salename"><label>需求名称：</label><input type="text" value="{{ item.item.name }}" maxlength="80" name="name"/><em class="saletishi">（*不得超过80字）</em></li>
+                    <li class="saleprice">
+                    <label>价格：</label><input type="text" maxlength="7" name="price" value="{{ item.item.price }}"/><em>元</em><em class="saletishi">(*愿意付出的价格)</em></li>
+                    <li class="saleprice">
+                    <label>有效期：</label><input type="text" maxlength="3" value={{ item.item.valid_date }} name="valid_date" /><em>天</em><em class="saletishi">(此商品在有效期内有效)</em></li>
+                    <li><label>类型：</label><select name="kind" >
             {% for kind in kinds.kinds %}
                 <option value="{{ kind.id }}" {% if kind.id == item.item.kind_id %}selected{% endif %}>{{ kind.name }}</option>
             {% endfor %}
-        </select>
-          </div>
-
-        </div>
-
-    <div class="control-group">
-
-          <!-- Textarea -->
-          <label class="control-label">描述信息</label>
-          <div class="controls">
-            <div class="textarea">
-                <textarea type="" class="input-xlarge" rows=5 name="description">{{ item.item.description }}</textarea>
+                    </select>
+                    <em class="saletishi">（*请选择商品所属种类）</em></li>
+            	</ul>
+                <div class="salexiangxi">
+                    <div class="sale-label">
+                        <label>需求描述：</label>
+                    </div>
+                    <div class="sale-description">
+                        <textarea name="description" rows="8" cols="60">{{ item.item.description }}</textarea>
+                    </div>
+                </div>
             </div>
-          </div>
+            </form>
+            <div class="sale-submit">
+            <a class="btn" href="javascript:document.demandform.submit();">修改</a>
+            <a href="{{ url_for('show_item_by_id', item_id=item.item.id) }}" class="btn">返回</a>
         </div>
+        </div>    
+    </div>
 
-    <div class="control-group">
-          <label class="control-label"></label>
 
-          <!-- Button -->
-          <div class="controls">
-            <button class="btn btn-info">修改</button>
-            <a href="{{ url_for('show_item_by_id', item_id=item.item.id) }}" class="btn btn-inverse">返回</a>
-          </div>
-        </div>
 
-    </fieldset>
-  </form>
+{% block sider %}
+{{ super() }}
+{% endblock %}
 {% endblock %}
 
 {% block solescript %}

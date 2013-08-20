@@ -1,53 +1,57 @@
 {% extends "layout.html" %}
 {% block title %}登录{% endblock %}
 {% block content %}
-<div>
-<form class="form-horizontal" action="{{ url_for('login') }}" method="POST">
-    <fieldset>
-      <!--div id="legend" class="">
-        <legend class="">登录</legend>
-      </div-->
-    <div class="control-group">
-
-          <!-- Text input-->
-          <label class="control-label" for="input01">用户名</label>
-          <div class="controls">
-            <input type="text" name="username" placeholder="您在有鱼网的用户名" class="input-xlarge">
-            <p class="help-block"></p>
-          </div>
-        </div>
-
-    <div class="control-group">
-
-          <!-- Text input-->
-          <label class="control-label" for="input01">密码</label>
-          <div class="controls">
-            <input type="password" name="password" placeholder="您在有鱼网的密码" class="input-xlarge">
-            <p class="help-block"></p>
-          </div>
-        </div>
-
-   <!-- Checkboxes -->
-          <div class="controls">
-            <label class="checkbox inline">
-            <input type="checkbox" checked="checked" name="login-auto"/> 下次自动登录
-            </label>
-          </div>
-
-    <div class="control-group">
-          <label class="control-label"></label>
-
-          <!-- Button -->
-          <div class="controls">
-            <button class="btn btn-primary">登录</button>
-            <a class="btn btn-success" href="{{ url_for('account.register') }}">注册</a>
-          </div>
-        </div>
-
-    </fieldset>
-</form>
+<div id="reg">
+<!--注册左边-->
+<div id="left-reg">
 </div>
+<!--注册左边结束-->
+
+<!--注册主体-->
+<div id="right-reg">
+	<form id="loginform" action="{{ url_for('account.login') }}" method="post" name="login">
+	<div id="reg-box">
+    	<div class="regbox-list">
+        	<div class="regbox-list-bt"><span>用户名</span></div>
+            <div class="regbox-list-text"><input class="reginput" type="text" name="username"/></div>
+            <div class="regbox-list-alert">
+                <!-- 
+                <span class="alert-wrong" id="regname-no"></span>
+                -->
+                <span class="alert-right"></span>
+            </div>
+            <div class="regbox-list-tip"><span>您在有鱼网的用户名</span></div>
+        </div>
+
+    	<div class="regbox-list">
+        	<div class="regbox-list-bt"><span>密码</span></div>
+            <div class="regbox-list-text"><input class="reginput" type="password" name="password"/></div>
+            <div class="regbox-list-alert">
+                <!-- 
+                <span class="alert-wrong" id="regname-no"></span>
+                -->
+                <span class="alert-right"></span>
+            </div>
+            <div class="regbox-list-tip"><span>您在有鱼网的密码</span></div>
+        </div>
+
+        <div class="regbox-list xieyi">
+            <input name="login-auto" type="checkbox" value="1" checked />&nbsp;&nbsp;记住我的登录状态
+
+        </div>
+        <div class="regbox-list areg">
+            <a href="javascript:document.login.submit();" class="login-button" id="loginbutton">登录</a>
+
+
+    </div>
+    </div>
+    </form>
+</div>
+</div>
+
 {% endblock %}
 
-{% block sider %}
+{% block solescript %}
+<script type="text/javascript" src="/static/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/static/js/validate.js"></script>
 {% endblock %}

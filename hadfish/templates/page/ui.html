@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block content %}
+<div id="content" class="agreement">
+    <div class="agreement-title">{{ content_title }}</div>
+    <div class="agreement-content">
+        {{ content|safe }}
+    </div>
+</div>
+
+{% endblock %}
+{% block solescript %}
+{% endblock %}k

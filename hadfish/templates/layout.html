@@ -1,124 +1,143 @@
-<!DOCTYPE HTML>
-<html>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %} - 有鱼网</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    {% block solehead %}
-    <!-- Bootstrap -->
-    <link href="{{ url_for('.static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('.static', filename='css/base.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('.static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet" media="screen">
-    {% endblock %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{% block title %}{% endblock %} - 有鱼网</title>
+<meta name="Description" content="有鱼网是集二手、求购、出售为一体的校园交易平台~！无论你是大四即将毕业而无法处理自己的东西；还是刚进大学希望能买到实惠的东西；都欢迎来有鱼网淘金~~
+有鱼，让有余有用起来~~！">
+<meta name="Keywords" content="有鱼,有鱼网,hadfish,HadFish,二手,二手交易,校内交易,学生创业,校园交易,校园二手">
+
+<link href="/static/css/css.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/append.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="/static/favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/static/favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+
+{% block head %}
+{% endblock %}
 </head>
+
 <body>
-
-{# 导航条 #}
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-
-            <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-
-            <a class="brand" href="/"><strong>hadfish</strong>.<small>com</small></a>
-
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                    <!--li><a class="brand" href="/"><strong>hadfish</strong>.<small>com</small></a></li-->
-                    <li><a href="{{ url_for('item_sale.show_item') }}">跳蚤市场</a></li>
-                    <li><a href="{{ url_for('item_demand.show_item') }}">求购市场</a></li>
-                </ul>
-
-                <ul class="nav pull-right">
-                    {% if g.user %}
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user icon-white"></i> {{ g.user.name }}<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ url_for('account.setting') }}"><i class="icon-wrench"></i> 个人设置</a></li>
-                            <li><a href="{{ url_for('item_sale.add_item') }}"><i class="icon-plus"></i> 发布商品</a></li>
-                            <li><a href="{{ url_for('item_demand.add_item') }}"><i class="icon-plus"></i> 发布求购</a></li>
-                            <li><a href="{{ url_for('account.logout') }}"><i class="icon-off"></i> 注销登录</a></li>
-                        </ul>
-                    </li>
-                    {% else %}
-                    <li><a href="{{ url_for('account.register') }}">注册</a></li>
-                    <li><a href="{{ url_for('account.login') }}">登录</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="container-fluid">
-    {# 
-    head_box 子模板 
-    可以在子模板中 include 不同的 head_box 
-    #}
-    {% block hreader %}
-    {% endblock %}
-    
-
-    <div class="row-fluid">
-
-            
-            {% block sider %}
-        <div class="span2">
-            <div class="hidden-phone">
+<!-- 下面是顶部导航 -->
+<div id="head">
+	<span>
+        <div id="logo"><img src="/static/img/logo2.png"  alt="有鱼网" /></div>
+        <div id="head-list">
+        	<ul class="left">
+                <li class="left"><a href="{{ url_for('common.index') }}">首页</a></li>
+                
                 {% if g.user %}
-                    {% include "sider/userinfo.html" %}
-                {% else %}
-                    <div>
-                        欢迎来到有鱼网！有鱼网是集二手、求购、出售为一体的校园交易平台~！无论你是大四即将毕业而无法处理自己的东西；还是刚进大学希望能买到实惠的东西；都欢迎来有鱼网淘金~~ 有鱼，让有余有用起来~~！
-                    </div>
+                    <li class="left"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}">个人主页</a></li>
                 {% endif %}
-            </div>
+                
+                <li class="left"><a href="{{ url_for('item_sale.show_item') }}">跳蚤市场</a></li>
+                <li class="left"><a href="{{ url_for('item_demand.show_item') }}">求购中心</a></li>
+                <li class="left"><a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">美食预定</a></li>
+                <li class="left"><a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">求购</a></li>
+                <li class="left"><a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">在线打印</a></li>
+            </ul>
+            <ul class="right">
+                {% if g.user %}
+                <li class="right"><a href="{{ url_for('account.logout') }}">注销</a>
+                <li class="right"><a href="{{ url_for('account.setting') }}">设置</a>
+                {% else %}
+                <li class="right"><a href="{{ url_for('account.login') }}">登录</a></li>
+                <li class="right"><a href="{{ url_for('account.register') }}">注册</a></li>
+                {% endif %}
+            	
+                
+            </ul>
         </div>
-            {% endblock %}
-            
-
-        <div class="span10">
-            {# flash message #}
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert {{ category }}">
-                            <a href="#" class="close" data-dismiss="alert">&times;</a>
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-            {% endif %}
-            {% endwith %}
-
-            {# left content #}
-            {% block content %}{% endblock %}
-        </div>
-        {# 
-        sider: right-content
-        sider_box 子模板 
-        可以在子模板中 include 不同的 sider_box 
-        #}
-        
-    </div>
+    </span>
 </div>
 
-    <div class="container-fluid">
-        <div class="span12">
-            {% block footer %}
-            {% include "footer/footer.html" %}
-            {% endblock %}
+    {# flash message #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+<div id="navigate">
+    <!--div class="alert-close">X</div-->
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+</div>
+    {% endif %}
+    {% endwith %}
+
+
+{% block search %}
+<!-- 下面是头部搜索和筛选 -->
+{% endblock %}
+
+<!-- 这里是主体内容 -->
+<div id="content">
+{% block content %}
+
+{% block sider %}
+	<div id="right-content">
+        {% if g.user %}
+        <div class="rightbox">
+	
+        <h1>个人信息</h1>
+        <div id="userpic"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}" title="cloverstd的头像" style="background-image:url(
+        {{ g.user.avatar | avatar_url }}_170.170
+            );background-repeat: no-repeat;">
+        </a></div>
+        <div id="username"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}">cloverstd</a></div>
+        <div id="usersale">我要出售：
+        	0
+        	件
+        </div>
+        <!--div id="userbuy">已买商品数：0件</div-->
+        <div id="userwant">已收藏商品数：
+        	
+        	<a href="productsmore.asp?kind=collect" title="点击查看详情">2</a>
+        	
+        	件 
+        </div>
+        <!--
+        <div id="iwantsale"><a href="{{ url_for('item_sale.add_item') }}" title="点击出售自己的物品"></a></div>
+        -->
+        <a href="{{ url_for('item_sale.add_item') }}" title="点击出售自己的物品">我要卖</a>
+        <a href="{{ url_for('item_demand.add_item') }}" title="点击出售自己的物品">我要买</a>
+    </div>
+    {% else %}
+    <div class="rightbox">
+        <div class="regnow"><a href="{{ url_for('account.register') }}">立即注册</a></div>
+        <div class="youyujs">
+            <p>欢迎来到有鱼网！有鱼网是集二手、求购、出售为一体的校园交易平台~！无论你是大四即将毕业而无法处理自己的东西；还是刚进大学希望能买到实惠的东西；都欢迎来有鱼网淘金~~</p>
+            <p>有鱼，让有余有用起来~~！</p>
         </div>
     </div>
 
+    {% endif %}
+    <div class="rightbox">
+        <div class="followus"><span>关注我们</span></div>
+        <div class="weixin">
+            <img src="/static/img/weixinQR.jpg" />
+            <p>微信扫一扫或者添加<span class="weixin-hadfish">有鱼网</span></p>
+        </div>
+    </div>
+
+    </div>
+{% endblock %}
+
+{% endblock %}
+
+    <div class="clear"></div>
+</div>
+
+</div>
+<!-- 下面是底部导航 -->
+{% block footer %}
+{% include "footer.html" %}
+{% endblock %}
+{% block solescript %}
+{% endblock %}
 </body>
-<script type="text/javascript" src="http://upcdn.b0.upaiyun.com/libs/jquery/jquery-1.9.1.min.js"></script>
-<script src="{{ url_for('.static', filename='js/jquery.scrolltotop.js') }}"></script>
-<script src="{{ url_for('.static', filename='js/bootstrap.min.js') }}"></script>
-{% block solescript %}{% endblock %}
-<script src="{{ url_for('.static', filename='js/base.js') }}"></script>
 </html>
+
+

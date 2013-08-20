@@ -22,7 +22,7 @@ function fileQueueError(file, errorCode, message) {
             errorMsg = "未知错误，请联系管理员"
             break;
     }
-    $("#errorMsg").html(errorMsg);
+    $("#imgerror").html(errorMsg);
 }
 
 function fileDialogComplete(numFilesSelected, numFilesQueued) {
@@ -34,12 +34,27 @@ function fileDialogComplete(numFilesSelected, numFilesQueued) {
 
 function uploadStart(file) {
     initSuccessfuUploads();
+    var span = $('<span></span>');
+    var div = $('<div></div>');
+    //var test = $('<a></a>');
+    //test.addClass("delimg");
+    //test.html("X");
+    // img.attr("src", "/static/js/swfupload/uploader.gif");
+    div.addClass("imgprocess");
+    div.css("display", "none");
+    // div.html("100%");
+    div.appendTo(span);
+    //test.appendTo(span);
+    span.appendTo($('#wait-uploadimg'));
+
+    /*
     var li = $('<li class="postimg-item"></li>');
     var img = $('<img class="postimg-item-img img-polaroid"/>');
     img.attr("src", "/static/js/swfupload/uploader.gif");
     img.appendTo(li);
     li.append('<span class="postimg-item-msg"></span>');
     li.appendTo($(".postimg"));
+    */
     var t = new Date();
     var timeFormat = "" + t.getFullYear() + t.getMonth() + t.getDate() + t.getHours() + t.getMinutes() + t.getSeconds() + t.getMilliseconds();
     var index = this.getStats().successful_uploads;
@@ -64,11 +79,27 @@ function uploadSuccess(file, serverData) {
     var result = $.parseJSON(serverData);
     if (result.key){
         var index = swfu.getStats().successful_uploads - 1;
+        var msg = $(".imgprocess").eq(index);
+        msg.css("display", "none");
+        var delimg = $('<a></a>');
+        delimg.addClass("delimg");
+        delimg.html("X");
+        delimg.attr('onClick', 'delUploadedFile($(this))')
+        delimg.attr('href', 'javascript:void(0);');
+        delimg.data("filename", result.key);
+        delimg.appendTo($('#wait-uploadimg span').eq(index));
+        var span= $('#wait-uploadimg span').eq(index);
+        var img = $('<img />');
+        img.attr('src', "http://" + QINIU.name + ".qiniudn.com/" + result.key + "_90.90");
+        img.appendTo(span);
+
         //console.log(index);
         //index += SETTINGS.successful_uploads;
+        /*
         $(".postimg-item-img").eq(index).attr("src", "http://" + QINIU.name + ".qiniudn.com/" + result.key + "_thumb120.120");
         $(".postimg-item-msg").eq(index).html("上传完成");
         $(".postimg-item").eq(index).append($('<a data-filename="' + result.key + '" class="postimg-item-del" href="javascript:void(0)" onClick="delUploadedFile(this);"><i class="icon-trash"></i></a>'));
+        */
         // 添加到 form 里
         //$(".postimg-item").eq(index).append($('<input hidden name="img_' + index + '"' + ' value="' + serverData.substring(9) + '" />'));
         if (index !== 0) {
@@ -109,11 +140,13 @@ function uploadComplete(file) {
     if (this.getStats().files_queued > 0) {
         this.startUpload();
     } else {
-        $("#errorMsg").html("文件全部上传成功");
+        $("#imgerror").html("文件全部上传成功");
+        $('#imgprocess').html(null);
     }
 }
 
 function uploadError(file, errorCode, message) {
+    console.log("test");
     errorMsg = '';
     switch (errorCode) {
         case SWFUpload.UPLOAD_ERROR.FILE_CANCELLED:
@@ -129,7 +162,7 @@ function uploadError(file, errorCode, message) {
             error = "出现了未知错误，请联系管理员";
             break;
     }
-    $("#errorMsg").html(errorMsg);
+    $("#imgerror").html(errorMsg);
 }
 
 function swfuInit(){
@@ -184,14 +217,19 @@ function swfuInit(){
 function myProgress(file, percent) {
     //console.log("success");
     //console.log(swfu.getStats().successful_uploads);
-    var msg = $(".postimg-item-msg").eq(swfu.getStats().successful_uploads);
-    msg.html("上传中：" + percent + "%");
+    var msg = $(".imgprocess").eq(swfu.getStats().successful_uploads);
+    msg.css("display", "block");
+    msg.html(percent + "%");
+    $('#imgerror').html(null);
+    var cur = swfu.getStats().successful_uploads + 1;
+    var wait = swfu.getStats().files_queued - 1;
+    $('#imgprocess').html(wait + '等待上传，' + '正在上传第' + cur + '个文件');
 }
 
 function delUploadedFile(element) {
     initSuccessfuUploads();
-    handleDelUploadedFile($(element).data('filename'));
-    $(element).parent().remove();
+    handleDelUploadedFile(element.data('filename'));
+    element.parent().remove();
     var stats = swfu.getStats();
     stats.successful_uploads--;
     swfu.setStats(stats);
