@@ -13,7 +13,7 @@ import os
 os.environ["TZ"] = config.DEFAULT_TIMEZONE
 
 app = Flask(__name__)
-app.config.from_object("hadfish.config.ProConfig")
+app.config.from_object("hadfish.config.DevConfig")
 
 app.register_module(account)
 app.register_module(item_sale)

@@ -18,7 +18,7 @@
                 <li class="grjj">个人简介：{{ g.user.profile }}</li>
              
              </ul>
-             <a href="useredit.asp" class="edit-button">修改资料</a>
+             <a href="{{ url_for('account.setting') }}" class="edit-button">修改资料</a>
              <div class="clear"></div>
             {% else %}
             <ul class="userinformation-user">
