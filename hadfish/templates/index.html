@@ -20,37 +20,7 @@
 
 <body style="padding-top:0;">
 
-<div id="head">
-	<span>
-        <div id="logo"><img src="/static/img/logo2.png"  alt="有鱼网" /></div>
-        <div id="head-list">
-        	<ul class="left">
-                <li class="left"><a href="{{ url_for('common.index') }}">首页</a></li>
-                
-                {% if g.user %}
-                    <li class="left"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}">个人主页</a></li>
-                {% endif %}
-                
-                <li class="left"><a href="{{ url_for('item_sale.show_item') }}">跳蚤市场</a></li>
-                <li class="left"><a href="{{ url_for('item_demand.show_item') }}">求购中心</a></li>
-                <li class="left"><a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">美食预定</a></li>
-                <li class="left"><a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">求购</a></li>
-                <li class="left"><a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">在线打印</a></li>
-            </ul>
-            <ul class="right">
-                {% if g.user %}
-                <li class="right"><a href="{{ url_for('account.logout') }}">注销</a>
-                <li class="right"><a href="{{ url_for('account.setting') }}">设置</a>
-                {% else %}
-                <li class="right"><a href="{{ url_for('account.login') }}">登录</a></li>
-                <li class="right"><a href="{{ url_for('account.register') }}">注册</a></li>
-                {% endif %}
-            	
-                
-            </ul>
-        </div>
-    </span>
-</div>
+    {% include "navigation.html" %}
 <!--
 <div id="index-head">
 	<div id="index-head-wrap" class="clearfix">
