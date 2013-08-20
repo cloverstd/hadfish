@@ -137,21 +137,19 @@
 
 
 <!--以下是商品分类导航-->
-<!--
 <div class="index-biaoti">商品分类</div>
 <div id="product-kind">
     <ul>
-        <li><a href="market.asp" class="kind-all"></a></li>
-        <li><a href="market.asp?kind=服装" class="kind-fuzhuang"></a></li>
-        <li><a href="market.asp?kind=日常用品" class="kind-richang"></a></li>
-        <li><a href="market.asp?kind=食品" class="kind-shipin"></a></li>
-        <li><a href="market.asp?kind=数码" class="kind-shuma"></a></li>
-        <li><a href="market.asp?kind=文化用品" class="kind-wenhua"></a></li>
-        <li><a href="market.asp?kind=其他" class="kind-qita"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item') }}" class="kind-all"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item', kind=1) }}" class="kind-fuzhuang"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item', kind=2) }}" class="kind-richang"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item', kind=3) }}" class="kind-shipin"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item', kind=4) }}" class="kind-shuma"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item', kind=5) }}" class="kind-wenhua"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item', kind=6) }}" class="kind-qita"></a></li>
         <div class="clear"></div>
     </ul>
 </div>
--->
 
 <!--以下是广告滚动-->
 <div class="index-biaoti">出售中的商品</div>

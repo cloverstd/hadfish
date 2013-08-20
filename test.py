@@ -15,15 +15,6 @@ with app.test_request_context():
         # users.append(user)
 
     # db.session.add_all(users)
-<<<<<<< HEAD
-    item = ItemSale.query.get(1)
-    items = list()
-    for i in range(8 * 10):
-        rv = ItemSale(item.name, item.price, item.original_price, randint(0, 4))
-        rv.user_id = item.user_id
-        rv.images = item.images
-        items.append(rv)
-=======
     # item = ItemSale.query.first()
     # items = list()
     # for i in range(8 * 10):
@@ -31,19 +22,21 @@ with app.test_request_context():
         # rv.user_id = item.user_id
         # rv.images = item.images
         # items.append(rv)
->>>>>>> hadfish-ui
 
     # db.session.add_all(items)
 
-    items = ItemSale.query.all()
-    for item in items:
-        item.level = randint(0, 9)
+    # items = ItemSale.query.all()
+    # for item in items:
+        # item.level = randint(0, 9)
 
     # user = User.query.filter_by(name="cloverstd").first()
     # user.power =  99
     # page = Page.query.all()
     # for p in page:
         # db.session.delete(p)
+    kinds = Kind.query.all()
+    for k in kinds:
+        print k.name, k.id
     db.session.commit()
 
 
