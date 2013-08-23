@@ -51,9 +51,17 @@
         <div class="rightbox">
 	
         <h1>个人信息</h1>
-        <div id="userpic"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}" title="cloverstd的头像" style="background-image:url(
-        {{ g.user.avatar | avatar_url }}_170.170
-            );background-repeat: no-repeat;">
+        <div id="userpic"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}" title="cloverstd的头像" 
+                {%- if g.user.avatar %}
+                style="background-image:url(
+                    {{ g.user.avatar | avatar_url }}_170.170
+                    );background-repeat: no-repeat;"
+                {% else %}
+                style="background-image:url(
+                /static/img/default.png
+                    );background-repeat: no-repeat;"
+                {% endif -%}
+        >
         </a></div>
         <div id="username"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}">cloverstd</a></div>
         <div id="usersale">我要出售：
@@ -70,8 +78,10 @@
         <!--
         <div id="iwantsale"><a href="{{ url_for('item_sale.add_item') }}" title="点击出售自己的物品"></a></div>
         -->
-        <a href="{{ url_for('item_sale.add_item') }}" title="点击出售自己的物品">我要卖</a>
-        <a href="{{ url_for('item_demand.add_item') }}" title="点击出售自己的物品">我要买</a>
+        <div class="sider-btn">
+        <a class="btn btn-buy" href="{{ url_for('item_sale.add_item') }}" title="点击出售自己的物品">我要卖</a>
+        <a class="btn btn-buy" href="{{ url_for('item_demand.add_item') }}" title="点击出售自己的物品">我要买</a>
+        </div>
     </div>
     {% else %}
     <div class="rightbox">

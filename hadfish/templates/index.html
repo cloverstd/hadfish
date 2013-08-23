@@ -70,7 +70,9 @@
                         <!--
                         <div class=""><a class="index-login-submit" onmouseover="this.className='index-login-submit-hover'" onmouseout="this.className='index-login-submit'">我的个人主页</a></div>
                         -->
-                        <div class=""><a href="{{ url_for('account.userinfo', uid=g.user.id) }}" class="btn">我的个人主页</a></div>
+                        <div class="index-btn"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}" class="btn">个人主页</a></div>
+                        <div class="index-btn"><a href="{{ url_for('item_sale.add_item') }}" class="btn">我要出售商品</a></div>
+                        <div class="index-btn"><a href="{{ url_for('item_demand.add_item') }}" class="btn">我要求购商品</a></div>
                         {% endif %}
 					</div>
 					

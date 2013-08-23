@@ -23,11 +23,25 @@
             {% else %}
             <ul class="userinformation-user">
                 <li>昵称：{{ user.name }}</li>
+                {#
                 <li>email：{{ user.email }}</li>
-                <li>手机号码：{{ user.tel }}</li>
+                #}
+                <li>手机号码：
+                {% if g.user %}
+                {{ user.tel }}
+                {% else %}
+                <a href="{{ url_for('account.login') }}">登录</a>后查看
+                {% endif %}
+                </li>
                 <li>QQ：
+                {% if g.user %}
                 {{ user.qq }}
+                {% if user.qq %}
                 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={{ user.qq }}&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:{{ user.qq }}:41" alt="点击给{{ user.name }}发消息" title="点击给{{ user.name }}发消息"></a>
+                {% endif %}
+                {% else %}
+                <a href="{{ url_for('account.login') }}">登录</a>后查看
+                {% endif %}
                 </li>
                 <li>宿舍地址：{{ user.address }}</li>
                 <div class="clear"></div>
@@ -45,13 +59,13 @@
             {% endif %}
         </div>
 
-        <div class="userinformation qiugou">
+        <div class="userinformation">
             <h1>求购信息</h1>
             <div id="qiugoujg">
                 <ul>                        
                     {% for item in item_demands %}
                     <li>
-                    <span class="qiugounr">{{ item.name }}</span>
+                    <span class="qiugounr"><a href="{{ url_for('item_demand.show_item_by_id', item_id=item.id) }}">{{ item.name }}</a></span>
                     <span style="margin-top:10px;">{{ item.description }}</span>
                         <span class="qiugouzt">
                             <b>求购中...</b>

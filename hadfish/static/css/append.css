@@ -399,3 +399,34 @@ a.item-mod {
 .alert-error {
 
 }
+
+.index-btn {
+    text-align: center;
+}
+
+#index-nologin {
+    text-align: center;
+}
+
+#username {
+    text-align: center;
+}
+
+#usersale {
+    text-align: center;
+}
+
+#userwant {
+    text-align: center;
+}
+
+.sider-btn {
+    text-align: center;
+}
+
+a.btn-buy {
+font-size: 14px;
+border-radius: 15px;
+line-height: 40px;
+background: #3F4ACB;
+}
