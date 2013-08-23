@@ -74,6 +74,7 @@ def register():
         return "已经登录了"
     error = None
     if request.method == "POST":
+        print request.form
         if not request.form["username"]:
             error = u"亲，用户名不能为空哟！"
         elif not request.form["password"]:
@@ -302,6 +303,8 @@ def email_valid():
             db.session.commit()
             flash(u"恭喜验证成功", category="alert-success")
             return redirect(url_for("account.setting"))
+    else:
+        return render_template("user/email_validate.html")
 
     if not g.user:
         # return redirect(url_for(""))

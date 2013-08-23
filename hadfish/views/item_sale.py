@@ -127,7 +127,7 @@ def add_item():
         item = ItemSale(request.form["name"].strip(), float(request.form["price"]),
                         request.form["level"], int(request.form["kind"]),
                         valid_date=int(request.form["valid_date"]),
-                        original_price=int(request.form["original_price"])
+                        original_price=float(request.form["original_price"])
                         if original_price is None else original_price,
                         description=request.form["description"].strip())
         if request.form["img"] != '':

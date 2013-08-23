@@ -68,7 +68,7 @@ class ItemSale(db.Model):
     level = db.Column(db.Integer(1))    # 新旧程度，0-9成新, 0 表示1，9 表示10
     date = db.Column(db.DateTime)  # 上架时间
     valid_date = db.Column(db.Integer(3))  # 最长时间 150 天
-    description = db.Column(db.Integer(140))
+    description = db.Column(db.String(140))
     images = db.relationship("Image", backref="itemsales", lazy="dynamic")
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     kind_id = db.Column(db.Integer, db.ForeignKey("kind.id"))  # 分类
