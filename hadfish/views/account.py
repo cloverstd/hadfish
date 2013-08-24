@@ -89,10 +89,14 @@ def register():
         print request.form
         if not request.form["username"]:
             error = u"亲，用户名不能为空哟！"
+        elif len(request.form["username"])>20 or len(request.form["username"])<6:
+            error = u"用户名长度为 6 - 20 个字符"
         elif not request.form["password"]:
             error = u"亲，肿么可以没有密码呢!"
         elif request.form["password"] != request.form["password2"]:
             error = u"亲，两次输入的密码不相同哟!"
+        elif len(request.form["password"])>32 or len(request.form["password"])<6:
+            error = u"密码长度必须在 6 - 32 个字符"
         elif not request.form["email"] or \
                 '@' not in request.form["email"]:
             error = u"亲，邮箱地址不正确哟!"
@@ -100,6 +104,8 @@ def register():
             error = u"亲，用户名已经存在了哟！"
         elif get_user_id_from_email(request.form["email"].strip()):
             error = u"亲，邮箱已经存在了哟！"
+        elif len(request.form["email"]) > 100:
+            error = u"邮箱长度需要小于 100 个字符"
 
         if error:
             flash(error, category="alert-error")
@@ -204,8 +210,12 @@ def setting():
     if request.method == "POST":
         if not request.form["username"]:
             error = u"用户名不能为空"
+        elif len(request.form["username"])>20 or len(request.form["username"])<6:
+            error = u"用户名长度为 6 - 20 个字符"
         elif not request.form["email"] or not '@' in request.form["email"]:
             error = u"邮箱不能为空"
+        elif len(request.form["email"]) > 100:
+            error = u"邮箱长度需要小于 100 个字符"
         if error:
             flash(error, category="alert-error")
             return redirect(url_for("account.setting"))
@@ -246,6 +256,9 @@ def setting_password():
             error = u"原密码不正确"
         elif request.form["password[1]"] != request.form["password[2]"]:
             error = u"新密码两次不相同"
+        elif len(request.form["password"])>32 or len(request.form["password"])<6:
+            error = u"密码长度必须在 6 - 32 个字符"
+
         if error:
             flash(error, category="alert-error")
             return redirect(url_for("account.setting", come="password"))
