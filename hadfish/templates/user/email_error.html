@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}邮箱验证错误{% endblock %}
+{% block content %}
+
+<div id="content" class="email-validate">
+    {#
+    <div class="agreement-title">{{ content_title }}</div>
+    #}
+    <div class="agreement-content">
+        {{ error }}，请验证
+        {% if uid %}
+        <form action="{{ url_for('account.email_valid') }}" method="POST">
+            <input type="hidden" name="uid" value={{ uid }} />
+            <button type=submit>重新验证</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+{% block solescript %}
+{% endblock %}k
