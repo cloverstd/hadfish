@@ -46,7 +46,7 @@ class BaseConfig(object):
     # MAIL_USE_SSL = False
     # MAIL_DEBUG = True
     MAIL_USERNAME = "server@mail.hadfish.com"
-    MAIL_PASSWORD = "aGFkZmlzaAo=293133"
+    MAIL_PASSWORD = "aGFkZmlzaAo=2931336"
     MAIL_DEFAULT_SENDER = "server@mail.hadfish.com"
     # MAIL_MAX_EMAILS = None
     # MAIL_SUPPRESS_SEND = False

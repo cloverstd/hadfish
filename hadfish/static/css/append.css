@@ -430,3 +430,16 @@ border-radius: 15px;
 line-height: 40px;
 background: #3F4ACB;
 }
+
+.email-validate {
+    background-color: #FFF;
+    background-image: url(/static/img/xieyi_bg.png);
+    background-repeat: repeat-x;
+    width: 880px !important;
+    padding: 0 40px 20px 40px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2),-2px -2px 5px rgba(0,0,0,0.2);
+    -moz-box-shadow: 2px 2px 5px rgba(0,0,0,0.2),-2px -2px 5px rgba(0,0,0,0.2);
+    -webkit-box-shadow: 2px 2px 5px rgba(0,0,0,0.2),-2px -2px 5px rgba(0,0,0,0.2);
+}

@@ -22,25 +22,32 @@
              <div class="clear"></div>
             {% else %}
             <ul class="userinformation-user">
+                <form action="{{ url_for('account.email_valid') }}" name="emailform" method="POST">
+                    <input type="hidden" name="uid" value={{ g.user.id }} />
+                </form>
                 <li>昵称：{{ user.name }}</li>
                 {#
                 <li>email：{{ user.email }}</li>
                 #}
                 <li>手机号码：
-                {% if g.user %}
-                {{ user.tel }}
-                {% else %}
+                {% if not g.user %}
                 <a href="{{ url_for('account.login') }}">登录</a>后查看
+                {% elif not g.user.is_validate %}
+                <a href="javascript:void(0);" onClick="document.emailform.submit();">验证邮箱</a>后查看
+                {% else %}
+                {{ user.tel }}
                 {% endif %}
                 </li>
                 <li>QQ：
-                {% if g.user %}
-                {{ user.qq }}
-                {% if user.qq %}
-                <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={{ user.qq }}&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:{{ user.qq }}:41" alt="点击给{{ user.name }}发消息" title="点击给{{ user.name }}发消息"></a>
-                {% endif %}
-                {% else %}
+                {% if not g.user %}
                 <a href="{{ url_for('account.login') }}">登录</a>后查看
+                {% elif not g.user.is_validate %}
+                <a href="javascript:void(0);" onClick="document.emailform.submit();">验证邮箱</a>后查看
+                {% else %}
+                {{ user.qq }}
+                    {% if user.qq %}
+                    <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={{ user.qq }}&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:{{ user.qq }}:41" alt="点击给{{ user.name }}发消息" title="点击给{{ user.name }}发消息"></a>
+                    {% endif %}
                 {% endif %}
                 </li>
                 <li>宿舍地址：{{ user.address }}</li>

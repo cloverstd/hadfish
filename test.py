@@ -34,9 +34,12 @@ with app.test_request_context():
     # page = Page.query.all()
     # for p in page:
         # db.session.delete(p)
-    kinds = Kind.query.all()
-    for k in kinds:
-        print k.name, k.id
+    # kinds = Kind.query.all()
+    # for k in kinds:
+        # print k.name, k.id
+    users = User.query.all()
+    for user in users:
+        db.session.delete(user)
     db.session.commit()
 
 

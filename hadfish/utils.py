@@ -10,6 +10,7 @@ from hashlib import sha1
 from hadfish import config
 from time import time
 from base64 import urlsafe_b64encode
+from hadfish.extensions import mail
 
 
 def generate_password_hash(password, key=None):
@@ -91,3 +92,18 @@ def qiniu_token(scope=config.QINIU_BUCKET):
     auth_digest_encoded = urlsafe_b64encode(auth_digest)
     return "%s:%s:%s" % (config.QINIU_ACCESS_KEY,
                          auth_digest_encoded, auth_info_encoded)
+
+
+# 注册邮件
+def send_mail(recipients, **args):
+    subject = None
+    html = None
+    if "subject" in args:
+        subject = args["subject"]
+
+    if "body" in args:
+        html = args["body"]
+
+    return mail.send_message(subject=subject,
+                             recipients=[recipients],
+                             html=html)

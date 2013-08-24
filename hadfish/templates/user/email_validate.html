@@ -1,10 +1,13 @@
 {% extends "layout.html" %}
-{% block title %}{{ page_title }}{% endblock %}
+{% block title %}邮箱验证{% endblock %}
 {% block content %}
-<div id="content" class="agreement">
+
+<div id="content" class="email-validate">
+    {#
     <div class="agreement-title">{{ content_title }}</div>
+    #}
     <div class="agreement-content">
-        {{ content|safe }}
+        恭喜您，{{ name }}，注册成功，请前往你的邮箱（{{ email }})去查看有鱼网发来的验证邮箱，点击邮箱里的验证链接完成注册
     </div>
 </div>
 

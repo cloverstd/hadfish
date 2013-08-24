@@ -5,7 +5,7 @@ from flask import Module, render_template, request, flash, url_for, redirect,\
 from werkzeug import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
 from hadfish.utils import check_password_hash, generate_password_hash,\
-    allowed_file, rename_image, get_avatar_name
+    allowed_file, rename_image, get_avatar_name, send_mail
 from hadfish.extensions import db, mail
 from hadfish.databases import User, ItemSale, ItemDemand, Kind
 from hadfish import config
@@ -15,6 +15,18 @@ from datetime import datetime
 # import os.path
 
 account = Module(__name__)
+
+def register_mail(username, email, uid, valid_code):
+    subject = "有鱼网注册验证邮件（noreply)"
+    body = u"""
+        欢迎 %s 加入<a href="http://www.hadfish.com">有鱼网</a>，请点击下列链接验证
+        <a href="%s/email_validate?k=%sv&v=%s">点击验证</a></br>
+        如果无法点击，请复制下列地址到浏览器中验证
+        %s/email_validate?k=%s&v=%s
+        """ % (username,
+               "http://pi.hui.lu", uid, valid_code.encode('utf-8'),
+               "http://pi.hui.lu", uid, valid_code.encode('utf-8'))
+    send_mail(email, subject=subject, body=body)
 
 
 def get_user_id(username):
@@ -99,10 +111,20 @@ def register():
                     school=u"上海建桥学院", profile=u"")
                     # address=request.form["address"])
 
+        valid_time = datetime.now()
+        valid_value = md5("%s%s" % (user.id,
+                                    valid_time.__str__())).hexdigest()
+        user.valid_time = valid_time
+        user.valid_value = valid_value
+
         db.session.add(user)
         db.session.commit()
-        flash(u"亲，注册成功了，赶紧登录吧！", category="alert-success")
-        return redirect(url_for("account.login"))
+        # 注册验证邮箱
+        register_mail(user.name, user.email, user.id, user.valid_value)
+        return render_template("user/email_validate.html", name=user.name, email=user.email)
+        # flash(u"亲，注册成功了，赶紧登录吧！", category="alert-success")
+        # return redirect(url_for("account.login"))
+
     return render_template("user/register.html")
 
 
@@ -273,65 +295,67 @@ def setting_avatar():
             return redirect(url_for("account.setting", come="avatar"))
 
 
-@account.route("/setting/email", methods=["GET", "POST"])
+@account.route("/email_validate", methods=["GET", "POST"])
 # @account.route("/setting/email", methods=["GET", "POST"])
 def email_valid():
     if request.args:
         k = request.args.get("k")
         v = request.args.get("v")
         if not k or not v:
-            flash(u"无效的验证链接", category="alert-error")
-            return redirect(url_for("account.setting"))
+            # flash(u"无效的验证链接", category="alert-error")
+            return render_template("user/email_error.html", error=u"无效的验证链接")
+            # return redirect(url_for("account.login"))
         user = User.query.filter_by(id=k).first()
         if user.is_validate:
             flash(u"已经验证过了", category="alert-warming")
-            return redirect(url_for("account.setting"))
+            return redirect(url_for("account.login"))
 
+        # 没有验证过的邮箱的处理
         valid_time = user.valid_time
         if (datetime.now() - valid_time).days > 0:
-            flash(u"验证链接已经过期", category="alert-warming")
-            return redirect(url_for("account.setting"))
+            # flash(u"验证链接已经过期", category="alert-warming")
+            return render_template("user/email_error.html", error=u"验证链接已经过期了", uid=user.id)
+            # return redirect(url_for("account.login"))
 
         if not user or user.valid_value != v:
-            flash(u"无效的验证链接", category="alert-error")
-            return redirect(url_for("account.setting"))
+            # flash(u"无效的验证链接", category="alert-error")
+            return render_template("user/email_error.html", error=u"无效的验证链接", uid=user.id)
+            # return redirect(url_for("account.login"))
 
         if user.valid_value == v:
             user.is_validate = True
             user.valid_time = None
             user.valid_value = None
             db.session.commit()
-            flash(u"恭喜验证成功", category="alert-success")
-            return redirect(url_for("account.setting"))
-    else:
-        return render_template("user/email_validate.html")
+            flash(u"恭喜验证成功，请登录", category="alert-success")
+            return redirect(url_for("account.login"))
+    # else:
+        # return render_template("user/email_validate.html")
 
-    if not g.user:
+    # if not g.user:
         # return redirect(url_for(""))
-        return "请先登录"
+        # return "请先登录"
     if request.method == "POST":
-        if g.user.is_validate:
+        uid = int(request.form["uid"])
+
+        user = User.query.get(uid)
+        if not user:
+            abort(404)
+
+        if user.is_validate:
             flash(u"已经验证过了", category="alert-warming")
-            flash(u"邮件已经发送，请查收", category="alert-success")
             return redirect(url_for("account.setting"))
 
         valid_time = datetime.now()
-        valid_value = md5("%s%s" % (g.user.id,
+        valid_value = md5("%s%s" % (user.id,
                                     valid_time.__str__())).hexdigest()
-        g.user.valid_time = valid_time
-        g.user.valid_value = valid_value
+        user.valid_time = valid_time
+        user.valid_value = valid_value
         db.session.commit()
         # Send a validate email
-        html = """
-        <a href="%s/setting/email?k=%sv&v=%s">点击验证</a></br>
-        如果无法点击，请复制下列地址到浏览器中验证
-        %s/setting/email?k=%s&v=%s
-        """ % ("http://pi.hui.lu", g.user.id, valid_value,
-               "http://pi.hui.lu", g.user.id, valid_value)
-        mail.send_message(subject="有鱼网验证邮件",
-                          recipients=[g.user.email],
-                          # recipients=["23081991@qq.com"],
-                          html=html)
+        register_mail(user.name, user.email, user.id, user.valid_value)
+
         flash(u"邮件已经发送，请查收", category="alert-success")
-        return redirect(url_for("account.setting"))
+        # return redirect(url_for("account.setting"))
+        return render_template("user/email_validate.html", name=user.name, email=user.email)
     return "无效的验证链接"
