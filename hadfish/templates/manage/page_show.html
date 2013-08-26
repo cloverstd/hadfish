@@ -1,0 +1,44 @@
+{% extends "manage/layout.html" %}
+{% block title %}页面{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>页面标题</td>
+                        <td>内容标题</td>
+                        <td>页面位置</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for page in pages %}
+                    <tr>
+                        <td>{{ page.id }}</td>
+                        <td>{{ page.title }}</td>
+                        <td>{{ page.content_title }}</td>
+                        <td>{{ page.slug }}</td>
+                        <td>
+                            {% if page.visitable %}
+                            <form action="{{ url_for('admin.disable', pid=page.id) }}" method=POST >
+                                <a class="btn btn-primary btn-sm" href="{{ url_for('admin.page_mod', pid=page.id) }}">修改</a>
+                                <button class="btn btn-warning btn-sm" type="submit">隐藏</button>
+                            </form>
+                            {% else %}
+                            <form action="{{ url_for('admin.enable', pid=page.id) }}" method=POST >
+                                <a class="btn btn-primary btn-sm" href="{{ url_for('admin.page_mod', pid=page.id) }}">修改</a>
+                                <button class="btn btn-info btn-sm" type="submit">显示</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+</div>
+{% endblock %}

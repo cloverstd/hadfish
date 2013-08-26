@@ -187,28 +187,43 @@ class Message(db.Model):
         return "<Message %r>" % self.id
 
 
-# class Page(db.Model):
-    # id = db.Column(db.Integer, primary_key=True)
-    # title = db.Column(db.String(10))
-    # slug = db.Column(db.String(20), unique=True)
-    # description = db.Column(db.String(150))
-    # content = db.Column(db.Text)
-    # timestamp = db.Column(db.DateTime)
-    # visitable = db.Column(db.Boolean)
-    # user_id = db.Column(db.Integer)
-    # ui = db.Column(db.Boolean)
-    # kind = True 表示整站 UI
-    # kind = False 表示独立页面
+class Page(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(10))
+    slug = db.Column(db.String(20), unique=True)
+    content = db.Column(db.Text)
+    content_title = db.Column(db.String(10))
+    timestamp = db.Column(db.DateTime)
+    visitable = db.Column(db.Boolean)
 
-    # def __init__(self, slug, title, description, content, user_id, ui):
-        # self.slug = slug
-        # self.title = title
-        # self.description = description
-        # self.content = content
-        # self.user_id = user_id
-        # self.timestamp = datetime.now()
-        # self.visitable = True
-        # self.ui = ui
+    def __init__(self, slug, title, content, content_title):
+        self.slug = slug
+        self.title = title
+        self.content_title = content_title
+        self.content = content
+        self.timestamp = datetime.now()
+        self.visitable = True
 
-    # def __repr__(self):
-        # return "<Page %r>" % self.id
+    def __repr__(self):
+        return "<Page %r>" % self.id
+
+
+class SiteInfo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(128))
+    description = db.Column(db.String(256))
+    domain = db.Column(db.String(128))
+
+    # 七牛云储存
+    qiniu_access_key = db.Column(db.String(40))
+    qiniu_secret_key = db.Column(db.String(40))
+    qiniu_bucket_avatar = db.Column(db.String(20))
+    qiniu_bucket_img = db.Column(db.String(20))
+    qiniu_domain_img = db.Column(db.String(128))
+    qiniu_domain_avatar = db.Column(db.String(128))
+
+    # 每页显示商品数目
+    per_page = db.Column(db.Integer, default=20)
+
+    def __repr__(self):
+        return "<SiteInfo %r>" % self.id

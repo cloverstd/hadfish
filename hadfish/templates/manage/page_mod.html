@@ -1,0 +1,55 @@
+{% extends "manage/layout.html" %}
+{% block title %}添加新页面{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <form action="{{ url_for('admin.page_mod', pid=page.id) }}" method="POST" role="form">
+          <div class="form-group">
+            <label>页面标题</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ page.title }}" placeholder="页面标题" name="page-title">
+          </div>
+
+          <div class="form-group">
+            <label>内容标题</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="内容标题" value="{{ page.content_title }}" name="content-title">
+          </div>
+
+          <div class="form-group">
+            <label>页面位置</label>
+            <select class="form-control" name="page-slug">
+                <option value="{{ page.slug }}">/{{ page.slug }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>页面内容</label>
+            <textarea class="form-control" name="content" rows="10">{{ page.content }}</textarea>
+            </div>
+
+          <button type="submit" class="btn btn-primary">修改</button>
+        </form>
+        </div>
+        <!--
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-4">
+                    页面标题是网页的 title 属性
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    内容标题是内容页面的标题
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    页面位置是页面所在的位置，目前只能添加 /help /agreement /about /joinus 这四个页面
+                </div>
+            </div>
+        </div>
+        -->
+    </div>
+</div>
+{% endblock %}
