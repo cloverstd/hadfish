@@ -51,7 +51,7 @@
                         {{ item.user.tel }}
                         {% endif %}
                     </span>
-                    <span class="simple-phon">QQ：{{ item.user.qq }}
+                    <span class="simple-phon">QQ：
                         {% if not g.user %}
                         <a href="{{ url_for('account.login') }}">登录</a>后查看
                         {% elif not g.user.is_validate %}

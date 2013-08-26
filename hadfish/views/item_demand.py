@@ -83,6 +83,8 @@ def add_item():
 
         if request.form["name"].strip() == '':
             error = u"名称不能为空"
+        elif len(request.form["name"]) >= 140:
+            error = u"名称不能大于 80 个字"
         elif not check_price(request.form["price"]):
             error = u"价格应该为数字"
         elif float(request.form["price"]) < 0:
@@ -92,6 +94,8 @@ def add_item():
         elif int(request.form["valid_date"]) <= 0 or \
                 int(request.form["valid_date"]) > 150:
             error = u"有效日期无效"
+        elif len(request.form["description"]) >= 140:
+            error = u"描述不能超过 140 个字"
 
         if error:
             flash(error, category="alert-error")
@@ -150,6 +154,8 @@ def modify_item(item_id):
 
         if request.form["name"].strip() == '':
             error = u"名称不能为空"
+        elif len(request.form["name"]) > 80:
+            error = u"名称不能超过 80 个字"
         elif not check_price(request.form["price"]):
             error = u"价格应该为数字"
         elif float(request.form["price"]) < 0:
@@ -159,6 +165,8 @@ def modify_item(item_id):
         elif int(request.form["valid_date"]) <= 0 or \
                 int(request.form["valid_date"]) > 150:
             error = u"有效日期无效"
+        elif len(request.form["description"]) >= 140:
+            error = u"描述不能超过 140 个字"
 
         if error:
             flash(error, category="alert-error")

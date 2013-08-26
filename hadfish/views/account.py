@@ -16,6 +16,17 @@ from datetime import datetime
 
 account = Module(__name__)
 
+def check_password(password, user_password):
+    if check_password_hash(user_password,
+                           request.form["password"],
+                           config.PASSWORD_KEY):
+        return True
+    elif md5(request.form["password"]).hexdigest() == user_password:
+        return True
+    else:
+        return False
+
+
 def register_mail(username, email, uid, valid_code):
     subject = "有鱼网注册验证邮件（noreply)"
     body = u"""
@@ -145,10 +156,16 @@ def login():
             user = User.query.filter_by(email=request.form["username"]).first()
             if user is None:
                 error = u"用户不存在！"
-            elif not check_password_hash(user.password,
-                                         request.form["password"],
-                                         config.PASSWORD_KEY):
-                error = u"亲，密码错误哟"
+            # elif not check_password_hash(user.password,
+                                         # request.form["password"],
+                                         # config.PASSWORD_KEY):
+                # error = u"亲，密码错误哟"
+            # 与原来的用户 md5 加密相兼容
+            # elif md5(request.form["password"]).hexdigest() != user.paddword:
+                # error = u"密码错误"
+            elif not check_password(request.form["password"], user.password):
+                error = u"密码错误"
+
             else:
                 flash(u"登录成功！", category="alert-success")
                 session["user_id"] = user.id
@@ -161,10 +178,13 @@ def login():
             user = User.query.filter_by(name=request.form["username"]).first()
             if user is None:
                 error = u"用户不存在！"
-            elif not check_password_hash(user.password,
-                                         request.form["password"],
-                                         config.PASSWORD_KEY):
-                error = u"亲，密码错误哟"
+            # elif not check_password_hash(user.password,
+                                         # request.form["password"],
+                                         # config.PASSWORD_KEY):
+                # error = u"亲，密码错误哟"
+            elif not check_password(request.form["password"], user.password):
+                error = u"密码错误"
+
             else:
                 flash(u"登录成功！", category="alert-success")
                 session["user_id"] = user.id
@@ -288,10 +308,10 @@ def setting_avatar():
             filename = rename_image(filename, get_avatar_name(g.user.id))
             # file.save(os.path.join("hadfish/hadfish/static/img", filename))
             # 上传二进制流到七牛
-            if not delete_images(config.QINIU_BUCKET_AVATAR, g.user.avatar)\
-                    and g.user.avatar:
-                flash(u"修改头像失败，请重试", category="alert-warming")
-                return redirect(url_for("account.setting", come="avatar"))
+            # if not delete_images(config.QINIU_BUCKET_AVATAR, g.user.avatar)\
+                    # and g.user.avatar:
+                # flash(u"修改头像失败，请重试", category="alert-warming")
+                # return redirect(url_for("account.setting", come="avatar"))
             if not upload_images(config.QINIU_BUCKET_AVATAR,
                                  filename, file.stream):
                 flash(u"修改头像失败，请重试", category="alert-warming")
