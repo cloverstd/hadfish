@@ -1,0 +1,42 @@
+{% extends "manage/layout.html" %}
+{% block title %}团购订单管理{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-condensed table-hover table-striped">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>姓名</td>
+                        <td>手机号码</td>
+                        <td>寝室号</td>
+                        <td>购买数量</td>
+                        <td>是否联系确认</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.name }}</td>
+                        <td>{{ order.tel }}</td>
+                        <td>{{ order.address }}</td>
+                        <td>{{ order.num }}</td>
+                        <td>
+                            {% if order.ok %}
+                            <button type="submit" class="btn btn-info btn-xs" disabled>是</a>
+                            {% else %}
+                            <form action="{{ url_for('admin.group_ok', oid=order.id) }}" method="POST">
+                                <button type="submit" class="btn btn-danger btn-xs">否</a>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+</div>
+{% endblock %}

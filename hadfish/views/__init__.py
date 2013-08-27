@@ -5,3 +5,5 @@ from hadfish.views.common import common
 from hadfish.views.message import message
 from hadfish.views.admin import admin
 from hadfish.views.page import page
+
+from hadfish.views.grouporder import group

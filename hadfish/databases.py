@@ -227,3 +227,27 @@ class SiteInfo(db.Model):
 
     def __repr__(self):
         return "<SiteInfo %r>" % self.id
+
+
+class GroupOrder(db.Model):
+    __tablename__ = "grouporder"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(10))
+    tel = db.Column(db.String(11))
+    address = db.Column(db.String(20))
+    email = db.Column(db.String(50))
+    timestamp = db.Column(db.DateTime)
+    num = db.Column(db.Integer(2))
+    ok = db.Column(db.Boolean)
+
+    def __init__(self, name, tel, address, email="", num=1):
+        self.name = name
+        self.tel = tel
+        self.address = address
+        self.email = email
+        self.num = num
+        self.timestamp = datetime.now()
+        self.ok = False
+
+    def __repr__(self):
+        return "<GroupOrder %r>" % self.id

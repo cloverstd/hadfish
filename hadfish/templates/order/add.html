@@ -1,0 +1,101 @@
+{% extends "order/layout.html" %}
+{% block title %}有鱼网路由器团购登记{% endblock %}
+
+{% block content %}
+        <div class="container text-center">
+            <h1>有鱼网路由器团购登记</h1>
+        </div>
+        <hr/>
+<div class="container">
+
+    <div class="row">
+        {% if error %}
+        <div class="col-lg-6 col-lg-offset-3">
+                    <div class="alert alert-danger text-center">
+<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+<p>{{ error }}</p>
+                    </div>
+        </div>
+        {% endif %}
+
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="info_tips">
+                        <div class="inner">
+                            <p>
+                            本次团购路由器型号为 TP-Link <a href="http://www.tp-link.com.cn/product_298.html">TL-WR842N</a> ，此路由器拥有双天线设计，信号更强，并且拥有 300Mbps 的无线速率，配合学校电信的 10Mbps 宽带，将为您带来更快的网速，让您无论是在游戏、下载和在线观看视频都畅通无阻。
+                            </p>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="alert alert-info" style="margin: 20px auto;padding: 10px;">
+                            <p>
+                            路由器价格为 85 元每台
+                            </p>
+                            <p>包含:
+                            <ul class="help">
+                                <li>原装路由器</li>
+                                <li>有鱼网友情赠送网线一根</li>
+                                <li>有鱼网友情帮助解决路由器设置相关问题</li>
+                            </ul>
+                            </p>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="alert alert-warning" style="margin: 20px auto;padding: 10px;">
+                        说明：当有鱼网接收到您的信息后，会在24小时内与您确认您的相关信息，具体发货时间请关注<a href="http://hadfish.com">有鱼网</a>及微信平台和<a href="http://weibo.com/u/3089589865">新浪微博</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+
+            <form action="{{ url_for('order_add') }}" role="form" method="POST">
+    <div class="alert alert-success" style="margin: 20px auto;padding: 10px;">
+              <div class="form-group">
+                <label class="control-label">姓名</label>
+                  <input type="text" name="name" class="form-control" placeholder="请务必填写真实姓名">
+              </div>
+              <div class="form-group">
+                <label class="control-label">手机号码</label>
+                  <input type="text" name="tel" class="form-control" placeholder="我们将通过手机号码与您联系">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">寝室号</label>
+                  <input type="text" name="address" class="form-control" placeholder="例如9-1-602-2">
+              </div>
+
+                <div class="form-group">
+                    <label >购买数量</label>
+                        <select class="form-control" name="num">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                        </select>
+                  </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="可不填写">
+                  </div>
+
+                  <div class="text-right">
+                  <button type="submit" class="btn btn-primary">提交订单</button>
+                  </div>
+    </div>
+            </form>
+        </div>
+
+        <!--div class="col-lg-4">
+        </div-->
+
+    </div>
+                <div class="footer">
+                    &copy; 2013 hadfish.com <br/>
+                    最终解释权归<a href="http://hadfish.com">有鱼网</a>所有
+</div>
+{% endblock %}

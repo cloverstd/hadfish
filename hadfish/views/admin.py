@@ -123,13 +123,15 @@ def page_mod(pid):
     if not page:
         abort(404)
 
+    print "test"
     if request.method == "POST":
         page.title = request.form["page-title"].strip()
         page.content = request.form["content"]
-        page.content_title = request.form["content_title"]
+        page.content_title = request.form["content-title"]
         db.session.commit()
         return redirect(url_for("page.page_ui", slug=page.slug))
     return render_template("manage/page_mod.html", page=page)
+
 
 
 
@@ -137,6 +139,38 @@ def page_mod(pid):
 
 @admin.route("/manage/user")
 def user_show():
+    if not g.user:
+        abort(404)
+    elif g.user.power != 99:
+        abort(404)
     users = User.query.all()
 
     return render_template("manage/user_show.html", users=users)
+
+
+
+#### 用户管理 ####
+@admin.route("/manage/group")
+def group_show():
+    if not g.user:
+        abort(404)
+    elif g.user.power != 99:
+        abort(404)
+    orders = GroupOrder.query.all()
+
+    return render_template("manage/group_order.html", orders=orders)
+
+
+
+@admin.route("/manage/group/ok/<int:oid>", methods=["POST"])
+def group_ok(oid):
+    if not g.user:
+        abort(404)
+    elif g.user.power != 99:
+        abort(404)
+    order = GroupOrder.query.get(oid)
+    order.ok = True
+
+    db.session.commit()
+
+    return redirect(url_for("admin.group_show"))
