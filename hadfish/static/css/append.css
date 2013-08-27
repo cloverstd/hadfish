@@ -131,6 +131,28 @@ a.btn {
 	-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 }
 
+a.btn-index {
+    padding: 5px 10px 5px 10px;
+	border-radius:4px;
+	color:#fff;
+	font-size:24px;
+	text-align:center;
+	line-height:60px;
+}
+
+a.btn-index:hover {
+    padding: 5px 10px 5px 10px;
+	border-radius:4px;
+	background:#3FA7CB;
+	color:#fff;
+	font-size:24px;
+	text-align:center;
+	line-height:60px;
+	box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+	-moz-box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+	-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
 .sale-submit {
 	text-align:right;
 	margin-right: 60px;
