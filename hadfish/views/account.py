@@ -94,7 +94,7 @@ def get_demand_item_by_user(uid):
 @account.route("/register", methods=["GET", "POST"])
 def register():
     if g.user:
-        return "已经登录了"
+        return redirect(url_for('common.index'))
     error = None
     if request.method == "POST":
         print request.form
@@ -117,6 +117,8 @@ def register():
             error = u"亲，邮箱已经存在了哟！"
         elif len(request.form["email"]) > 100:
             error = u"邮箱长度需要小于 100 个字符"
+        elif request.form.get("xieyi", "") != 1:
+            error = u"您还未接受有鱼网用户协议"
 
         if error:
             flash(error, category="alert-error")

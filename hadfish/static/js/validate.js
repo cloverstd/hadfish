@@ -18,10 +18,11 @@ $(document).ready(function(){
             var $regerror = element.parent().next();
             $regerror.append($error);
             $regerror.children().eq(0).css("display", "none");
+            $("#regbutton").attr("href", "javascript:void(0);");
+            $("#regbutton").attr("disabled", "disabled");
         },
         errorElement: "span",
         //errorClass: "alert-wrong",
-        debug: true,
         rules: {
             username: {
                 required: true,
@@ -45,6 +46,9 @@ $(document).ready(function(){
             },
             QQ: {
                 qq: true
+            },
+            xieyi: {
+                required: true
             }
 
         },
@@ -67,13 +71,19 @@ $(document).ready(function(){
                 required: "请再输入一遍密码",
                 equalTo: "两次密码不一样"
             },
+            xieyi: {
+                required: "还未接受有鱼网用户协议"
+            }
         },
         success: function(span) {
             span.prev().css("display", "block");
             span.remove();
+            $("#regbutton").attr("href", "javascript:document.reg.submit();");
+            $("#regbutton").removeAttr("disabled");
         }
     });
     }
+
     if ($('#loginform')) {
     /* 登录表单验证 */
     $('#loginform').validate({
@@ -85,7 +95,6 @@ $(document).ready(function(){
         },
         errorElement: "span",
         //errorClass: "alert-wrong",
-        debug: true,
         rules: {
             username: {
                 required: true,
