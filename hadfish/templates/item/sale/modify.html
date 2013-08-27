@@ -42,7 +42,7 @@
                                 <img src="http://hadfish.qiniudn.com/{{ img }}_90.90"></span>
                             {% endfor %}
 						</div>
-                <input type="hidden" id="postimg-ipt" name="img" value=""/>
+                        <input type="hidden" id="postimg-ipt" name="img" value="{{ item.item.images|join(';')"/>
 					</div>		
                 <div class="salexiangxi">
                     <div class="sale-label">
