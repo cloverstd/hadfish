@@ -19,9 +19,26 @@
 </head>
 
 <body style="padding-top:0;">
+<div id="index-top">
+	<div id="index-top-wrap">
+		<div id="index-guanzhu">
+			<wb:follow-button uid="3089589865" type="red_1" width="80px" height="29px" style="display:block;float:left;width:80px;height:29px">官方微博</wb:follow-button>
+			<iframe scrolling="no" frameborder="0" allowtransparency="true" src="http://widget.renren.com/plugin/followbutton?page_id=601578383&color=0&model=0" style="display:block;float:left;width:76px;height:23px;" ></iframe>
+		</div>
+		<div id="index-reg">
+            {% if g.user %}
+            <a href="{{ url_for('account.logout') }}">注销</a>
+			<span class="link-split"></span>
+            <a href="{{ url_for('account.setting') }}">设置</a>
+            {% else %}
+            <a href="{{ url_for('account.register') }}">注册</a>
+			<span class="link-split"></span>
+            <a href="{{ url_for('account.login') }}">登录</a>
+            {% endif %}
+		</div>
+	</div>
+</div>
 
-    {% include "navigation.html" %}
-<!--
 <div id="index-head">
 	<div id="index-head-wrap" class="clearfix">
 		<div id="index-logo"><img src="/static/img/index-logo.png"></div>
@@ -32,9 +49,6 @@
 			<a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">在线打印</a>
 		</div>
 	</div>
-</div>
--->
-<div id="index-head">
 </div>
 
 <!--以下是图片轮播-->

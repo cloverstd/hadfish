@@ -10,10 +10,12 @@
                     <li class="left"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}">个人主页</a></li>
                 {% endif %}
                 
-                <li class="left"><a href="{{ url_for('item_sale.show_item') }}">跳蚤市场</a></li>
+                <li class="left"><a href="{{ url_for('item_sale.show_item') }}">商品交易</a></li>
                 <li class="left"><a href="{{ url_for('item_demand.show_item') }}">求购中心</a></li>
+                <!--
                 <li class="left"><a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">美食预定</a></li>
                 <li class="left"><a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">在线打印</a></li>
+                -->
             </ul>
             <ul class="right">
                 {% if g.user %}
