@@ -14,6 +14,7 @@ def is_int(value):
     except:
         return False
 
+@group.route("/group", methods=["GET", "POST"])
 @group.route("/group/add", methods=["GET", "POST"])
 def order_add():
     error = None

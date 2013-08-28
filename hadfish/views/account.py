@@ -51,7 +51,7 @@ def get_user_id_from_email(email):
 
 
 def get_sale_item_by_user(uid):
-    rv = ItemSale.query.filter_by(user_id=uid).order_by("id desc")[:10]
+    rv = ItemSale.query.filter_by(is_visited=True).filter_by(user_id=uid).order_by("id desc")[:10]
 
     items = list()
     for item in rv:
@@ -74,7 +74,7 @@ def get_sale_item_by_user(uid):
     return items
 
 def get_demand_item_by_user(uid):
-    rv = ItemDemand.query.filter_by(user_id=uid).order_by("id desc")[:10]
+    rv = ItemDemand.query.filter_by(is_visited=True).filter_by(user_id=uid).order_by("id desc")[:10]
     items = list()
     for item in rv:
         kind = Kind.query.get(item.kind_id).name
@@ -117,7 +117,7 @@ def register():
             error = u"亲，邮箱已经存在了哟！"
         elif len(request.form["email"]) > 100:
             error = u"邮箱长度需要小于 100 个字符"
-        elif request.form.get("xieyi", "") != 1:
+        elif request.form.get("xieyi", "") != "1":
             error = u"您还未接受有鱼网用户协议"
 
         if error:

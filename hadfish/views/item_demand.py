@@ -17,9 +17,9 @@ def get_items(page=None, kind_id=None):
     """全部 items"""
     if page is not None:
         if kind_id:
-            rv = ItemDemand.query.filter_by(kind_id=kind_id).order_by("id desc").paginate(page, config.PER_PAGE)
+            rv = ItemDemand.query.filter_by(is_visited=True).filter_by(kind_id=kind_id).order_by("id desc").paginate(page, config.PER_PAGE)
         else:
-            rv = ItemDemand.query.order_by("id desc").paginate(page, config.PER_PAGE)
+            rv = ItemDemand.query.filter_by(is_visited=True).order_by("id desc").paginate(page, config.PER_PAGE)
         items = list()
         for item in rv.items:
             items.append(get_item_by_id(item.id, item))
@@ -47,6 +47,9 @@ def get_item_by_id(item_id, item=None):
 
     if item is None:
         return None
+    elif not item.is_visited:
+        return None
+
     kind = Kind.query.get(item.kind_id).name
     user = User.query.get(item.user_id)
     item = dict(id=item.id,

@@ -17,7 +17,7 @@ def get_items(page=None, kind_id=None):
     """全部 items"""
     if page is not None:
         if kind_id:
-            rv = ItemSale.query.filter_by(kind_id=kind_id).order_by("id desc").paginate(page, config.PER_PAGE)
+            rv = ItemSale.query.filter_by(is_visited=True).filter_by(kind_id=kind_id).order_by("id desc").paginate(page, config.PER_PAGE)
         else:
             rv = ItemSale.query.order_by("id desc").paginate(page, config.PER_PAGE)
         items = list()
@@ -32,7 +32,7 @@ def get_items(page=None, kind_id=None):
                   page=rv.page)
         return rv
 
-    rv = ItemSale.query.all()
+    rv = ItemSale.query.filter_by(is_visited=True).limit(20).all()
     items = list()
     for item in rv:
         # images = list(img.name for img in item.images)

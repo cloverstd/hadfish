@@ -63,7 +63,7 @@
                 {% endif -%}
         >
         </a></div>
-        <div id="username"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}">cloverstd</a></div>
+        <div id="username"><a href="{{ url_for('account.userinfo', uid=g.user.id) }}">{{ g.user.name }}</a></div>
         <!--
         <div id="usersale">我要出售：
         	0

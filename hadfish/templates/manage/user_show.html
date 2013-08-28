@@ -3,6 +3,18 @@
 
 {% block content %}
 <div class="container">
+<ul class="pager">
+    {% if page.has_prev %}
+      <li class="previous"><a href="{{ url_for('admin.user_show', page=page.prev_num) }}">&larr; 上一页</a></li>
+    {% else %}
+      <li class="previous disabled"><a href="#">&larr; 上一页</a></li>
+    {% endif %}
+    {% if page.has_next %}
+      <li class="next"><a href="{{ url_for('admin.user_show', page=page.next_num) }}">下一页 &rarr;</a></li>
+    {% else %}
+    <li class="next disabled"><a href="#">下一页 &rarr;</a></li>
+    {% endif %}
+</ul>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-condensed table-hover">
@@ -22,12 +34,17 @@
                     <tr>
                         <td>{{ user.id }}</td>
                         <td>{{ user.name }}</td>
-                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if not user.is_validate %}
+                            <span class="label label-warning">未验证</span>
+                            {% endif %}
+                            {{ user.email }}
+                        </td>
                         <td>{{ user.tel }}</td>
                         <td>{{ user.qq }}</td>
                         <td>{{ user.address }}</td>
                         <td>
-                            <a class="btn btn-primary btn-sm" href="{{ url_for("account.userinfo", uid=user.id) }}">查看</a>
+                            <a class="btn btn-primary btn-sm" target="_blank" href="{{ url_for("account.userinfo", uid=user.id) }}">查看</a>
                             <a class="btn btn-danger btn-sm" href="{{ url_for("account.userinfo", uid=user.id) }}">禁用</a>
                         </td>
                     </tr>
@@ -35,5 +52,17 @@
                 </tbody>
             </table>
         </div>
+<ul class="pager">
+    {% if page.has_prev %}
+      <li class="previous"><a href="{{ url_for('admin.user_show', page=page.prev_num) }}">&larr; 上一页</a></li>
+    {% else %}
+      <li class="previous disabled"><a href="#">&larr; 上一页</a></li>
+    {% endif %}
+    {% if page.has_next %}
+      <li class="next"><a href="{{ url_for('admin.user_show', page=page.next_num) }}">下一页 &rarr;</a></li>
+    {% else %}
+    <li class="next disabled"><a href="#">下一页 &rarr;</a></li>
+    {% endif %}
+</ul>
 </div>
 {% endblock %}

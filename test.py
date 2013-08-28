@@ -68,11 +68,11 @@ def import_all():
 
 
 with app.test_request_context():
-    import_all()
+    # import_all()
     # import_user()
-    # u = User.query.filter_by(name="cloverstd").first()
-    # print u
-    # u.power = 99
+    u = User.query.filter_by(name="cloverstd").first()
+    print u.power
+    u.power = 99
     # for user in users_json:
         # print user["avatar"]
 

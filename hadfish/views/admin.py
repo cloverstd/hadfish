@@ -137,19 +137,21 @@ def page_mod(pid):
 
 #### 用户管理 ####
 
-@admin.route("/manage/user")
-def user_show():
+@admin.route("/manage/user", defaults={"page": 1})
+@admin.route("/manage/user/page/<int:page>")
+def user_show(page):
     if not g.user:
         abort(404)
     elif g.user.power != 99:
         abort(404)
-    users = User.query.all()
+    users = User.query.paginate(page, 50, False)
 
-    return render_template("manage/user_show.html", users=users)
+    return render_template("manage/user_show.html", users=users.items,
+                           page=users)
 
 
 
-#### 用户管理 ####
+#### 团购管理 ####
 @admin.route("/manage/group")
 def group_show():
     if not g.user:
@@ -174,3 +176,86 @@ def group_ok(oid):
     db.session.commit()
 
     return redirect(url_for("admin.group_show"))
+
+
+#### 出售商品管理 ####
+@admin.route("/manage/item/sale", defaults={"page":1})
+@admin.route("/manage/item/sale/page/<int:page>")
+def sale_show(page):
+    if not g.user:
+        abort(404)
+    elif g.user.power != 99:
+        abort(404)
+
+    sales = ItemSale.query.paginate(page, 50, False)
+    return render_template("manage/item_sale.html", items=sales.items,
+                           page=sales)
+
+@admin.route("/manage/item/sale/<int:item_id>/disable", methods=["POST"])
+def sale_disable(item_id):
+    if not g.user:
+        abort(404)
+    elif g.user.power != 99:
+        abort(404)
+
+    sale = ItemSale.query.get(item_id)
+    sale.is_visited = False
+    db.session.commit()
+
+    return redirect(url_for("admin.sale_show"))
+
+
+@admin.route("/manage/item/sale/<int:item_id>/enable", methods=["POST"])
+def sale_enable(item_id):
+    if not g.user:
+        abort(404)
+    elif g.user.power != 99:
+        abort(404)
+
+    sale = ItemSale.query.get(item_id)
+    sale.is_visited = True
+    db.session.commit()
+
+    return redirect(url_for("admin.sale_show"))
+
+
+
+#### 出售商品管理 ####
+@admin.route("/manage/item/demand", defaults={"page":1})
+@admin.route("/manage/item/demand/page/<int:page>")
+def demand_show(page):
+    if not g.user:
+        abort(404)
+    elif g.user.power != 99:
+        abort(404)
+
+    demands = ItemDemand.query.paginate(page, 50, False)
+    return render_template("manage/item_demand.html", items=demands.items,
+                           page=demands)
+
+@admin.route("/manage/item/demand/<int:item_id>/disable", methods=["POST"])
+def demand_disable(item_id):
+    if not g.user:
+        abort(404)
+    elif g.user.power != 99:
+        abort(404)
+
+    demand = ItemDemand.query.get(item_id)
+    demand.is_visited = False
+    db.session.commit()
+
+    return redirect(url_for("admin.demand_show"))
+
+
+@admin.route("/manage/item/demand/<int:item_id>/enable", methods=["POST"])
+def demand_enable(item_id):
+    if not g.user:
+        ort(404)
+    if g.user.power != 99:
+        abort(404)
+
+    demand = ItemDemand.query.get(item_id)
+    demand.is_visited = True
+    db.session.commit()
+
+    return redirect(url_for("admin.demand_show"))
