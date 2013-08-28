@@ -18,6 +18,8 @@
                     <ul>
                     {% for img in item.item.images %}
                     <li onClick="sliderto(nextIndex(currentIndex))"><img src="http://hadfish.qiniudn.com/{{ img }}_320.240" /></li>
+                    {% else %}
+                    <li><img src="http://hadfish.qiniudn.com/nofish.jpg_320.240" /></li>
                     {% endfor %}
                     </ul>
                 </div>
@@ -25,6 +27,8 @@
                     <ul id="nav" class="nav">
                         {% for img in item.item.images %}
                         <li onClick="sliderto({{ loop.index0 }})"><img src="http://hadfish.qiniudn.com/{{ img }}_42.42" /></li>
+                        {% else %}
+                        <li><img src="http://hadfish.qiniudn.com/nofish.jpg_320.240" /></li>
                         {% endfor %}
                     </ul>
                 </div>

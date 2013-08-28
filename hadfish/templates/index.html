@@ -43,10 +43,13 @@
 	<div id="index-head-wrap" class="clearfix">
 		<div id="index-logo"><img src="/static/img/index-logo.png"></div>
 		<div id="index-dh" class="clearfix">
-            <a href="{{ url_for('item_sale.show_item') }}">跳蚤市场</a>
-            <a href="{{ url_for('item_demand.show_item') }}">商品求购</a>
+            <a id="group-add" href="{{ url_for('grouporder.order_add') }}">路由器团购火热进行中</a>
+            <a href="{{ url_for('item_sale.show_item') }}">商品交易</a>
+            <a href="{{ url_for('item_demand.show_item') }}">求购中心</a>
+			<!--
 			<a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">美食预定</a>
 			<a href="javascript:void(0);" onclick="alert('即将上线！尽请期待(*^__^*)')">在线打印</a>
+            -->
 		</div>
 	</div>
 </div>
@@ -61,7 +64,7 @@
 	        <li class="4"></li>
 	    </ul> 
 	    <div id="banner_list"> 
-	        <a style="background:url(/static/img/banner/p1.jpg) no-repeat 50% 50%;"></a> 
+            <a href="{{ url_for('grouporder.order_add') }}" style="background:url(/static/img/banner/p1.jpg) no-repeat 50% 50%;"></a> 
 	        <a style="background:url(/static/img/banner/p2.jpg) no-repeat 50% 50%;"></a> 
 	        <a style="background:url(/static/img/banner/p3.jpg) no-repeat 50% 50%;"></a> 
 	        <a style="background:url(/static/img/banner/p4.jpg) no-repeat 50% 50%;"></a>
@@ -127,12 +130,12 @@
 <div id="product-kind">
     <ul>
         <li><a href="{{ url_for('item_sale.show_item') }}" class="kind-all"></a></li>
-        <li><a href="{{ url_for('item_sale.show_item', kind=1) }}" class="kind-fuzhuang"></a></li>
-        <li><a href="{{ url_for('item_sale.show_item', kind=2) }}" class="kind-richang"></a></li>
-        <li><a href="{{ url_for('item_sale.show_item', kind=3) }}" class="kind-shipin"></a></li>
-        <li><a href="{{ url_for('item_sale.show_item', kind=4) }}" class="kind-shuma"></a></li>
-        <li><a href="{{ url_for('item_sale.show_item', kind=5) }}" class="kind-wenhua"></a></li>
-        <li><a href="{{ url_for('item_sale.show_item', kind=6) }}" class="kind-qita"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item', kind_id=1) }}" class="kind-fuzhuang"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item', kind_id=2) }}" class="kind-richang"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item', kind_id=3) }}" class="kind-shipin"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item', kind_id=4) }}" class="kind-shuma"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item', kind_id=5) }}" class="kind-wenhua"></a></li>
+        <li><a href="{{ url_for('item_sale.show_item', kind_id=6) }}" class="kind-qita"></a></li>
         <div class="clear"></div>
     </ul>
 </div>
@@ -142,7 +145,7 @@
 <div id="admarqueen">
 	<div id="admarqueen0">
 	<div id="admarqueen1">
-        {% for item in items.sales %}
+        {% for item in items.sales[:10] %}
         <a href="{{ url_for('item_sale.show_item_by_id', item_id=item.item.id) }}"><img src="http://hadfish.qiniudn.com/{{ item.item.images[0] }}_126.96" border="0" /></a>
         {% endfor %}
         <!--

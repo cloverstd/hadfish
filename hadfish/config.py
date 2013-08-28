@@ -18,6 +18,7 @@ DEFAULT_TIMEZONE = "Asia/Shanghai" # 默认时区
 
 PASSWORD_KEY = "This is a key"
 SITE_NAME = u"有鱼网"
+SITE_DOMAIN = u"beta.hadfish.com"
 
 # 七牛 key
 QINIU_ACCESS_KEY = "mTjx-jhzEBaeRpY60t--XLCVdKWDopZK4TqIRPDj"

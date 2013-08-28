@@ -25,6 +25,10 @@ users_json = None
 with open("hadfish.json") as fp:
     users_json = json.load(fp)
 
+users_all_json = None
+with open("hadfish-all.json") as fp:
+    users_all_json = json.load(fp)
+    
 def import_user():
     users = list()
     for user in users_json:
@@ -37,12 +41,40 @@ def import_user():
                           avatar=user["avatar"]))
     db.session.add_all(users)
 
+def import_all():
+    for user in users_all_json:
+        if user["items"]:
+            for item in user["items"]:
+                kind_id = item["kind_id"]
+                if item["kind_id"] == 7:
+                    kind_id = 1
+                elif item["kind_id"] == 8:
+                    kind_id = 5
+                sale = ItemSale(name=item["name"],
+                                price=item["price"],
+                                level=item["level"]-1,
+                                kind_id=kind_id,
+                                original_price=item["original_price"]
+                                )
+                sale.description = item["description"][:139]
+                if item["images"][0] != "nofish.jpg":
+                    images = [Image(img) for img in item["images"]]
+                    sale.images = images
+                uid = User.query.filter_by(name=user["name"]).first().id
+                sale.user_id = uid
+                db.session.add(sale)
+
+
+
 
 with app.test_request_context():
+    import_all()
     # import_user()
-    u = User.query.filter_by(name="cloverstd").first()
-    print u
-    u.power = 99
+    # u = User.query.filter_by(name="cloverstd").first()
+    # print u
+    # u.power = 99
+    # for user in users_json:
+        # print user["avatar"]
 
     # me = User.query.filter_by(name="cloverstd").first()
     # users = list()

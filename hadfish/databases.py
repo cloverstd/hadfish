@@ -129,7 +129,7 @@ class ItemDemand(db.Model):
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # name 最大应该为 25
-    name = db.Column(db.String(40), unique=True)
+    name = db.Column(db.String(40))
     date = db.Column(db.DateTime)  # 文件名以日期保存
     item_sale_id = db.Column(db.Integer, db.ForeignKey("itemsales.id"))
     # item_demand_id = db.Column(db.Integer, db.ForeignKey("itemdemands.id"))

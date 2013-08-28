@@ -31,12 +31,12 @@ def register_mail(username, email, uid, valid_code):
     subject = "有鱼网注册验证邮件（noreply)"
     body = u"""
         欢迎 %s 加入<a href="http://www.hadfish.com">有鱼网</a>，请点击下列链接验证
-        <a href="%s/email_validate?k=%sv&v=%s">点击验证</a></br>
+        <a href="http://%s/email_validate?k=%sv&v=%s">点击验证</a></br>
         如果无法点击，请复制下列地址到浏览器中验证
-        %s/email_validate?k=%s&v=%s
+        http://%s/email_validate?k=%s&v=%s
         """ % (username,
-               "http://pi.hui.lu", uid, valid_code.encode('utf-8'),
-               "http://pi.hui.lu", uid, valid_code.encode('utf-8'))
+               config.SITE_DOMAIN, uid, valid_code.encode('utf-8'),
+               config.SITE_DOMAIN, uid, valid_code.encode('utf-8'))
     send_mail(email, subject=subject, body=body)
 
 

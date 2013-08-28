@@ -7,6 +7,7 @@ from hadfish.extensions import db
 import re
 
 group = Module(__name__) 
+
 def is_int(value):
     try:
         return int(value)

@@ -43,9 +43,15 @@
 		
         {% for item in items.sales %}
     <div class="fish inline">
-        <div id="fishpic"><a href="{{ url_for('item_sale.show_item_by_id', item_id=item.item.id) }}" title="{{ item.item.name }}"><img src="http://hadfish.qiniudn.com/{{ item.item.images[0] }}_281.190test" width="281" height="190" alt="" data-pinit="registered"></a></div>
+        <div id="fishpic"><a href="{{ url_for('item_sale.show_item_by_id', item_id=item.item.id) }}" title="{{ item.item.name }}">
+                {% if item.item.images[0] %}
+                <img src="http://hadfish.qiniudn.com/{{ item.item.images[0] }}_281.190test" width="281" height="190" alt="" data-pinit="registered">
+                {% else %}
+                <img src="http://hadfish.qiniudn.com/nofish.jpg_281.190test" width="281" height="190" alt="" data-pinit="registered">
+                {% endif %}
+            </a></div>
         <div id="fishname"><a href=""{{ url_for('item_sale.show_item_by_id', item_id=item.item.id) }} title={{ item.item.name }}>{{ item.item.name[:20] }}</a></div>
-        <div id="fishprice"><a href=""{{ url_for('item_sale.show_item_by_id', item_id=item.item.id) }}>去看看</a><span><b>￥</b>1111</span></div>
+        <div id="fishprice"><a href=""{{ url_for('item_sale.show_item_by_id', item_id=item.item.id) }}>去看看</a><span><b>￥</b>{{ item.item.price }}</span></div>
     </div>
     {% endfor %}
     
